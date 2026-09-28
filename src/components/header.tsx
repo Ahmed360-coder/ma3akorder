@@ -12,7 +12,7 @@ export async function Header() {
 
   const links: { href: string; label: string }[] = [];
   if (!role || role === "customer" || role === "admin") links.push({ href: "/", label: t.nav.stores });
-  if (role === "customer") links.push({ href: "/orders", label: t.nav.orders });
+  if (role === "customer") links.push({ href: "/orders", label: t.nav.orders }, { href: "/spending", label: t.nav.spending });
   if (role === "business_owner") links.push({ href: "/business", label: t.nav.business });
   if (role === "driver") links.push({ href: "/driver", label: t.nav.driver });
   if (role === "admin") links.push({ href: "/admin", label: t.nav.admin });

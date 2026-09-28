@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatEGP, pickName } from "@/lib/format";
 import type { Business, Item } from "@/lib/types";
 import { AddToCart } from "./add-to-cart";
+import { WorthBadge, type ValueScore } from "@/components/worth-badge";
 
 export default async function StorePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -15,6 +16,8 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
   if (!store) notFound();
   const { data } = await supabase.from("items").select("*").eq("business_id", id).order("sort_order").order("created_at");
   const items = (data ?? []) as Item[];
+  const { data: scoreRows } = await supabase.rpc("item_value_scores", { p_business_id: id });
+  const scores = new Map(((scoreRows ?? []) as ValueScore[]).map((s) => [s.item_id, s]));
   const name = pickName(locale, store.name_ar, store.name_en);
   const storeInfo = { businessId: store.id, businessName: name, deliveryFee: Number(store.delivery_fee), minOrder: Number(store.min_order) };
 
@@ -54,6 +57,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
                       · {item.unit_amount} {t.business.units[item.unit_type]}
                     </span>
                   </div>
+                  <WorthBadge score={scores.get(item.id)} unit={item.unit_type} category={store.category} t={t} />
                 </div>
                 {soldOut ? (
                   <span className="text-sm font-bold text-danger">{t.common.soldOut}</span>

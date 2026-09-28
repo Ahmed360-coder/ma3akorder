@@ -14,3 +14,7 @@ export function formatTime(iso: string, locale: string) {
 export function pickName(locale: string, ar: string | null | undefined, en: string | null | undefined) {
   return (locale === "en" ? en || ar : ar || en) ?? "";
 }
+
+export function fill(template: string, values: Record<string, string | number>) {
+  return template.replace(/\{(\w+)\}/g, (_, k) => String(values[k] ?? ""));
+}

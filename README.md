@@ -13,6 +13,8 @@ Food and local-shop ordering for Egypt. Next.js + TypeScript + Tailwind on the f
 - **Customers:** store list, store page with live sold-out flags, cart (one store at a time), cash-on-delivery checkout with a "pay with a note of" field, live order tracking, order history and one-tap reorder.
 - **Businesses (`/business`):** store setup and settings, open/closed switch, menu editor with photos, unit size and optional stock count, sold-out toggle, and a live orders board with a sound for new orders (accept, reject, preparing, ready).
 - **Drivers (`/driver`):** orders waiting for a driver, take an order, picked up, delivered with cash collected.
+- **Spending tracker (`/spending`):** monthly budget, spend this month with 80% and 100% warnings, spend by store, last 6 months, delivery fees paid. The cart warns when an order would go over budget.
+- **Worth-it check:** each item's price per piece, 100 g or 100 ml is compared with similarly named items at other stores (`item_value_scores` in the database), shown as Great value, Fair price or Pricey with a one-line reason. The cart also flags when delivery is a big share of the order.
 - **Admin (`/admin`):** approve or reject stores and drivers, latest orders.
 - Orders are placed and moved through statuses only by database functions (`place_order`, `set_order_status`, `claim_delivery`), which compute prices and totals, lock and reduce stock, and check who may make each move.
 

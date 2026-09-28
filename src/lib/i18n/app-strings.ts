@@ -1,7 +1,7 @@
 // Text for the ordering screens (stores, cart, orders, business, driver, admin).
 
 const enApp = {
-  nav: { stores: "Stores", orders: "My orders", cart: "Cart", business: "My store", driver: "Deliveries", admin: "Admin", account: "Account" },
+  nav: { stores: "Stores", orders: "My orders", spending: "Spending", cart: "Cart", business: "My store", driver: "Deliveries", admin: "Admin", account: "Account" },
   common: {
     save: "Save",
     saved: "Saved",
@@ -126,6 +126,37 @@ const enApp = {
     collect: "Collect",
     notReady: "Wait until the store marks it ready",
   },
+  worth: {
+    great: "Great value",
+    fair: "Fair price",
+    pricey: "Pricey",
+    cheaper: "{n}% cheaper per {unit} than similar items at other stores",
+    dearer: "{n}% more per {unit} than similar items at other stores",
+    same: "About the usual price per {unit} at other stores",
+    per: { piece: "piece", g: "100 g", ml: "100 ml" },
+    feeShare: "Delivery is {n}% of this order. Adding more items makes it better value.",
+    budgetFit: "This order uses {n}% of what's left in your monthly budget.",
+    overBudget: "This order would take you {amount} over your monthly budget.",
+  },
+  spending: {
+    title: "My spending",
+    thisMonth: "This month",
+    budget: "Monthly budget",
+    setBudget: "Set a monthly budget",
+    budgetHint: "We'll warn you at 80% and 100%.",
+    left: "left",
+    over: "over budget",
+    orders: "orders",
+    avgOrder: "Average order",
+    deliveryPaid: "Paid for delivery",
+    byStore: "Where it went this month",
+    byMonth: "Last 6 months",
+    none: "No orders yet this month.",
+    warn80: "You've used {n}% of your budget this month.",
+    warn100: "You've gone over your monthly budget.",
+    save: "Save budget",
+    remove: "Remove budget",
+  },
   admin: {
     title: "Admin",
     pendingStores: "Stores waiting for approval",
@@ -141,7 +172,7 @@ const enApp = {
 export type AppStrings = typeof enApp;
 
 const arApp: AppStrings = {
-  nav: { stores: "المحلات", orders: "طلباتي", cart: "السلة", business: "محلي", driver: "التوصيلات", admin: "الإدارة", account: "حسابي" },
+  nav: { stores: "المحلات", orders: "طلباتي", spending: "مصاريفي", cart: "السلة", business: "محلي", driver: "التوصيلات", admin: "الإدارة", account: "حسابي" },
   common: {
     save: "حفظ",
     saved: "اتحفظ",
@@ -265,6 +296,37 @@ const arApp: AppStrings = {
     pickupFrom: "استلم من",
     collect: "حصّل",
     notReady: "استنى لحد ما المحل يقول إنه جاهز",
+  },
+  worth: {
+    great: "سعره لقطة",
+    fair: "سعره معقول",
+    pricey: "غالي شوية",
+    cheaper: "أرخص {n}% لكل {unit} من نفس المنتج في محلات تانية",
+    dearer: "أغلى {n}% لكل {unit} من نفس المنتج في محلات تانية",
+    same: "نفس السعر تقريبًا لكل {unit} في المحلات التانية",
+    per: { piece: "قطعة", g: "100 جرام", ml: "100 مل" },
+    feeShare: "التوصيل {n}% من الطلب ده. لو زودت حاجات هيبقى أوفر.",
+    budgetFit: "الطلب ده هياخد {n}% من الباقي في ميزانيتك الشهرية.",
+    overBudget: "الطلب ده هيعدّي ميزانيتك الشهرية بـ {amount}.",
+  },
+  spending: {
+    title: "مصاريفي",
+    thisMonth: "الشهر ده",
+    budget: "الميزانية الشهرية",
+    setBudget: "حدد ميزانية شهرية",
+    budgetHint: "هننبهك لما توصل 80% و100%.",
+    left: "باقي",
+    over: "فوق الميزانية",
+    orders: "طلبات",
+    avgOrder: "متوسط الطلب",
+    deliveryPaid: "دفعت توصيل",
+    byStore: "فلوسك راحت فين الشهر ده",
+    byMonth: "آخر 6 شهور",
+    none: "مفيش طلبات الشهر ده لسه.",
+    warn80: "استخدمت {n}% من ميزانيتك الشهر ده.",
+    warn100: "عدّيت ميزانيتك الشهرية.",
+    save: "احفظ الميزانية",
+    remove: "امسح الميزانية",
   },
   admin: {
     title: "الإدارة",

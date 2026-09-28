@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-provider";
-import { formatEGP } from "@/lib/format";
+import { fill, formatEGP } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { DeliveryAddress } from "@/lib/types";
 import { placeOrder } from "./actions";
@@ -14,11 +14,13 @@ export function Checkout({
   locale,
   signedIn,
   defaults,
+  budgetLeft,
 }: {
   t: Dictionary;
   locale: string;
   signedIn: boolean;
   defaults: { address: DeliveryAddress | null; phone: string | null };
+  budgetLeft: number | null;
 }) {
   const { cart, subtotal, setQty, clear } = useCart();
   const router = useRouter();
@@ -85,6 +87,19 @@ export function Checkout({
           <div className="flex justify-between"><dt className="text-muted">{t.cart.deliveryFee}</dt><dd>{formatEGP(cart.deliveryFee, locale)}</dd></div>
           <div className="flex justify-between text-base font-bold"><dt>{t.cart.total}</dt><dd>{formatEGP(total, locale)}</dd></div>
         </dl>
+        {cart.deliveryFee > 0 && cart.deliveryFee / subtotal >= 0.25 && (
+          <p className="rounded-xl bg-warning/10 p-3 text-sm text-warning">
+            {fill(t.worth.feeShare, { n: Math.round((cart.deliveryFee / subtotal) * 100) })}
+          </p>
+        )}
+        {budgetLeft !== null &&
+          (total > budgetLeft ? (
+            <p className="rounded-xl bg-danger/10 p-3 text-sm text-danger">
+              {fill(t.worth.overBudget, { amount: formatEGP(total - Math.max(budgetLeft, 0), locale) })}
+            </p>
+          ) : (
+            <p className="text-sm text-muted">{fill(t.worth.budgetFit, { n: Math.round((total / budgetLeft) * 100) })}</p>
+          ))}
         {belowMin && (
           <p className="text-sm text-warning">
             {t.cart.belowMin} {formatEGP(cart.minOrder, locale)}

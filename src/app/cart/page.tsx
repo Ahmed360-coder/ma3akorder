@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/i18n/server";
 import { getCurrentProfile } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
 import type { DeliveryAddress } from "@/lib/types";
+import { getMonthSpend } from "@/lib/spending";
 import { Checkout } from "./checkout";
 
 export default async function CartPage() {
@@ -10,6 +11,10 @@ export default async function CartPage() {
   const { user, profile } = await getCurrentProfile();
   let lastAddress: DeliveryAddress | null = null;
   let lastPhone: string | null = profile?.phone ?? null;
+  let budgetLeft: number | null = null;
+  if (user && profile?.monthly_budget) {
+    budgetLeft = Number(profile.monthly_budget) - (await getMonthSpend(user.id));
+  }
   if (user) {
     const supabase = await createClient();
     const { data } = await supabase
@@ -27,7 +32,7 @@ export default async function CartPage() {
       <Header />
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
         <h1 className="mb-5 text-2xl font-bold">{t.cart.title}</h1>
-        <Checkout t={t} locale={locale} signedIn={!!user} defaults={{ address: lastAddress, phone: lastPhone }} />
+        <Checkout t={t} locale={locale} signedIn={!!user} defaults={{ address: lastAddress, phone: lastPhone }} budgetLeft={budgetLeft} />
       </main>
     </>
   );

@@ -12,6 +12,7 @@ export type Profile = {
   phone: string | null;
   email: string | null;
   locale: "ar" | "en";
+  monthly_budget: number | null;
 };
 
 export async function getCurrentProfile() {
