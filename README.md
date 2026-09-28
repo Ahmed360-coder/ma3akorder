@@ -30,7 +30,6 @@ You need [Node.js 20 or newer](https://nodejs.org) installed.
 
 ```bash
 npm install
-cp .env.example .env.local
 npm run dev
 ```
 
