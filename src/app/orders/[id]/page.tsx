@@ -10,6 +10,7 @@ import { formatTime, pickName } from "@/lib/format";
 import { setOrderStatus } from "@/lib/order-actions";
 import type { Order, OrderEvent, OrderItem, OrderStatus } from "@/lib/types";
 import { ReorderButton } from "./reorder-button";
+import { RatingForm } from "./rating-form";
 
 const STEPS: OrderStatus[] = ["placed", "accepted", "preparing", "ready", "picked_up", "delivered"];
 
@@ -31,6 +32,11 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
     const { data } = await supabase.from("profiles").select("full_name").eq("id", o.driver_id).maybeSingle();
     driverName = data?.full_name ?? null;
   }
+
+  const { data: myRatings } = await supabase.from("ratings").select("target").eq("order_id", id);
+  const rated = new Set((myRatings ?? []).map((r) => r.target as string));
+  const canRate = o.status === "delivered" && o.customer_id === user.id;
+  const ratingLabels = { comment: t.rating.comment, send: t.rating.send, thanks: t.rating.thanks, stars: t.rating.stars };
 
   const failed = o.status === "rejected" || o.status === "cancelled";
   const reached = STEPS.indexOf(o.status);
@@ -82,6 +88,9 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
             />
           )}
         </OrderCard>
+
+        {canRate && !rated.has("business") && <RatingForm orderId={o.id} target="business" title={t.rating.rateStore} labels={ratingLabels} />}
+        {canRate && o.driver_id && !rated.has("driver") && <RatingForm orderId={o.id} target="driver" title={t.rating.rateDriver} labels={ratingLabels} />}
 
         <section className="flex flex-col gap-2">
           <h2 className="font-bold">{t.orders.timeline}</h2>

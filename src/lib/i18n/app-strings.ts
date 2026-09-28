@@ -138,6 +138,21 @@ const enApp = {
     budgetFit: "This order uses {n}% of what's left in your monthly budget.",
     overBudget: "This order would take you {amount} over your monthly budget.",
   },
+  rating: {
+    rateStore: "Rate the store",
+    rateDriver: "Rate the driver",
+    comment: "Anything to add?",
+    send: "Send rating",
+    thanks: "Thanks for your rating!",
+    stars: "stars",
+    reviews: "ratings",
+  },
+  sales: {
+    today: "Today's sales",
+    orders: "Delivered orders",
+    avg: "Average order",
+    top: "Top item today",
+  },
   spending: {
     title: "My spending",
     thisMonth: "This month",
@@ -308,6 +323,21 @@ const arApp: AppStrings = {
     feeShare: "التوصيل {n}% من الطلب ده. لو زودت حاجات هيبقى أوفر.",
     budgetFit: "الطلب ده هياخد {n}% من الباقي في ميزانيتك الشهرية.",
     overBudget: "الطلب ده هيعدّي ميزانيتك الشهرية بـ {amount}.",
+  },
+  rating: {
+    rateStore: "قيّم المحل",
+    rateDriver: "قيّم المندوب",
+    comment: "عايز تضيف حاجة؟",
+    send: "ابعت التقييم",
+    thanks: "شكرًا على تقييمك!",
+    stars: "نجوم",
+    reviews: "تقييم",
+  },
+  sales: {
+    today: "مبيعات النهارده",
+    orders: "طلبات اتسلمت",
+    avg: "متوسط الطلب",
+    top: "أكتر صنف اتباع",
   },
   spending: {
     title: "مصاريفي",

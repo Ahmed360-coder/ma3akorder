@@ -10,6 +10,12 @@ export default async function Home() {
   const supabase = await createClient();
   const { data } = await supabase.from("businesses").select("*").eq("status", "approved").order("is_open", { ascending: false }).order("name_ar");
   const stores = (data ?? []) as Business[];
+  const { data: ratingRows } = await supabase.from("ratings").select("business_id, stars").eq("target", "business");
+  const ratings = new Map<string, { sum: number; n: number }>();
+  for (const r of ratingRows ?? []) {
+    const cur = ratings.get(r.business_id) ?? { sum: 0, n: 0 };
+    ratings.set(r.business_id, { sum: cur.sum + r.stars, n: cur.n + 1 });
+  }
 
   const features = [t.features.budget, t.features.worth, t.features.local];
 
@@ -35,6 +41,12 @@ export default async function Home() {
                 </div>
                 <span className="text-sm text-muted">
                   {t.categories[s.category]} · {s.area}
+                  {ratings.get(s.id) && (
+                    <>
+                      {" · "}
+                      <span className="text-accent">★</span> {(ratings.get(s.id)!.sum / ratings.get(s.id)!.n).toFixed(1)} ({ratings.get(s.id)!.n})
+                    </>
+                  )}
                 </span>
                 <span className="text-sm text-muted">
                   {t.stores.deliveryFee} {formatEGP(s.delivery_fee, locale)} · {s.prep_minutes} {t.stores.prep}

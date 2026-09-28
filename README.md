@@ -15,6 +15,7 @@ Food and local-shop ordering for Egypt. Next.js + TypeScript + Tailwind on the f
 - **Drivers (`/driver`):** orders waiting for a driver, take an order, picked up, delivered with cash collected.
 - **Spending tracker (`/spending`):** monthly budget, spend this month with 80% and 100% warnings, spend by store, last 6 months, delivery fees paid. The cart warns when an order would go over budget.
 - **Worth-it check:** each item's price per piece, 100 g or 100 ml is compared with similarly named items at other stores (`item_value_scores` in the database), shown as Great value, Fair price or Pricey with a one-line reason. The cart also flags when delivery is a big share of the order.
+- **Ratings:** after delivery the customer rates the store and the driver; store cards show the average. Stores see today's sales, order count, average order and top item.
 - **Admin (`/admin`):** approve or reject stores and drivers, latest orders.
 - Orders are placed and moved through statuses only by database functions (`place_order`, `set_order_status`, `claim_delivery`), which compute prices and totals, lock and reduce stock, and check who may make each move.
 
