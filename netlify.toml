@@ -1,0 +1,4 @@
+# Netlify builds the Next.js app with its built-in Next.js support.
+[build]
+  command = "npm run build"
+  publish = ".next"
