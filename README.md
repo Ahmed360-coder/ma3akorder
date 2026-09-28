@@ -7,7 +7,7 @@ Food and local-shop ordering for Egypt. Next.js + TypeScript + Tailwind on the f
 - Dark, mobile-first web app in Arabic (right-to-left) and English, with a language switch.
 - Installable on phones (web app manifest and icon).
 - Sign in with email and password, Google, or phone code.
-- First-time users pick an account type: customer, business owner or driver. Businesses and drivers wait for admin approval.
+- First-time users pick an account type: customer, business owner or driver. New stores and drivers wait for admin approval.
 - Database: profiles, businesses, menu categories, items (with stock and unit size), addresses, drivers, orders, order items, order events (a log of every status change), payments, ratings.
 - Row Level Security on every table, tested: users only see their own data, stores can't approve themselves, nobody can make themselves admin.
 - **Customers:** store list, store page with live sold-out flags, cart (one store at a time), cash-on-delivery checkout with a "pay with a note of" field, live order tracking, order history and one-tap reorder.
