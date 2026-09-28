@@ -2,7 +2,7 @@
 
 Food and local-shop ordering for Egypt. Next.js + TypeScript + Tailwind on the front, Supabase (Postgres, Auth, Realtime) on the back. Dark theme, Arabic and English.
 
-## What's built so far (milestones 0 and 1)
+## What's built so far (first clickable version)
 
 - Dark, mobile-first web app in Arabic (right-to-left) and English, with a language switch.
 - Installable on phones (web app manifest and icon).
@@ -10,6 +10,19 @@ Food and local-shop ordering for Egypt. Next.js + TypeScript + Tailwind on the f
 - First-time users pick an account type: customer, business owner or driver. Businesses and drivers wait for admin approval.
 - Database: profiles, businesses, menu categories, items (with stock and unit size), addresses, drivers, orders, order items, order events (a log of every status change), payments, ratings.
 - Row Level Security on every table, tested: users only see their own data, stores can't approve themselves, nobody can make themselves admin.
+- **Customers:** store list, store page with live sold-out flags, cart (one store at a time), cash-on-delivery checkout with a "pay with a note of" field, live order tracking, order history and one-tap reorder.
+- **Businesses (`/business`):** store setup and settings, open/closed switch, menu editor with photos, unit size and optional stock count, sold-out toggle, and a live orders board with a sound for new orders (accept, reject, preparing, ready).
+- **Drivers (`/driver`):** orders waiting for a driver, take an order, picked up, delivered with cash collected.
+- **Admin (`/admin`):** approve or reject stores and drivers, latest orders.
+- Orders are placed and moved through statuses only by database functions (`place_order`, `set_order_status`, `claim_delivery`), which compute prices and totals, lock and reduce stock, and check who may make each move.
+
+## Try a full order
+
+The database has a demo bakery with a demo owner and a demo driver (`demo-store@m3akorder.test` and `demo-driver@m3akorder.test`; the password was shared in the project thread). Use three browser windows (or one normal and two private windows):
+
+1. Sign in as the demo store and open **My store**.
+2. In another window, sign up as a customer, open the demo bakery, add items and place the order. The store hears a chime and sees the order.
+3. The store accepts it and marks it ready. Sign in as the demo driver in a third window, take the order, then mark it picked up and delivered. The customer's tracking page updates live.
 
 ## Run it on your computer
 

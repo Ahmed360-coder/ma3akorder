@@ -1,0 +1,5 @@
+-- Demo bakery used for click-through testing. Already applied to the project database.
+-- The demo owner and driver accounts were created in auth.users with a password shared in the project thread.
+-- To remove the demo later:
+--   delete from public.businesses where name_en = 'M3ak Bakery (demo)';
+--   delete from auth.users where email in ('demo-store@m3akorder.test', 'demo-driver@m3akorder.test');

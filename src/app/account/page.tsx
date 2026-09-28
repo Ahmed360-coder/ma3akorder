@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Header } from "@/components/header";
 import { getDictionary } from "@/lib/i18n/server";
@@ -11,10 +12,18 @@ export default async function AccountPage() {
   if (!profile?.onboarded) redirect("/onboarding");
 
   const pending = profile.approval_status !== "approved";
+  const home =
+    profile.role === "business_owner"
+      ? { href: "/business", label: t.nav.business }
+      : profile.role === "driver"
+        ? { href: "/driver", label: t.nav.driver }
+        : profile.role === "admin"
+          ? { href: "/admin", label: t.nav.admin }
+          : { href: "/", label: t.nav.stores };
 
   return (
     <>
-      <Header t={t} />
+      <Header />
       <main className="mx-auto flex w-full max-w-md flex-col gap-5 px-4 pb-16 pt-8">
         <h1 className="text-2xl font-bold">{profile.full_name ?? t.account.title}</h1>
         <dl className="card grid grid-cols-2 gap-4">
@@ -30,7 +39,12 @@ export default async function AccountPage() {
             {profile.email ?? profile.phone}
           </div>
         </dl>
-        <p className="text-muted">{pending ? t.account.pendingNote : t.account.nextUp}</p>
+        {pending && <p className="text-muted">{t.account.pendingNote}</p>}
+        {home && (
+          <Link href={home.href} className="btn-primary">
+            {home.label}
+          </Link>
+        )}
         <form action={signOut}>
           <button className="btn-ghost w-full">{t.account.signOut}</button>
         </form>

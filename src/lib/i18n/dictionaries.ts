@@ -1,3 +1,5 @@
+import { arApp, enApp, type AppStrings } from "./app-strings";
+
 export const locales = ["ar", "en"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "ar";
@@ -66,9 +68,9 @@ const en = {
   },
 };
 
-export type Dictionary = typeof en;
+type BaseDictionary = typeof en;
 
-const ar: Dictionary = {
+const ar: BaseDictionary = {
   brand: "معاك أوردر",
   tagline: "اطلب من المحلات اللي جنبك، واعرف دايمًا إذا كانت الحاجة تستاهل.",
   heroNote: "قريبًا في منطقتك.",
@@ -132,4 +134,9 @@ const ar: Dictionary = {
   },
 };
 
-export const dictionaries: Record<Locale, Dictionary> = { ar, en };
+export type Dictionary = BaseDictionary & AppStrings;
+
+export const dictionaries: Record<Locale, Dictionary> = {
+  ar: { ...ar, ...arApp },
+  en: { ...en, ...enApp },
+};

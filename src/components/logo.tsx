@@ -20,7 +20,7 @@ export function Logo({ name }: { name: string }) {
   return (
     <span className="inline-flex items-center gap-3">
       <LogoMark />
-      <span className="text-xl font-bold tracking-tight">{name}</span>
+      <span className="hidden text-xl font-bold tracking-tight sm:inline">{name}</span>
     </span>
   );
 }

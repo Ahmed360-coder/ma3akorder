@@ -16,5 +16,5 @@ export async function completeOnboarding(formData: FormData) {
     p_locale: await getLocale(),
   });
   if (error) throw new Error(error.message);
-  redirect("/account");
+  redirect(role === "business_owner" ? "/business" : role === "driver" ? "/driver" : "/");
 }

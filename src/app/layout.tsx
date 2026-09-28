@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import { getDictionary } from "@/lib/i18n/server";
+import { CartProvider } from "@/components/cart-provider";
 import "./globals.css";
 
 // Cairo covers both Arabic and Latin, so the two languages look consistent.
@@ -17,7 +18,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const { locale, dir } = await getDictionary();
   return (
     <html lang={locale} dir={dir}>
-      <body className={`${cairo.variable} min-h-dvh antialiased`}>{children}</body>
+      <body className={`${cairo.variable} min-h-dvh antialiased`}>
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }
