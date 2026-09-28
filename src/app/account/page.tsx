@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { Header } from "@/components/header";
 import { getDictionary } from "@/lib/i18n/server";
 import { getCurrentProfile } from "@/lib/profile";
-import { signOut } from "./actions";
+import { ActionButton } from "@/components/action-button";
+import { deleteAccount, signOut } from "./actions";
 
 export default async function AccountPage() {
   const { t } = await getDictionary();
@@ -48,6 +49,11 @@ export default async function AccountPage() {
         <form action={signOut}>
           <button className="btn-ghost w-full">{t.account.signOut}</button>
         </form>
+        <div className="mt-6 border-t border-line pt-6">
+          <ActionButton action={deleteAccount} className="btn w-full text-danger hover:bg-danger/10" confirmText={t.site.deleteConfirm}>
+            {t.site.deleteAccount}
+          </ActionButton>
+        </div>
       </main>
     </>
   );

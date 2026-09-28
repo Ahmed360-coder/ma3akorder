@@ -17,6 +17,8 @@ Food and local-shop ordering for Egypt. Next.js + TypeScript + Tailwind on the f
 - **Worth-it check:** each item's price per piece, 100 g or 100 ml is compared with similarly named items at other stores (`item_value_scores` in the database), shown as Great value, Fair price or Pricey with a one-line reason. The cart also flags when delivery is a big share of the order.
 - **Ratings:** after delivery the customer rates the store and the driver; store cards show the average. Stores see today's sales, order count, average order and top item.
 - **Admin (`/admin`):** approve or reject stores and drivers, latest orders.
+- **Pilot essentials:** privacy policy (`/privacy`) and terms (`/terms`) in Arabic and English, written to follow Egypt's data protection law (have a lawyer review before a wide launch); a footer with those links and a WhatsApp help link (set your number in `src/lib/site.ts`); a consent line on sign-in; and "Delete my account" on the account page, which removes the login and strips name and phone from past orders.
+- **Feel:** instant loading placeholders on every page, short fade-in animations, and a bounce on the cart count. Motion turns off for people who ask their phone to reduce motion.
 - Orders are placed and moved through statuses only by database functions (`place_order`, `set_order_status`, `claim_delivery`), which compute prices and totals, lock and reduce stock, and check who may make each move.
 
 ## Try a full order
