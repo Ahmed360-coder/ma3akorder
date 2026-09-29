@@ -54,6 +54,7 @@ export type SideMenuLabels = {
   workspace: string;
   language: string;
   help: string;
+  byline: string;
   // Discover pages (Spin & Eat, Feed us for…, Rewards, Favourites).
   discover?: { title: string; spin: string; feed: string; rewards: string; favorites: string; guide: string };
 };
@@ -210,6 +211,7 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
             {labels.help}
           </a>
         )}
+        <p className="px-3 pt-1 text-xs font-semibold text-accent">{labels.byline}</p>
       </div>
     </div>
   );

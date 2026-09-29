@@ -55,6 +55,7 @@ export default async function Home() {
     workspace: t.ui.workspace,
     language: t.ui.language,
     help: t.site.support,
+    byline: t.site.byline,
     discover: (({ title, spin, feed, rewards, favorites, guide }) => ({ title, spin: spin.title, feed: feed.title, rewards: rewards.title, favorites: favorites.title, guide: guide.title }))(getExtras(locale).discover),
   };
   const menu = { role, signedIn: !!user, labels: menuLabels, langToggle: <LanguageToggle label={t.switchLanguage} />, whatsapp: SUPPORT_WHATSAPP };

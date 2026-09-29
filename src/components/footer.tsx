@@ -5,7 +5,7 @@ import { SUPPORT_WHATSAPP } from "@/lib/site";
 export async function Footer() {
   const { t } = await getDictionary();
   return (
-    <footer className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-line px-4 py-6 text-sm text-muted">
+    <footer className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-line px-4 pb-24 pt-6 text-sm text-muted md:pb-6">
       <Link href="/privacy" className="hover:text-foreground">{t.site.privacy}</Link>
       <Link href="/terms" className="hover:text-foreground">{t.site.terms}</Link>
       {SUPPORT_WHATSAPP && (
@@ -14,6 +14,7 @@ export async function Footer() {
         </a>
       )}
       <span>© 2026 M3akOrder</span>
+      <span className="font-semibold text-accent">{t.site.byline}</span>
     </footer>
   );
 }
