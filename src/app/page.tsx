@@ -13,6 +13,8 @@ import { fill } from "@/lib/format";
 import { getCustomerLocation } from "@/lib/location-server";
 import { searchLabels } from "@/lib/search-data";
 import { WelcomeBack } from "@/components/welcome-back";
+import { DiscoverRow } from "@/components/discover/discover-row";
+import { getExtras } from "@/lib/i18n/extras";
 
 // Phone status bar matches the green top band.
 export const viewport: Viewport = { themeColor: "#12a150" };
@@ -52,6 +54,7 @@ export default async function Home() {
     workspace: t.ui.workspace,
     language: t.ui.language,
     help: t.site.support,
+    discover: (({ title, spin, feed, rewards, favorites, guide }) => ({ title, spin: spin.title, feed: feed.title, rewards: rewards.title, favorites: favorites.title, guide: guide.title }))(getExtras(locale).discover),
   };
   const menu = { role, signedIn: !!user, labels: menuLabels, langToggle: <LanguageToggle label={t.switchLanguage} />, whatsapp: SUPPORT_WHATSAPP };
 
@@ -66,14 +69,13 @@ export default async function Home() {
       <HomeFeed
         menu={menu}
         searchLabels={searchLabels(t)}
+        discover={<DiscoverRow x={getExtras(locale).discover} />}
         stores={cards}
         againIds={againIds}
         langToggle={<LanguageToggle label={t.switchLanguage} />}
         location={{ t: t.location, locale, current: loc }}
         labels={{
           brand: t.brand,
-          nearbyEntry: t.nearby.entry,
-          nearbyEntryBody: t.nearby.entryBody,
           demo: t.ui.demo,
           deliverTo: t.ui.deliverTo,
           area: loc?.label || lastArea || t.ui.yourArea,

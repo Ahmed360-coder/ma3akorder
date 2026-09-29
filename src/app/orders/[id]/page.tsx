@@ -12,6 +12,8 @@ import { setOrderStatus } from "@/lib/order-actions";
 import type { Order, OrderEvent, OrderItem, OrderStatus } from "@/lib/types";
 import { ReorderButton } from "./reorder-button";
 import { RatingForm } from "./rating-form";
+import { SplitBill } from "@/components/discover/split-bill";
+import { getExtras } from "@/lib/i18n/extras";
 
 const STEPS: OrderStatus[] = ["placed", "accepted", "preparing", "ready", "picked_up", "delivered"];
 
@@ -95,6 +97,18 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
             />
           )}
         </OrderCard>
+
+        {o.customer_id === user.id && !failed && (
+          <SplitBill
+            code={o.code}
+            store={storeName}
+            total={Number(o.total)}
+            deliveryFee={Number(o.delivery_fee)}
+            lines={((items ?? []) as OrderItem[]).map((i) => ({ id: i.id, name: i.name, qty: i.quantity, total: Number(i.line_total) }))}
+            locale={locale}
+            x={getExtras(locale).split}
+          />
+        )}
 
         {canRate && !rated.has("business") && <RatingForm orderId={o.id} target="business" title={t.rating.rateStore} labels={ratingLabels} />}
         {canRate && o.driver_id && !rated.has("driver") && <RatingForm orderId={o.id} target="driver" title={t.rating.rateDriver} labels={ratingLabels} />}

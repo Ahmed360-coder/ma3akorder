@@ -12,6 +12,8 @@ import { getDemoState } from "@/lib/demo";
 import { getCurrentProfile } from "@/lib/profile";
 import { AddToCart } from "./add-to-cart";
 import { WorthBadge, type ValueScore } from "@/components/worth-badge";
+import { HeartButton } from "@/components/discover/heart-button";
+import { getExtras } from "@/lib/i18n/extras";
 
 export default async function StorePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -55,12 +57,13 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
                 <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
               </span>
             )}
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <h1 className="text-2xl font-extrabold sm:text-3xl">{name}</h1>
               <p className="text-sm text-muted">
                 {t.categories[store.category]} · {store.area}
               </p>
             </div>
+            <HeartButton storeId={store.id} labels={getExtras(locale).favorites} className="shrink-0 self-start" />
           </div>
           {store.description && <p className="mt-4 text-sm leading-relaxed">{store.description}</p>}
           <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold">
