@@ -205,7 +205,7 @@ export function SearchScreen({
             <ShoppingBag className="h-5 w-5" aria-hidden="true" />
             <span className="text-[10px] font-bold leading-none text-muted">{labels.cart}</span>
             {count > 0 && (
-              <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-accent px-1 text-[10px] font-bold text-accent-ink">
+              <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-warm px-1 text-[10px] font-bold text-white">
                 {count}
               </span>
             )}
@@ -253,7 +253,7 @@ export function SearchScreen({
                               <span className="block truncate font-bold">{i.name}</span>
                               <span className="block truncate text-xs text-muted">{s.name}</span>
                             </span>
-                            <span className="shrink-0 font-bold text-accent">{formatEGP(i.price, locale)}</span>
+                            <span className="shrink-0 font-bold text-warm-deep">{formatEGP(i.price, locale)}</span>
                           </Link>
                         </li>
                       );
@@ -339,7 +339,7 @@ export function SearchScreen({
                   <Link
                     href={`/stores/${spotlight.id}`}
                     className="relative isolate flex min-h-40 flex-col justify-end overflow-hidden rounded-3xl p-5 text-white shadow-xl shadow-black/10 transition active:scale-[0.99]"
-                    style={{ background: "linear-gradient(135deg, var(--accent-2), var(--accent) 45%, var(--accent-deep))" }}
+                    style={{ background: "linear-gradient(135deg, var(--warm-2), var(--warm) 50%, var(--warm-deep))" }}
                   >
                     <span className="float-slow absolute end-5 top-5 -z-10 grid h-18 w-18 place-items-center rounded-3xl bg-white/20">
                       <Art src="/art/balance_scale.webp" className="h-12 w-12" />

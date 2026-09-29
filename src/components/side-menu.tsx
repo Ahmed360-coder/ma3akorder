@@ -116,7 +116,7 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
           />
           <span className="flex-1">{e.label}</span>
           {!!e.badge && (
-            <span className="grid h-6 min-w-6 place-items-center rounded-full bg-accent px-1.5 text-xs font-bold text-accent-ink">
+            <span className="grid h-6 min-w-6 place-items-center rounded-full bg-warm px-1.5 text-xs font-bold text-white">
               {e.badge}
             </span>
           )}

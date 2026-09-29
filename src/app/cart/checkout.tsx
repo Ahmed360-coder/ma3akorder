@@ -111,7 +111,7 @@ export function Checkout({
         <dl className="flex flex-col gap-1 border-t border-line pt-3 text-sm">
           <div className="flex justify-between"><dt className="text-muted">{t.cart.subtotal}</dt><dd>{formatEGP(subtotal, locale)}</dd></div>
           <div className="flex justify-between"><dt className="text-muted">{t.cart.deliveryFee}</dt><dd>{formatEGP(cart.deliveryFee, locale)}</dd></div>
-          <div className="mt-1 flex justify-between border-t border-dashed border-line pt-2 text-lg font-extrabold"><dt>{t.cart.total}</dt><dd className="text-accent">{formatEGP(total, locale)}</dd></div>
+          <div className="mt-1 flex justify-between border-t border-dashed border-line pt-2 text-lg font-extrabold"><dt>{t.cart.total}</dt><dd className="text-warm-deep">{formatEGP(total, locale)}</dd></div>
         </dl>
         {cart.deliveryFee > 0 && cart.deliveryFee / subtotal >= 0.25 && (
           <p className="rounded-xl bg-warning/10 p-3 text-sm text-warning">

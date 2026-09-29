@@ -43,9 +43,9 @@ export type HomeLabels = {
 
 const CATEGORIES: BusinessCategory[] = ["restaurant", "bakery", "grocery", "pharmacy", "cafe", "other"];
 const PROMO_BG = [
+  "linear-gradient(120deg, #c2410c, #ff8a2b)",
   "linear-gradient(120deg, #0a7a3c, #3cc878)",
-  "linear-gradient(120deg, #1d4ed8, #60a5fa)",
-  "linear-gradient(120deg, #c2410c, #fb923c)",
+  "linear-gradient(120deg, #b91c1c, #f59e0b)",
 ];
 const PROMO_ART = ["/art/balance_scale.webp", "/art/money_bag.webp", "/art/convenience_store.webp"];
 
@@ -111,7 +111,7 @@ export function HomeFeed({
                 <ShoppingBag className="h-5 w-5" aria-hidden="true" />
                 <span className="text-[10px] font-bold leading-none">{labels.cart}</span>
                 {count > 0 && (
-                  <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-accent px-1 text-[10px] font-bold text-accent-ink">
+                  <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-warm px-1 text-[10px] font-bold text-white">
                     {count}
                   </span>
                 )}
@@ -163,7 +163,7 @@ export function HomeFeed({
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-20 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span className="relative">
                     <StoreBadge category={s.category} logo={s.logo} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
-                    {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-positive px-1.5 text-[10px] font-bold text-accent-ink">{labels.freeDelivery}</span>}
+                    {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-warm px-1.5 text-[10px] font-bold text-white">{labels.freeDelivery}</span>}
                   </span>
                   <span className="line-clamp-2 text-xs font-semibold">{s.name}</span>
                 </Link>
@@ -264,7 +264,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
             {s.prep}–{s.prep + 15} {labels.mins}
           </span>
           <span>·</span>
-          <span className={s.fee === 0 ? "font-semibold text-positive" : ""}>{s.fee === 0 ? labels.freeDelivery : s.feeText}</span>
+          <span className={s.fee === 0 ? "font-bold text-warm-deep" : ""}>{s.fee === 0 ? labels.freeDelivery : s.feeText}</span>
           {s.distanceText && (
             <>
               <span>·</span>

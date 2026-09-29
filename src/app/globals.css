@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* Green and white theme. Every colour in the app comes from these tokens. */
+/* Green and white theme with warm orange for actions, prices and offers (orange reads as "tasty").
+   Every colour in the app comes from these tokens. */
 :root {
   --background: #f6faf7;
   --surface: #ffffff;
@@ -12,6 +13,12 @@
   --accent-2: #3cc878;
   --accent-deep: #0a7a3c;
   --accent-ink: #ffffff;
+  --warm: #f26a0f;
+  --warm-2: #ff8a2b;
+  --warm-deep: #c2410c;
+  /* Fast food picture behind every page (made in Higgsfield); the doodle pattern is the fallback. */
+  --page-photo: url(/bg/fast-food.webp);
+  --doodle-opacity: 0;
   --positive: #0f9a4c;
   --warning: #c77700;
   --danger: #dc3b3b;
@@ -29,6 +36,9 @@
   --color-accent-2: var(--accent-2);
   --color-accent-deep: var(--accent-deep);
   --color-accent-ink: var(--accent-ink);
+  --color-warm: var(--warm);
+  --color-warm-2: var(--warm-2);
+  --color-warm-deep: var(--warm-deep);
   --color-positive: var(--positive);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
@@ -50,9 +60,9 @@ body {
   @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 font-semibold transition active:scale-[0.98] disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-accent text-accent-ink hover:brightness-110;
-  background-image: linear-gradient(135deg, var(--accent-2), var(--accent));
-  box-shadow: 0 8px 24px -10px color-mix(in oklab, var(--accent) 70%, transparent), inset 0 1px 0 rgb(255 255 255 / 0.25);
+  @apply btn bg-warm font-bold text-white hover:brightness-105;
+  background-image: linear-gradient(135deg, var(--warm-2), var(--warm));
+  box-shadow: 0 8px 24px -10px color-mix(in oklab, var(--warm) 75%, transparent), inset 0 1px 0 rgb(255 255 255 / 0.25);
 }
 @utility btn-ghost {
   @apply btn border border-line bg-surface text-foreground hover:bg-surface-2;
@@ -140,8 +150,9 @@ body {
 }
 .page-bg::before {
   background: var(--page-photo, none) center / cover no-repeat;
-  opacity: 0.16;
+  opacity: 0.2;
 }
+
 .page-bg::after {
   background: url(/bg/food-doodles.svg) 0 0 / 320px repeat;
   opacity: var(--doodle-opacity, 0.07);

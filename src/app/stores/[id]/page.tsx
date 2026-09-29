@@ -101,7 +101,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
                   <div className="font-bold">{pickName(locale, item.name_ar, item.name_en)}</div>
                   {item.description && <div className="line-clamp-2 text-sm text-muted">{item.description}</div>}
                   <div className="mt-1 text-sm">
-                    <b className="text-accent">{formatEGP(item.price, locale)}</b>
+                    <b className="text-warm-deep">{formatEGP(item.price, locale)}</b>
                     <span className="text-muted">
                       {" "}
                       · {item.unit_amount} {t.business.units[item.unit_type]}
