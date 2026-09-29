@@ -48,11 +48,11 @@ export function SplitBill({ code, store, total, deliveryFee, lines, locale, x }:
             <div className="flex items-center justify-between gap-2">
               <span className="text-sm font-semibold">{x.people}</span>
               <div className="flex items-center gap-2 rounded-xl border border-line p-1">
-                <button className="grid h-9 w-9 place-items-center rounded-lg hover:bg-surface-2" onClick={() => setPeople((p) => Math.max(2, p - 1))} aria-label="-">
+                <button className="hit grid h-9 w-9 place-items-center rounded-lg hover:bg-surface-2" onClick={() => setPeople((p) => Math.max(2, p - 1))} aria-label="-">
                   <Minus className="h-4 w-4" />
                 </button>
                 <span className="min-w-6 text-center font-extrabold">{people}</span>
-                <button className="grid h-9 w-9 place-items-center rounded-lg hover:bg-surface-2" onClick={() => setPeople((p) => Math.min(12, p + 1))} aria-label="+">
+                <button className="hit grid h-9 w-9 place-items-center rounded-lg hover:bg-surface-2" onClick={() => setPeople((p) => Math.min(12, p + 1))} aria-label="+">
                   <Plus className="h-4 w-4" />
                 </button>
               </div>

@@ -196,7 +196,7 @@ export function SearchScreen({
               className="input h-13 rounded-full ps-11 pe-10 [&::-webkit-search-cancel-button]:hidden"
             />
             {q && (
-              <button type="button" onClick={() => setQ("")} aria-label={labels.clear} title={labels.clear} className="absolute end-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:bg-surface-2">
+              <button type="button" onClick={() => setQ("")} aria-label={labels.clear} title={labels.clear} className="absolute end-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full text-muted hover:bg-surface-2">
                 <X className="h-4 w-4" />
               </button>
             )}

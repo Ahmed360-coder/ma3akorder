@@ -71,6 +71,22 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* UI UX Pro Max checklist: every tappable thing shows the hand cursor, and keyboard users
+   get a clear crimson ring (mouse and touch taps don't show it). */
+button:not(:disabled), [role="button"], a[href], summary, select, label[for], input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+:where(a, button, [role="button"], [tabindex], summary, select):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 0.75rem;
+}
+/* Small icon buttons (+/−, close) keep their look but get a 44px tap area. */
+@utility hit {
+  position: relative;
+  &::after { content: ""; position: absolute; inset: -6px; }
+}
+
 @utility btn {
   @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 font-semibold transition active:scale-[0.97] disabled:opacity-50;
 }

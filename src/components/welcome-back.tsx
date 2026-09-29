@@ -78,7 +78,7 @@ export function WelcomeBack({ title, body, close }: { title: string; body: strin
             <span className="block truncate font-extrabold">{title}</span>
             <span className="block text-sm text-muted">{body}</span>
           </span>
-          <button type="button" onClick={() => setShow(false)} title={close} aria-label={close} className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted hover:bg-surface-2">
+          <button type="button" onClick={() => setShow(false)} title={close} aria-label={close} className="hit grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted hover:bg-surface-2">
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </m.div>
