@@ -288,6 +288,9 @@ const enApp = {
     loading: "Loading…",
   },
   admin: {
+    pilotKit: "Pilot kit",
+    pilotKitBody: "Visit list, store demos, messages and tracker for Al Rehab",
+    openPilotKit: "Open pilot kit",
     title: "Admin",
     pendingStores: "Stores waiting for approval",
     pendingPeople: "Drivers waiting for approval",
@@ -595,6 +598,9 @@ const arApp: AppStrings = {
     loading: "لحظة…",
   },
   admin: {
+    pilotKit: "عدّة التجربة",
+    pilotKitBody: "قايمة الزيارات وشكل المحلات والرسايل والمتابعة للرحاب",
+    openPilotKit: "افتح عدّة التجربة",
     title: "الإدارة",
     pendingStores: "محلات مستنية الموافقة",
     pendingPeople: "مندوبين مستنيين الموافقة",

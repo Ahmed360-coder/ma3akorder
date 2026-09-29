@@ -32,6 +32,17 @@ export default async function AdminPage() {
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-6">
         <h1 className="text-2xl font-bold">{t.admin.title}</h1>
 
+        {/* Admin only: the kit shows sample menus for restaurants that haven't joined yet. */}
+        <section className="card flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="font-bold">{t.admin.pilotKit}</div>
+            <div className="text-sm text-muted">{t.admin.pilotKitBody}</div>
+          </div>
+          <a href="https://claude.ai/artifact/LzcZcpSpYmo3fmkykdeTEJ" target="_blank" rel="noopener noreferrer" className="btn-primary">
+            {t.admin.openPilotKit}
+          </a>
+        </section>
+
         <section className="card flex flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
             <div className="font-bold">{t.admin.demoTitle}</div>
