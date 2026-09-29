@@ -12,6 +12,7 @@ import { SUPPORT_WHATSAPP } from "@/lib/site";
 import { fill } from "@/lib/format";
 import { getCustomerLocation } from "@/lib/location-server";
 import { searchLabels } from "@/lib/search-data";
+import { WelcomeBack } from "@/components/welcome-back";
 
 // Phone status bar matches the green top band.
 export const viewport: Viewport = { themeColor: "#12a150" };
@@ -57,6 +58,7 @@ export default async function Home() {
   return (
     <>
       <Header hideOnPhone />
+      {user && firstName && <WelcomeBack title={fill(t.ui.welcomeBack, { name: firstName })} body={t.ui.welcomeBackBody} close={t.ui.close} />}
       {/* Computers get the menu as a side panel; phones open it as a drawer from the top band. */}
       <div className="mx-auto flex w-full max-w-7xl gap-6 lg:px-4 lg:pt-4">
         <SidePanel {...menu} />
