@@ -21,6 +21,9 @@ export type StoreCard = {
   distanceText: string | null;
   inRange: boolean;
   isDemo: boolean;
+  // Pictures the store uploaded itself; the category picture stands in when missing.
+  logo: string | null;
+  cover: string | null;
 };
 
 // Approved stores with their average rating, shaped for the home and search screens.
@@ -57,6 +60,8 @@ export async function getStoreCards(t: Dictionary, locale: string, loc: Loc | nu
       distanceText: s.distance_km == null ? null : formatKm(s.distance_km, locale === "ar" ? "ar" : "en"),
       inRange: s.in_range,
       isDemo: s.is_demo,
+      logo: s.logo_url,
+      cover: s.cover_url,
     };
   });
 }

@@ -7,7 +7,7 @@ import { ChevronDown, MapPin, ShoppingBag, Star, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
 import { SideMenuButton } from "@/components/side-menu";
-import { Art, CATEGORY_ART, CATEGORY_TINT, CategoryBadge } from "@/components/category-icon";
+import { Art, CATEGORY_ART, CATEGORY_TINT, StoreBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
 import { GOOGLE_MAPS_KEY } from "@/lib/site";
@@ -162,7 +162,7 @@ export function HomeFeed({
               {again.map((s) => (
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-20 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span className="relative">
-                    <CategoryBadge category={s.category} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
+                    <StoreBadge category={s.category} logo={s.logo} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
                     {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-positive px-1.5 text-[10px] font-bold text-accent-ink">{labels.freeDelivery}</span>}
                   </span>
                   <span className="line-clamp-2 text-xs font-semibold">{s.name}</span>
@@ -241,8 +241,13 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
       href={`/stores/${s.id}`}
       className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface transition hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
     >
-      <span className="grid w-20 shrink-0 place-items-center border-e border-line" style={{ background: `color-mix(in oklab, ${tint} 8%, white)` }}>
-        <Art src={CATEGORY_ART[s.category]} className="h-11 w-11 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
+      <span className="relative grid w-20 shrink-0 place-items-center overflow-hidden border-e border-line" style={{ background: `color-mix(in oklab, ${tint} 8%, white)` }}>
+        {s.logo || s.cover ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={(s.logo ?? s.cover)!} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
+        ) : (
+          <Art src={CATEGORY_ART[s.category]} className="h-11 w-11 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
+        )}
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
         <span className="flex items-center gap-1.5 text-xs font-semibold">

@@ -10,6 +10,7 @@ export type Business = {
   description: string | null;
   category: BusinessCategory;
   logo_url: string | null;
+  cover_url: string | null;
   phone: string | null;
   area: string;
   address: string | null;

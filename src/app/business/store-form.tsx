@@ -1,6 +1,7 @@
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Business } from "@/lib/types";
 import { StoreLocationField } from "./store-location-field";
+import { StorePictureField } from "./store-picture-field";
 
 const CATEGORIES = ["restaurant", "bakery", "grocery", "pharmacy", "cafe", "other"] as const;
 
@@ -42,6 +43,8 @@ export function StoreFields({ t, business, locale }: { t: Dictionary; business?:
         <input name="address" className="input" defaultValue={b?.address ?? ""} />
       </label>
       <StoreLocationField t={t.location} lat={b?.lat ?? null} lng={b?.lng ?? null} radius={Number(b?.delivery_radius_km ?? 3)} locale={locale} />
+      <StorePictureField name="logo" square label={t.business.logo} hint={t.business.logoHint} current={b?.logo_url ?? null} labels={{ choose: t.business.choosePhoto, change: t.business.changePhoto, remove: t.business.removePhoto }} />
+      <StorePictureField name="cover" square={false} label={t.business.cover} hint={t.business.coverHint} current={b?.cover_url ?? null} labels={{ choose: t.business.choosePhoto, change: t.business.changePhoto, remove: t.business.removePhoto }} />
       <label className="flex flex-col gap-2 text-sm font-semibold">
         {t.business.description} <span className="font-normal text-muted">({t.common.optional})</span>
         <textarea name="description" rows={2} className="input h-auto py-3" defaultValue={b?.description ?? ""} />

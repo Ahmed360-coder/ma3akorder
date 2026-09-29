@@ -7,7 +7,7 @@ import { AnimatePresence, m } from "motion/react";
 import { ArrowRight, History, Search, ShoppingBag, TrendingUp, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useCart } from "@/components/cart-provider";
-import { Art, CategoryBadge } from "@/components/category-icon";
+import { Art, StoreBadge } from "@/components/category-icon";
 import { formatEGP } from "@/lib/format";
 import type { StoreCard } from "@/lib/stores";
 import type { BusinessCategory } from "@/lib/types";
@@ -248,7 +248,7 @@ export function SearchScreen({
                       return (
                         <li key={i.id} className="stagger" style={{ "--i": n } as React.CSSProperties}>
                           <Link href={`/stores/${s.id}`} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition hover:border-accent/50 active:scale-[0.99]">
-                            <CategoryBadge category={s.category} className="h-11 w-11 rounded-xl" iconClass="h-7 w-7" />
+                            <StoreBadge category={s.category} logo={s.logo} className="h-11 w-11 rounded-xl" iconClass="h-7 w-7" />
                             <span className="min-w-0 flex-1">
                               <span className="block truncate font-bold">{i.name}</span>
                               <span className="block truncate text-xs text-muted">{s.name}</span>
@@ -364,7 +364,7 @@ function StoreTiles({ stores, mins }: { stores: StoreCard[]; mins: string }) {
     <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
       {stores.map((s, i) => (
         <Link key={s.id} href={`/stores/${s.id}`} className={`stagger flex w-22 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95 ${s.isOpen ? "" : "opacity-60"}`} style={{ "--i": i } as React.CSSProperties}>
-          <CategoryBadge category={s.category} className="h-22 w-22 rounded-2xl border border-line" iconClass="h-12 w-12" />
+          <StoreBadge category={s.category} logo={s.logo} className="h-22 w-22 rounded-2xl border border-line" iconClass="h-12 w-12" />
           <span className="line-clamp-1 text-sm font-bold">{s.name}</span>
           <span className="text-xs text-muted">
             {s.prep}–{s.prep + 15} {mins}
