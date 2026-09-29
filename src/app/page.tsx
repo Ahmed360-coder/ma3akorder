@@ -11,6 +11,7 @@ import { SidePanel, type SideMenuLabels } from "@/components/side-menu";
 import { SUPPORT_WHATSAPP } from "@/lib/site";
 import { fill } from "@/lib/format";
 import { getCustomerLocation } from "@/lib/location-server";
+import { searchLabels } from "@/lib/search-data";
 
 // Phone status bar matches the green top band.
 export const viewport: Viewport = { themeColor: "#12a150" };
@@ -62,6 +63,7 @@ export default async function Home() {
         <div className="min-w-0 flex-1">
       <HomeFeed
         menu={menu}
+        searchLabels={searchLabels(t)}
         stores={cards}
         againIds={againIds}
         langToggle={<LanguageToggle label={t.switchLanguage} />}

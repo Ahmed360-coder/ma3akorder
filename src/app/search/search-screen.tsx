@@ -13,6 +13,7 @@ import type { StoreCard } from "@/lib/stores";
 import type { BusinessCategory } from "@/lib/types";
 
 export type SearchItem = { id: string; storeId: string; name: string; alt: string; price: number };
+export type SearchData = { stores: StoreCard[]; items: SearchItem[]; popular: string[] };
 type Tab = "all" | "food" | "groceries" | "pharmacies";
 type Craving = "coffee" | "burgers" | "desserts" | "pizza" | "chicken" | "bread" | "fruit" | "medicine";
 
@@ -34,7 +35,7 @@ const CRAVINGS: { key: Craving; art: string; tint: string; tab: Tab }[] = [
 ];
 const RECENT_KEY = "m3akorder.recent-searches";
 
-type Labels = {
+export type SearchLabels = {
   back: string;
   search: string;
   cart: string;
@@ -52,6 +53,22 @@ type Labels = {
   cravings: Record<Craving, string>;
   promo: { title: string; body: string };
 };
+type Labels = SearchLabels;
+
+// One shared download per language, reused for a minute, so opening search never waits on the network.
+let cached: { locale: string; at: number; data: Promise<SearchData> } | null = null;
+export function loadSearchData(locale: string): Promise<SearchData> {
+  if (cached && cached.locale === locale && Date.now() - cached.at < 60_000) return cached.data;
+  const data = fetch("/search/data", { cache: "no-store" }).then((r) => {
+    if (!r.ok) throw new Error(String(r.status));
+    return r.json() as Promise<SearchData>;
+  });
+  data.catch(() => {
+    if (cached?.data === data) cached = null;
+  });
+  cached = { locale, at: Date.now(), data };
+  return data;
+}
 
 // Arabic-friendly matching: ignore case, tashkeel and the common alef/ya/ta-marbuta spelling variants.
 function norm(s: string) {
@@ -65,20 +82,38 @@ function norm(s: string) {
 
 export function SearchScreen({
   initialQuery,
-  stores,
-  items,
-  popular,
   labels,
   locale,
+  onClose,
+  inputRef,
+  active = true,
 }: {
   initialQuery: string;
-  stores: StoreCard[];
-  items: SearchItem[];
-  popular: string[];
   labels: Labels;
   locale: string;
+  // Set when shown as an overlay on another page: Back closes it instead of going back a page.
+  onClose?: () => void;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
+  active?: boolean;
 }) {
   const router = useRouter();
+  const [data, setData] = useState<SearchData | null>(null);
+  useEffect(() => {
+    if (!active) return;
+    let live = true;
+    const get = () =>
+      loadSearchData(locale).then(
+        (d) => live && setData(d),
+        () => live && setTimeout(get, 3000),
+      );
+    get();
+    return () => {
+      live = false;
+    };
+  }, [active, locale]);
+  const stores = useMemo(() => data?.stores ?? [], [data]);
+  const items = data?.items ?? [];
+  const popular = data?.popular ?? [];
   const { count } = useCart();
   const [q, setQ] = useState(initialQuery);
   const [tab, setTab] = useState<Tab>("all");
@@ -134,7 +169,7 @@ export function SearchScreen({
       {/* Top bar: back, search, cart. */}
       <div className="glass sticky top-0 z-20 border-b border-line/70">
         <div className="mx-auto flex max-w-3xl items-center gap-2 px-4 pt-3">
-          <button onClick={() => router.back()} title={labels.back} className="flex h-13 w-13 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-surface transition active:scale-90">
+          <button onClick={() => (onClose ? onClose() : router.back())} title={labels.back} className="flex h-13 w-13 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-surface transition active:scale-90">
             <ArrowRight className="h-5 w-5 ltr:rotate-180" aria-hidden="true" />
             <span className="text-[10px] font-bold leading-none text-muted">{labels.back}</span>
           </button>
@@ -148,7 +183,9 @@ export function SearchScreen({
           >
             <Search className="pointer-events-none absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" aria-hidden="true" />
             <input
-              autoFocus
+              ref={inputRef}
+              autoFocus={!onClose}
+              tabIndex={active ? 0 : -1}
               type="search"
               enterKeyHint="search"
               value={q}
@@ -184,11 +221,19 @@ export function SearchScreen({
         </nav>
       </div>
 
+      {active && (
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 pb-16 pt-5">
         <AnimatePresence mode="wait" initial={false}>
           {needle ? (
             <m.div key="results" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-8">
-              {storeHits.length === 0 && itemHits.length === 0 && (
+              {!data && (
+                <ul className="flex flex-col gap-2" aria-busy="true">
+                  {[0, 1, 2].map((n) => (
+                    <li key={n} className="skeleton h-17 rounded-2xl" />
+                  ))}
+                </ul>
+              )}
+              {data && storeHits.length === 0 && itemHits.length === 0 && (
                 <div className="flex flex-col items-center gap-3 py-12 text-center text-muted">
                   <Art src="/art/magnifying_glass_tilted_left.webp" className="h-14 w-14 opacity-80" />
                   {labels.noMatch}
@@ -309,6 +354,7 @@ export function SearchScreen({
           )}
         </AnimatePresence>
       </main>
+      )}
     </div>
   );
 }
