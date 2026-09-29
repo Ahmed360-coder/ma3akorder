@@ -134,8 +134,9 @@ export function SearchScreen({
       {/* Top bar: back, search, cart. */}
       <div className="glass sticky top-0 z-20 border-b border-line/70">
         <div className="mx-auto flex max-w-3xl items-center gap-2 px-4 pt-3">
-          <button onClick={() => router.back()} aria-label={labels.back} className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line bg-surface transition active:scale-90">
-            <ArrowRight className="h-5 w-5 ltr:rotate-180" />
+          <button onClick={() => router.back()} title={labels.back} className="flex h-13 w-13 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-surface transition active:scale-90">
+            <ArrowRight className="h-5 w-5 ltr:rotate-180" aria-hidden="true" />
+            <span className="text-[10px] font-bold leading-none text-muted">{labels.back}</span>
           </button>
           <form
             className="relative min-w-0 flex-1"
@@ -155,16 +156,17 @@ export function SearchScreen({
               onBlur={() => remember(q)}
               placeholder={labels.search}
               aria-label={labels.search}
-              className="input h-12 rounded-full ps-11 pe-10 [&::-webkit-search-cancel-button]:hidden"
+              className="input h-13 rounded-full ps-11 pe-10 [&::-webkit-search-cancel-button]:hidden"
             />
             {q && (
-              <button type="button" onClick={() => setQ("")} aria-label={labels.clear} className="absolute end-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:bg-surface-2">
+              <button type="button" onClick={() => setQ("")} aria-label={labels.clear} title={labels.clear} className="absolute end-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted hover:bg-surface-2">
                 <X className="h-4 w-4" />
               </button>
             )}
           </form>
-          <Link href="/cart" aria-label={labels.cart} className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line bg-surface transition active:scale-90">
-            <ShoppingBag className="h-5 w-5" />
+          <Link href="/cart" title={labels.cart} className="relative flex h-13 w-13 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-surface transition active:scale-90">
+            <ShoppingBag className="h-5 w-5" aria-hidden="true" />
+            <span className="text-[10px] font-bold leading-none text-muted">{labels.cart}</span>
             {count > 0 && (
               <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-accent px-1 text-[10px] font-bold text-accent-ink">
                 {count}

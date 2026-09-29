@@ -86,7 +86,7 @@ export function HomeFeed({
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-10 pt-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5">
-              <SideMenuButton {...menu} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-ink/15 transition hover:bg-accent-ink/25 active:scale-90 lg:hidden" />
+              <SideMenuButton {...menu} className="flex h-14 w-14 shrink-0 flex-col items-center justify-center gap-1 rounded-2xl bg-accent-ink/15 transition hover:bg-accent-ink/25 active:scale-90 lg:hidden" />
               <LogoMark className="hidden h-9 w-9 shrink-0 sm:block md:hidden [&_rect]:fill-accent-ink [&_path]:stroke-accent [&_circle]:fill-accent" />
               <button type="button" onClick={() => setPicking((v) => !v)} aria-expanded={picking} className="min-w-0 text-start leading-tight">
                 <span className="block text-xs font-semibold opacity-75">{labels.deliverTo}</span>
@@ -99,8 +99,9 @@ export function HomeFeed({
             </div>
             <div className="flex shrink-0 items-center gap-1 [&_button]:text-accent-ink [&_button:hover]:bg-accent-ink/10">
               <span className="md:hidden">{langToggle}</span>
-              <Link href="/cart" aria-label={labels.cart} className="relative grid h-12 w-12 place-items-center rounded-full bg-background text-foreground shadow-lg shadow-black/10 transition active:scale-90">
-                <ShoppingBag className="h-5 w-5" />
+              <Link href="/cart" title={labels.cart} className="relative flex h-14 w-14 flex-col items-center justify-center gap-1 rounded-2xl bg-background text-foreground shadow-lg shadow-black/10 transition active:scale-90">
+                <ShoppingBag className="h-5 w-5" aria-hidden="true" />
+                <span className="text-[10px] font-bold leading-none">{labels.cart}</span>
                 {count > 0 && (
                   <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-accent px-1 text-[10px] font-bold text-accent-ink">
                     {count}

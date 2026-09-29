@@ -216,11 +216,12 @@ export function SideMenuButton(props: Props & { className?: string }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label={props.labels.menu}
         aria-expanded={open}
+        title={props.labels.menu}
         className={props.className}
       >
-        <Menu className="h-6 w-6" />
+        <Menu className="h-6 w-6" aria-hidden="true" />
+        <span className="text-[10px] font-bold leading-none">{props.labels.menu}</span>
       </button>
       {/* Rendered at the end of <body> so no parent's styles or stacking can clip it. */}
       {mounted &&
@@ -255,10 +256,11 @@ export function SideMenuButton(props: Props & { className?: string }) {
                     <button
                       type="button"
                       onClick={() => setOpen(false)}
-                      aria-label={props.labels.close}
-                      className="grid h-10 w-10 place-items-center rounded-full hover:bg-surface-2"
-                    >
-                      <X className="h-5 w-5" />
+                      title={props.labels.close}
+                  className="inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-muted hover:bg-surface-2 hover:text-foreground"
+                >
+                  <X className="h-5 w-5" aria-hidden="true" />
+                  {props.labels.close}
                     </button>
                   </div>
                   <MenuBody {...props} onNavigate={() => setOpen(false)} />

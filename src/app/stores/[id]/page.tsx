@@ -103,6 +103,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
                       line={{ itemId: item.id, name: pickName(locale, item.name_ar, item.name_en), price: Number(item.price), stock: item.stock_count }}
                       label={t.stores.addToCart}
                       replaceText={t.stores.otherStoreInCart}
+                      qtyLabels={{ addOne: t.ui.addOne, removeOne: t.ui.removeOne, removeItem: t.ui.removeItem }}
                     />
                   )
                 )}

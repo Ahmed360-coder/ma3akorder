@@ -95,11 +95,11 @@ export function Checkout({
               >
                 <span className="min-w-0 flex-1 truncate">{l.name}</span>
                 <div className="flex items-center gap-0.5 rounded-xl border border-line bg-surface-2/60 p-0.5">
-                  <button className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty - 1)} aria-label="-">
+                  <button className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty - 1)} aria-label={l.qty === 1 ? t.ui.removeItem : t.ui.removeOne} title={l.qty === 1 ? t.ui.removeItem : t.ui.removeOne}>
                     {l.qty === 1 ? <Trash2 className="h-4 w-4 text-danger" /> : <Minus className="h-4 w-4" />}
                   </button>
                   <span className="min-w-5 text-center font-bold">{l.qty}</span>
-                  <button className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty + 1)} aria-label="+">
+                  <button className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty + 1)} aria-label={t.ui.addOne} title={t.ui.addOne}>
                     <Plus className="h-4 w-4" />
                   </button>
                 </div>
