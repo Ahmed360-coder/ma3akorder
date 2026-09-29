@@ -260,6 +260,7 @@ const enApp = {
     needLocation: "Set your location first to see restaurants around you.",
     notReady: "This list turns on once the Google key is added.",
     source: "Restaurant info from Google Maps",
+    sourceOsm: "Restaurant info from OpenStreetMap",
     partners: "Order here with M3akOrder",
   },
   location: {
@@ -580,6 +581,7 @@ const arApp: AppStrings = {
     needLocation: "حدد موقعك الأول عشان تشوف المطاعم اللي حواليك.",
     notReady: "القائمة دي هتشتغل أول ما نضيف مفتاح جوجل.",
     source: "بيانات المطاعم من خرائط جوجل",
+    sourceOsm: "بيانات المطاعم من OpenStreetMap",
     partners: "اطلب من هنا مع معاك أوردر",
   },
   location: {
