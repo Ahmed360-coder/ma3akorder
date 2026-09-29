@@ -266,13 +266,15 @@ export function SideMenuButton(props: Props & { className?: string }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
                   onClick={() => setOpen(false)}
                 />
                 <m.aside
-                  initial={{ x: off }}
-                  animate={{ x: 0 }}
-                  exit={{ x: off }}
-                  transition={{ type: "spring", stiffness: 380, damping: 38 }}
+                  // iOS-style drawer curve; a full transform string stays smooth on busy phones.
+                  initial={{ transform: `translateX(${off})` }}
+                  animate={{ transform: "translateX(0%)" }}
+                  exit={{ transform: `translateX(${off})` }}
+                  transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
                   className="absolute inset-y-0 start-0 flex w-[84%] max-w-xs flex-col gap-4 overflow-y-auto bg-surface p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-foreground shadow-2xl"
                 >
                   <div className="flex items-center justify-between">

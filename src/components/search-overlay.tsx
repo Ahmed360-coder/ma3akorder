@@ -54,7 +54,7 @@ export function SearchLauncher({ labels, locale, className }: { labels: SearchLa
         aria-modal="true"
         aria-label={labels.search}
         aria-hidden={!open}
-        className={`fixed inset-0 z-50 flex flex-col overflow-y-auto bg-background text-foreground transition-opacity duration-150 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`fixed inset-0 z-50 flex flex-col overflow-y-auto bg-background text-foreground transition-[opacity,transform] duration-200 ${open ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"}`}
       >
         <SearchScreen initialQuery="" labels={labels} locale={locale} inputRef={inputRef} active={open} onClose={() => history.back()} />
       </div>,

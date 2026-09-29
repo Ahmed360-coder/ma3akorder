@@ -137,7 +137,7 @@ export function HomeFeed({
             return (
               <m.button
                 key={c}
-                whileTap={{ scale: 0.94 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => pick(c)}
                 aria-pressed={active}
                 className={`stagger relative flex flex-col items-center gap-1 rounded-2xl border-2 pb-2.5 pt-4 transition ${active ? "border-accent bg-accent/10" : "border-transparent bg-tile hover:border-accent/40"}`}
@@ -230,7 +230,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
   return (
     <Link
       href={`/stores/${s.id}`}
-      className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface transition hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
+      className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface lift hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
     >
       <span className="relative grid w-20 shrink-0 place-items-center overflow-hidden border-e border-line bg-tile">
         {s.logo || s.cover ? (

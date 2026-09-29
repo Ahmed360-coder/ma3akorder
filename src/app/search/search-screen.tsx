@@ -276,7 +276,7 @@ export function SearchScreen({
                   {CRAVINGS.filter((c) => tab === "all" || c.tab === tab).map((c, i) => (
                     <m.button
                       key={c.key}
-                      whileTap={{ scale: 0.9 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => runSearch(labels.cravings[c.key], c.tab)}
                       className="stagger flex w-16 shrink-0 flex-col items-center gap-1.5"
                       style={{ "--i": i } as React.CSSProperties}
