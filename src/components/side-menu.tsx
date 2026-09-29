@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
 import {
   Bike,
+  Sparkles,
   Dices,
   Heart,
   PiggyBank,
@@ -55,7 +56,7 @@ export type SideMenuLabels = {
   language: string;
   help: string;
   // Discover pages (Spin & Eat, Feed us for…, Rewards, Favourites).
-  discover?: { spin: string; feed: string; rewards: string; favorites: string };
+  discover?: { title: string; spin: string; feed: string; rewards: string; favorites: string };
 };
 type Props = {
   role: Role;
@@ -71,14 +72,6 @@ function useEntries({ role, signedIn, labels }: Props) {
   const shop: Entry[] = [
     { href: "/", label: labels.home, Icon: House },
     { href: "/search", label: labels.search, Icon: Search },
-    ...(labels.discover
-      ? [
-          { href: "/spin", label: labels.discover.spin, Icon: Dices },
-          { href: "/feed", label: labels.discover.feed, Icon: PiggyBank },
-          { href: "/rewards", label: labels.discover.rewards, Icon: Trophy },
-          { href: "/favorites", label: labels.discover.favorites, Icon: Heart },
-        ]
-      : []),
     ...(signedIn
       ? [
           { href: "/orders", label: labels.orders, Icon: ReceiptText },
@@ -101,13 +94,22 @@ function useEntries({ role, signedIn, labels }: Props) {
       ? [{ href: "/admin", label: labels.admin, Icon: ShieldCheck }]
       : []),
   ];
-  return { shop, work };
+  // Standout features, in their own group so they are easy to find.
+  const discover: Entry[] = labels.discover
+    ? [
+        { href: "/spin", label: labels.discover.spin, Icon: Dices },
+        { href: "/feed", label: labels.discover.feed, Icon: PiggyBank },
+        { href: "/rewards", label: labels.discover.rewards, Icon: Trophy },
+        { href: "/favorites", label: labels.discover.favorites, Icon: Heart },
+      ]
+    : [];
+  return { shop, discover, work };
 }
 
 function MenuBody(props: Props & { onNavigate?: () => void }) {
   const { labels, signedIn, langToggle, whatsapp, onNavigate } = props;
   const path = usePathname();
-  const { shop, work } = useEntries(props);
+  const { shop, discover, work } = useEntries(props);
   const item = (e: Entry) => {
     const active = e.href === "/" ? path === "/" : path.startsWith(e.href);
     return (
@@ -168,6 +170,15 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
 
       <nav className="isolate flex flex-col gap-4">
         <ul className="flex flex-col gap-0.5">{shop.map(item)}</ul>
+        {discover.length > 0 && labels.discover && (
+          <div>
+            <p className="mb-1 flex items-center gap-2 px-3 text-xs font-bold uppercase tracking-wide text-muted">
+              <Sparkles className="h-3.5 w-3.5 text-warm" aria-hidden="true" />
+              {labels.discover.title}
+            </p>
+            <ul className="flex flex-col gap-0.5">{discover.map(item)}</ul>
+          </div>
+        )}
         {work.length > 0 && (
           <div>
             <p className="mb-1 px-3 text-xs font-bold uppercase tracking-wide text-muted">
