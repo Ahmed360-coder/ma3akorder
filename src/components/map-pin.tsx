@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { loadGoogleMaps } from "@/lib/google-maps";
+import { loadGoogleMaps, onMapsAuthFailure } from "@/lib/google-maps";
 import { GOOGLE_MAPS_KEY } from "@/lib/site";
 
 export const mapsEnabled = GOOGLE_MAPS_KEY != null;
@@ -24,6 +24,8 @@ export function MapPin({
   const changed = useRef(onChange);
   const [failed, setFailed] = useState(false);
   changed.current = onChange;
+
+  useEffect(() => onMapsAuthFailure(() => setFailed(true)), []);
 
   useEffect(() => {
     if (!GOOGLE_MAPS_KEY || !box.current) return;
