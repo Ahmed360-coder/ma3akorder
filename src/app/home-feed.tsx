@@ -7,7 +7,7 @@ import { ChevronDown, MapPin, ShoppingBag, Star, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
 import { SideMenuButton } from "@/components/side-menu";
-import { Art, CATEGORY_ART, CATEGORY_TINT, StoreBadge } from "@/components/category-icon";
+import { Art, CATEGORY_ART, StoreBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
 import { GOOGLE_MAPS_KEY } from "@/lib/site";
@@ -140,7 +140,7 @@ export function HomeFeed({
                 whileTap={{ scale: 0.94 }}
                 onClick={() => pick(c)}
                 aria-pressed={active}
-                className={`stagger relative flex flex-col items-center gap-1 rounded-2xl border pb-2.5 pt-4 transition ${active ? "border-accent bg-accent/10" : "border-line bg-surface hover:border-accent/40"}`}
+                className={`stagger relative flex flex-col items-center gap-1 rounded-2xl border-2 pb-2.5 pt-4 transition ${active ? "border-accent bg-accent/10" : "border-transparent bg-tile hover:border-accent/40"}`}
                 style={{ "--i": i } as React.CSSProperties}
               >
                 <span
@@ -148,7 +148,7 @@ export function HomeFeed({
                 >
                   {n ? labels.openCount.replace("{n}", String(n)) : labels.soon}
                 </span>
-                <Art src={CATEGORY_ART[c]} className="h-11 w-11 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
+                <Art src={CATEGORY_ART[c]} className="h-16 w-16 drop-shadow-[0_6px_8px_rgba(0,0,0,0.15)]" />
                 <span className="text-xs font-bold">{labels.tiles[c]}</span>
               </m.button>
             );
@@ -235,18 +235,17 @@ export function HomeFeed({
 }
 
 function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
-  const tint = CATEGORY_TINT[s.category];
   return (
     <Link
       href={`/stores/${s.id}`}
       className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface transition hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
     >
-      <span className="relative grid w-20 shrink-0 place-items-center overflow-hidden border-e border-line" style={{ background: `color-mix(in oklab, ${tint} 8%, white)` }}>
+      <span className="relative grid w-20 shrink-0 place-items-center overflow-hidden border-e border-line bg-tile">
         {s.logo || s.cover ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={(s.logo ?? s.cover)!} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
-          <Art src={CATEGORY_ART[s.category]} className="h-11 w-11 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
+          <Art src={CATEGORY_ART[s.category]} className="h-14 w-14 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]" />
         )}
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">

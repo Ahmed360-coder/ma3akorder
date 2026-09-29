@@ -16,6 +16,8 @@
   --warm: #f26a0f;
   --warm-2: #ff8a2b;
   --warm-deep: #c2410c;
+  /* Soft beige behind the realistic pictures, like the big delivery apps. */
+  --tile: #f4eee6;
   /* Fast food picture behind every page (made in Higgsfield); the doodle pattern is the fallback. */
   --page-photo: url(/bg/fast-food.webp);
   --positive: #0f9a4c;
@@ -38,6 +40,7 @@
   --color-warm: var(--warm);
   --color-warm-2: var(--warm-2);
   --color-warm-deep: var(--warm-deep);
+  --color-tile: var(--tile);
   --color-positive: var(--positive);
   --color-warning: var(--warning);
   --color-danger: var(--danger);

@@ -24,14 +24,14 @@ const TAB_CATS: Record<Tab, BusinessCategory[] | null> = {
   pharmacies: ["pharmacy"],
 };
 const CRAVINGS: { key: Craving; art: string; tint: string; tab: Tab }[] = [
-  { key: "coffee", art: "/art/hot_beverage.webp", tint: "#8a5a3c", tab: "food" },
-  { key: "burgers", art: "/art/hamburger.webp", tint: "#e8590c", tab: "food" },
-  { key: "desserts", art: "/art/shortcake.webp", tint: "#db2777", tab: "food" },
-  { key: "pizza", art: "/art/pizza.webp", tint: "#dc2626", tab: "food" },
-  { key: "chicken", art: "/art/poultry_leg.webp", tint: "#c97a12", tab: "food" },
-  { key: "bread", art: "/art/baguette_bread.webp", tint: "#b45309", tab: "food" },
-  { key: "fruit", art: "/art/red_apple.webp", tint: "#12a150", tab: "groceries" },
-  { key: "medicine", art: "/art/pill.webp", tint: "#2f6fdf", tab: "pharmacies" },
+  { key: "coffee", art: "/art/real/coffee.webp", tint: "#8a5a3c", tab: "food" },
+  { key: "burgers", art: "/art/real/burger.webp", tint: "#e8590c", tab: "food" },
+  { key: "desserts", art: "/art/real/cake.webp", tint: "#db2777", tab: "food" },
+  { key: "pizza", art: "/art/real/pizza.webp", tint: "#dc2626", tab: "food" },
+  { key: "chicken", art: "/art/real/chicken.webp", tint: "#c97a12", tab: "food" },
+  { key: "bread", art: "/art/real/bread.webp", tint: "#b45309", tab: "food" },
+  { key: "fruit", art: "/art/real/apple.webp", tint: "#12a150", tab: "groceries" },
+  { key: "medicine", art: "/art/real/pills.webp", tint: "#2f6fdf", tab: "pharmacies" },
 ];
 const RECENT_KEY = "m3akorder.recent-searches";
 
@@ -281,8 +281,8 @@ export function SearchScreen({
                       className="stagger flex w-16 shrink-0 flex-col items-center gap-1.5"
                       style={{ "--i": i } as React.CSSProperties}
                     >
-                      <span className="grid h-16 w-16 place-items-center rounded-full border border-line" style={{ background: `color-mix(in oklab, ${c.tint} 10%, white)` }}>
-                        <Art src={c.art} className="h-10 w-10 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
+                      <span className="grid h-16 w-16 place-items-center rounded-2xl bg-tile">
+                        <Art src={c.art} className="h-12 w-12 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]" />
                       </span>
                       <span className="text-center text-[11px] font-semibold leading-tight text-muted">{labels.cravings[c.key]}</span>
                     </m.button>

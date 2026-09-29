@@ -18,14 +18,14 @@ export function CategoryIcon({ category, ...props }: { category: BusinessCategor
   return <Icon aria-hidden="true" {...props} />;
 }
 
-// 3D illustrations (Microsoft Fluent Emoji, MIT licence), self-hosted as ~5 KB WebP files in /public/art.
+// Realistic pictures (made in Higgsfield, cut out onto transparency), ~10 KB WebP files in /public/art/real.
 export const CATEGORY_ART: Record<BusinessCategory, string> = {
-  restaurant: "/art/hamburger.webp",
-  bakery: "/art/croissant.webp",
-  grocery: "/art/shopping_cart.webp",
-  pharmacy: "/art/pill.webp",
-  cafe: "/art/hot_beverage.webp",
-  other: "/art/shopping_bags.webp",
+  restaurant: "/art/real/burger.webp",
+  bakery: "/art/real/bakery.webp",
+  grocery: "/art/real/grocery.webp",
+  pharmacy: "/art/real/pharmacy.webp",
+  cafe: "/art/real/coffee.webp",
+  other: "/art/real/shops.webp",
 };
 
 export function Art({ src, className = "h-10 w-10" }: { src: string; className?: string }) {
@@ -33,11 +33,10 @@ export function Art({ src, className = "h-10 w-10" }: { src: string; className?:
   return <img src={src} alt="" width={80} height={80} loading="lazy" decoding="async" draggable={false} className={`select-none object-contain ${className}`} />;
 }
 
-// A category picture on a soft tinted tile: the one visual style used for stores and categories everywhere.
+// A category picture on a soft beige tile: the one visual style used for stores and categories everywhere.
 export function CategoryBadge({ category, className = "h-14 w-14 rounded-2xl", iconClass = "h-9 w-9" }: { category: BusinessCategory; className?: string; iconClass?: string }) {
-  const tint = CATEGORY_TINT[category];
   return (
-    <span className={`grid shrink-0 place-items-center ${className}`} style={{ background: `color-mix(in oklab, ${tint} 10%, white)` }}>
+    <span className={`grid shrink-0 place-items-center bg-tile ${className}`}>
       <Art src={CATEGORY_ART[category]} className={iconClass} />
     </span>
   );
