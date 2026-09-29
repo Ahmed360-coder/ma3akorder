@@ -3,6 +3,7 @@ import { formatEGP, pickName } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Business, BusinessCategory } from "@/lib/types";
 import { formatKm, sortByDistance, type Loc } from "@/lib/location";
+import { getDemoState } from "@/lib/demo";
 
 export type StoreCard = {
   id: string;
@@ -19,22 +20,25 @@ export type StoreCard = {
   distanceKm: number | null;
   distanceText: string | null;
   inRange: boolean;
+  isDemo: boolean;
 };
 
 // Approved stores with their average rating, shaped for the home and search screens.
 // With a customer location, open stores come first, nearest first, and out-of-range ones last.
 export async function getStoreCards(t: Dictionary, locale: string, loc: Loc | null = null): Promise<StoreCard[]> {
   const supabase = await createClient();
-  const [{ data }, { data: ratingRows }] = await Promise.all([
+  const [{ data }, { data: ratingRows }, demo] = await Promise.all([
     supabase.from("businesses").select("*").eq("status", "approved").order("is_open", { ascending: false }).order("name_ar"),
     supabase.from("ratings").select("business_id, stars").eq("target", "business"),
+    getDemoState(supabase),
   ]);
   const ratings = new Map<string, { sum: number; n: number }>();
   for (const r of ratingRows ?? []) {
     const cur = ratings.get(r.business_id) ?? { sum: 0, n: 0 };
     ratings.set(r.business_id, { sum: cur.sum + r.stars, n: cur.n + 1 });
   }
-  const sorted = sortByDistance((data ?? []) as Business[], loc);
+  const visible = ((data ?? []) as Business[]).filter((s) => demo.showDemo || !s.is_demo);
+  const sorted = sortByDistance(visible, loc);
   const ordered = [...sorted.filter((s) => s.is_open), ...sorted.filter((s) => !s.is_open)];
   return ordered.map((s) => {
     const r = ratings.get(s.id);
@@ -52,6 +56,7 @@ export async function getStoreCards(t: Dictionary, locale: string, loc: Loc | nu
       distanceKm: s.distance_km,
       distanceText: s.distance_km == null ? null : formatKm(s.distance_km, locale === "ar" ? "ar" : "en"),
       inRange: s.in_range,
+      isDemo: s.is_demo,
     };
   });
 }
