@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
-/* Tomato red and white theme (warm colours read as "tasty").
+/* Deep crimson and white theme (warm colours read as "tasty").
    To change the main colour, edit the three --brand values below (and BRAND_COLOR in src/lib/brand.ts
    plus the fill in src/app/icon.svg). Everything else in the app follows these tokens. */
 :root {
-  --brand: #f2542d;
-  --brand-light: #ff7b52;
-  --brand-dark: #c4381a;
+  --brand: #cb202d;
+  --brand-light: #e8474f;
+  --brand-dark: #9c1520;
 
   --background: #fbf8f6;
   --surface: #ffffff;

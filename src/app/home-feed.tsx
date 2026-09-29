@@ -40,7 +40,7 @@ export type HomeLabels = {
 
 const CATEGORIES: BusinessCategory[] = ["restaurant", "bakery", "grocery", "pharmacy", "cafe", "other"];
 const PROMO_BG = [
-  "linear-gradient(120deg, #c2410c, #ff8a2b)",
+  "linear-gradient(120deg, var(--brand-dark), var(--brand-light))",
   "linear-gradient(120deg, #b45309, #f59e0b)",
   "linear-gradient(120deg, #b91c1c, #f59e0b)",
 ];
