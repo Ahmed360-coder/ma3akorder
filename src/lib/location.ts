@@ -54,7 +54,10 @@ export function formatKm(km: number, locale: "ar" | "en") {
 }
 
 // For people who don't share their location. Approximate centre of each area.
+// Al Rehab is the pilot neighbourhood, so it comes first.
 export const AREAS: { key: string; ar: string; en: string; lat: number; lng: number }[] = [
+  { key: "rehab", ar: "الرحاب", en: "Al Rehab City", lat: 30.0588, lng: 31.494 },
+  { key: "madinaty", ar: "مدينتي", en: "Madinaty", lat: 30.1037, lng: 31.6386 },
   { key: "maadi", ar: "المعادي", en: "Maadi", lat: 29.9602, lng: 31.2569 },
   { key: "nasr-city", ar: "مدينة نصر", en: "Nasr City", lat: 30.0561, lng: 31.3301 },
   { key: "heliopolis", ar: "مصر الجديدة", en: "Heliopolis", lat: 30.0911, lng: 31.3225 },
