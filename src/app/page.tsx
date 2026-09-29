@@ -4,12 +4,18 @@ import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { formatEGP, pickName } from "@/lib/format";
 import type { Business } from "@/lib/types";
+import { LocationPicker } from "@/components/location-picker";
+import { getCustomerLocation } from "@/lib/location-server";
+import { formatKm, sortByDistance } from "@/lib/location";
 
 export default async function Home() {
   const { t, locale } = await getDictionary();
   const supabase = await createClient();
   const { data } = await supabase.from("businesses").select("*").eq("status", "approved").order("is_open", { ascending: false }).order("name_ar");
-  const stores = (data ?? []) as Business[];
+  const loc = await getCustomerLocation();
+  // Nearest first once we know where the customer is; open stores stay ahead of closed ones.
+  const sorted = sortByDistance((data ?? []) as Business[], loc);
+  const stores = [...sorted.filter((s) => s.is_open), ...sorted.filter((s) => !s.is_open)];
   const { data: ratingRows } = await supabase.from("ratings").select("business_id, stars").eq("target", "business");
   const ratings = new Map<string, { sum: number; n: number }>();
   for (const r of ratingRows ?? []) {
@@ -28,11 +34,12 @@ export default async function Home() {
         </section>
 
         <section className="flex flex-col gap-4">
+          <LocationPicker t={t.location} locale={locale} current={loc} />
           <h2 className="text-xl font-bold">{t.stores.title}</h2>
           {stores.length === 0 && <p className="card text-muted">{t.stores.none}</p>}
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {stores.map((s) => (
-              <Link key={s.id} href={`/stores/${s.id}`} className={`card flex flex-col gap-2 transition hover:border-accent ${s.is_open ? "" : "opacity-60"}`}>
+              <Link key={s.id} href={`/stores/${s.id}`} className={`card flex flex-col gap-2 transition hover:border-accent ${s.is_open && s.in_range ? "" : "opacity-60"}`}>
                 <div className="flex items-start justify-between gap-2">
                   <span className="text-lg font-bold">{pickName(locale, s.name_ar, s.name_en)}</span>
                   <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${s.is_open ? "bg-positive/15 text-positive" : "bg-surface-2 text-muted"}`}>
@@ -48,6 +55,11 @@ export default async function Home() {
                     </>
                   )}
                 </span>
+                {s.distance_km != null && (
+                  <span className={`text-sm ${s.in_range ? "text-foreground" : "text-warning"}`}>
+                    📍 {formatKm(s.distance_km, locale)} {s.in_range ? t.location.away : `· ${t.location.outOfRange}`}
+                  </span>
+                )}
                 <span className="text-sm text-muted">
                   {t.stores.deliveryFee} {formatEGP(s.delivery_fee, locale)} · {s.prep_minutes} {t.stores.prep}
                 </span>

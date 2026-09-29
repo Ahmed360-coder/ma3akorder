@@ -13,6 +13,9 @@ export type Business = {
   phone: string | null;
   area: string;
   address: string | null;
+  lat: number | null;
+  lng: number | null;
+  delivery_radius_km: number;
   is_open: boolean;
   min_order: number;
   delivery_fee: number;
@@ -37,7 +40,7 @@ export type Item = {
   sort_order: number;
 };
 
-export type DeliveryAddress = { area: string; street?: string; floor_apt?: string; landmark?: string };
+export type DeliveryAddress = { area: string; street?: string; floor_apt?: string; landmark?: string; lat?: number; lng?: number };
 
 export type Order = {
   id: string;
