@@ -2,13 +2,7 @@
 export function LogoMark({ className = "h-9 w-9 drop-shadow-[0_6px_14px_rgba(18,161,80,0.35)]" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-      <defs>
-        <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="var(--accent-2)" />
-          <stop offset="1" stopColor="var(--accent)" />
-        </linearGradient>
-      </defs>
-      <rect width="64" height="64" rx="18" fill="url(#logo-g)" />
+      <rect width="64" height="64" rx="18" fill="var(--accent)" />
       <path
         d="M20 24h24l-2 22a4 4 0 0 1-4 3.6H26a4 4 0 0 1-4-3.6z"
         fill="none"

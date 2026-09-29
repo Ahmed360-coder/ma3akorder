@@ -6,6 +6,7 @@ import { AnimatePresence, m } from "motion/react";
 import { ChevronDown, MapPin, PiggyBank, Scale, Search, ShoppingBag, Star, Store, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
+import { SideMenuButton } from "@/components/side-menu";
 import { CATEGORY_TINT, CategoryBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
@@ -50,12 +51,14 @@ export function HomeFeed({
   labels,
   langToggle,
   location,
+  menu,
 }: {
   stores: StoreCard[];
   againIds: string[];
   labels: HomeLabels;
   langToggle: React.ReactNode;
   location: LocationProps;
+  menu: Omit<React.ComponentProps<typeof SideMenuButton>, "className">;
 }) {
   // No location yet: show the picker straight away so nearby stores can come first.
   const [picking, setPicking] = useState(!location.current);
@@ -79,11 +82,12 @@ export function HomeFeed({
   return (
     <>
       {/* Top band: address, cart and search, like the big delivery apps. */}
-      <section className="relative isolate text-accent-ink" style={{ background: "linear-gradient(160deg, var(--accent-2), var(--accent) 50%, var(--accent-deep))" }}>
+      <section className="relative isolate overflow-hidden text-accent-ink lg:rounded-3xl" style={{ background: "linear-gradient(160deg, var(--accent-2), var(--accent) 50%, var(--accent-deep))" }}>
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-10 pt-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5">
-              <LogoMark className="h-9 w-9 shrink-0 md:hidden [&_rect]:fill-accent-ink [&_path]:stroke-accent [&_circle]:fill-accent" />
+              <SideMenuButton {...menu} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-ink/15 transition hover:bg-accent-ink/25 active:scale-90 lg:hidden" />
+              <LogoMark className="hidden h-9 w-9 shrink-0 sm:block md:hidden [&_rect]:fill-accent-ink [&_path]:stroke-accent [&_circle]:fill-accent" />
               <button type="button" onClick={() => setPicking((v) => !v)} aria-expanded={picking} className="min-w-0 text-start leading-tight">
                 <span className="block text-xs font-semibold opacity-75">{labels.deliverTo}</span>
                 <span className="flex items-center gap-1 truncate text-lg font-extrabold">
