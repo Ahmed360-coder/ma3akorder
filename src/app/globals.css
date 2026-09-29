@@ -18,7 +18,6 @@
   --warm-deep: #c2410c;
   /* Fast food picture behind every page (made in Higgsfield); the doodle pattern is the fallback. */
   --page-photo: url(/bg/fast-food.webp);
-  --doodle-opacity: 0;
   --positive: #0f9a4c;
   --warning: #c77700;
   --danger: #dc3b3b;
@@ -149,15 +148,30 @@ body {
   inset: 0;
 }
 .page-bg::before {
-  background: var(--page-photo, none) center / cover no-repeat;
-  opacity: 0.2;
+  background-image: var(--page-photo, none);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.55;
 }
-
+/* A soft light haze in the middle, where text sits, so the food stays bright at the edges. */
 .page-bg::after {
-  background: url(/bg/food-doodles.svg) 0 0 / 320px repeat;
-  opacity: var(--doodle-opacity, 0.07);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.55) 100%);
-  mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.55) 100%);
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, color-mix(in oklab, var(--background) 70%, transparent), transparent 100%);
+}
+/* Wide screens: the whole tall picture on each side, fading out before its edge (the picture is 81vh wide), instead of a blown-up crop. */
+@media (min-width: 1024px) {
+  .page-bg::before,
+  .page-bg::after {
+    background: var(--page-photo, none) left center / auto 100% no-repeat;
+    opacity: 0.65;
+    -webkit-mask-image: linear-gradient(to right, black 40vh, transparent 78vh);
+    mask-image: linear-gradient(to right, black 40vh, transparent 78vh);
+  }
+  .page-bg::after {
+    background-position: right center;
+    -webkit-mask-image: linear-gradient(to left, black 40vh, transparent 78vh);
+    mask-image: linear-gradient(to left, black 40vh, transparent 78vh);
+  }
 }
 
 /* Room for the phone tab bar so it never covers the footer. */
