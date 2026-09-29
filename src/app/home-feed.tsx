@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { ChevronDown, MapPin, Search, ShoppingBag, Star, X } from "lucide-react";
+import { ChevronDown, MapPin, ShoppingBag, Star, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
 import { SideMenuButton } from "@/components/side-menu";
@@ -14,6 +14,8 @@ import { GOOGLE_MAPS_KEY } from "@/lib/site";
 import type { Loc } from "@/lib/location";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { LocationPicker } from "@/components/location-picker";
+import { SearchLauncher } from "@/components/search-overlay";
+import type { SearchLabels } from "@/app/search/search-screen";
 
 export type HomeLabels = {
   brand: string;
@@ -56,6 +58,7 @@ export function HomeFeed({
   langToggle,
   location,
   menu,
+  searchLabels,
 }: {
   stores: StoreCard[];
   againIds: string[];
@@ -63,6 +66,7 @@ export function HomeFeed({
   langToggle: React.ReactNode;
   location: LocationProps;
   menu: Omit<React.ComponentProps<typeof SideMenuButton>, "className">;
+  searchLabels: SearchLabels;
 }) {
   // No location yet: show the picker straight away so nearby stores can come first.
   const [picking, setPicking] = useState(!location.current);
@@ -114,11 +118,8 @@ export function HomeFeed({
               </Link>
             </div>
           </div>
-          {/* Tapping search opens the full search screen. */}
-          <Link href="/search" className="relative flex h-13 w-full items-center rounded-full bg-background ps-12 text-base text-muted shadow-xl shadow-black/10 transition active:scale-[0.99]">
-            <Search className="absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2" aria-hidden="true" />
-            {labels.search}
-          </Link>
+          {/* Tapping search opens the search screen in place, with the keyboard already up. */}
+          <SearchLauncher labels={searchLabels} locale={location.locale} className="relative flex h-13 w-full items-center rounded-full bg-background ps-12 text-base text-muted shadow-xl shadow-black/10 transition active:scale-[0.99]" />
         </div>
         {/* Wavy edge into the dark page. */}
         <svg aria-hidden="true" viewBox="0 0 390 24" preserveAspectRatio="none" className="absolute inset-x-0 -bottom-px h-6 w-full text-background">
