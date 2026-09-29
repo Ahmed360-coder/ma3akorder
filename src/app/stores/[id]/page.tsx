@@ -39,11 +39,22 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
           className="relative isolate overflow-hidden rounded-3xl border border-line p-5 sm:p-7"
           style={{ background: `radial-gradient(120% 120% at 100% 0%, ${tint}40, transparent 55%), var(--surface)` }}
         >
-          <Art src={CATEGORY_ART[store.category]} className="absolute -bottom-6 -end-4 -z-10 h-32 w-32 opacity-15" />
-          <div className="flex items-center gap-4">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/10 bg-background/60 backdrop-blur" style={{ color: tint }}>
-              <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
-            </span>
+          {store.cover_url ? (
+            // The store's own cover photo across the top of the card.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={store.cover_url} alt="" className="-mx-5 -mt-5 mb-4 block h-36 w-[calc(100%+2.5rem)] max-w-none object-cover sm:-mx-7 sm:-mt-7 sm:h-48 sm:w-[calc(100%+3.5rem)]" />
+          ) : (
+            <Art src={CATEGORY_ART[store.category]} className="absolute -bottom-6 -end-4 -z-10 h-32 w-32 opacity-15" />
+          )}
+          <div className={`flex gap-4 ${store.cover_url ? "items-end" : "items-center"}`}>
+            {store.logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={store.logo_url} alt="" className={`h-16 w-16 shrink-0 rounded-2xl border-2 border-surface bg-white object-cover shadow-md ${store.cover_url ? "-mt-12" : ""}`} />
+            ) : (
+              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/10 bg-background/60 backdrop-blur" style={{ color: tint }}>
+                <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
+              </span>
+            )}
             <div className="min-w-0">
               <h1 className="text-2xl font-extrabold sm:text-3xl">{name}</h1>
               <p className="text-sm text-muted">

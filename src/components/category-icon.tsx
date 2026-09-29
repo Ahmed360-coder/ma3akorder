@@ -42,3 +42,14 @@ export function CategoryBadge({ category, className = "h-14 w-14 rounded-2xl", i
     </span>
   );
 }
+
+// The store's own logo when it uploaded one, otherwise its category picture.
+export function StoreBadge({ category, logo, className = "h-14 w-14 rounded-2xl", iconClass = "h-9 w-9" }: { category: BusinessCategory; logo: string | null; className?: string; iconClass?: string }) {
+  if (!logo) return <CategoryBadge category={category} className={className} iconClass={iconClass} />;
+  return (
+    <span className={`block shrink-0 overflow-hidden bg-white ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={logo} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+    </span>
+  );
+}

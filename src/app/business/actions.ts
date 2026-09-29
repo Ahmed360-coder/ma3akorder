@@ -43,14 +43,35 @@ function storeFields(form: FormData) {
   };
 }
 
+// Uploads a new logo or cover (already shrunk on the phone) into the store's own folder, or clears it.
+async function storePictures(supabase: Awaited<ReturnType<typeof createClient>>, businessId: string, form: FormData) {
+  const patch: Record<string, string | null> = {};
+  for (const kind of ["logo", "cover"] as const) {
+    const file = form.get(kind);
+    if (file instanceof File && file.size > 0) {
+      const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
+      const path = `${businessId}/${kind}-${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from("item-photos").upload(path, file, { contentType: file.type });
+      if (error) return { patch, error: error.message };
+      patch[`${kind}_url`] = supabase.storage.from("item-photos").getPublicUrl(path).data.publicUrl;
+    } else if (form.get(`${kind}_remove`) === "1") {
+      patch[`${kind}_url`] = null;
+    }
+  }
+  return { patch, error: null };
+}
+
 export async function createBusiness(form: FormData) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  const { error } = await supabase.from("businesses").insert({ owner_id: user.id, ...storeFields(form) });
+  const { data: created, error } = await supabase.from("businesses").insert({ owner_id: user.id, ...storeFields(form) }).select("id").single();
   if (error) throw new Error(error.message);
+  // Pictures need the store's id for their folder, so they go up right after it exists.
+  const pics = await storePictures(supabase, created.id, form);
+  if (Object.keys(pics.patch).length) await supabase.from("businesses").update(pics.patch).eq("id", created.id);
   revalidatePath("/business", "layout");
   redirect("/business/menu");
 }
@@ -59,8 +80,11 @@ export async function updateBusiness(_: unknown, form: FormData) {
   const business = await getMyBusiness();
   if (!business) return { error: "No store", ok: false };
   const supabase = await createClient();
-  const { error } = await supabase.from("businesses").update(storeFields(form)).eq("id", business.id);
+  const pics = await storePictures(supabase, business.id, form);
+  if (pics.error) return { error: pics.error, ok: false };
+  const { error } = await supabase.from("businesses").update({ ...storeFields(form), ...pics.patch }).eq("id", business.id);
   revalidatePath("/business", "layout");
+  revalidatePath("/");
   return { error: error?.message ?? null, ok: !error };
 }
 
