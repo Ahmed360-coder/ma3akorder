@@ -12,6 +12,8 @@ export type Dish = {
   photo: string | null;
   stock: number | null;
   storeId: string;
+  // Both names, for matching searches in either language.
+  search: string;
 };
 
 export type DiscoverStore = Pick<StoreCard, "id" | "name" | "category" | "logo" | "fee" | "prep" | "rating" | "distanceText"> & {
@@ -38,6 +40,7 @@ export async function getOpenDishes(t: Dictionary, locale: string, loc: Loc | nu
       photo: i.photo_url,
       stock: i.stock_count,
       storeId: i.business_id,
+      search: `${i.name_ar} ${i.name_en ?? ""} ${i.description ?? ""}`,
     }));
   const withDishes = new Set(dishes.map((d) => d.storeId));
   const stores = cards

@@ -15,9 +15,9 @@ type Labels = Extras["feed"] & { added: string; viewCart: string; otherStore: st
 
 const QUICK = [150, 300, 500, 800, 1200];
 
-export function MealBuilder({ stores, dishes, locale, x }: { stores: DiscoverStore[]; dishes: Dish[]; locale: string; x: Labels }) {
-  const [people, setPeople] = useState(2);
-  const [budget, setBudget] = useState(300);
+export function MealBuilder({ start, stores, dishes, locale, x }: { start?: { people: number; budget: number }; stores: DiscoverStore[]; dishes: Dish[]; locale: string; x: Labels }) {
+  const [people, setPeople] = useState(start?.people ?? 2);
+  const [budget, setBudget] = useState(start?.budget ?? 300);
   const [shown, setShown] = useState<{ people: number; budget: number } | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const fill = useFillCart(x.otherStore);

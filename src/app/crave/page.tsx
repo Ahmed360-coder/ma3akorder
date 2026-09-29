@@ -5,13 +5,11 @@ import { getExtras } from "@/lib/i18n/extras";
 import { getCustomerLocation } from "@/lib/location-server";
 import { getOpenDishes } from "@/lib/discover";
 import { PageTitle } from "@/components/discover/page-title";
-import { MealBuilder } from "./meal-builder";
+import { CraveDeck } from "./crave-deck";
 
-export const metadata: Metadata = { title: "Feed us for…" };
+export const metadata: Metadata = { title: "Swipe to crave" };
 
-export default async function FeedPage({ searchParams }: { searchParams: Promise<{ people?: string; budget?: string }> }) {
-  const sp = await searchParams;
-  const start = { people: Math.min(20, Math.max(1, Number(sp.people) || 2)), budget: Math.min(3000, Math.max(50, Number(sp.budget) || 300)) };
+export default async function CravePage() {
   const { t, locale } = await getDictionary();
   const x = getExtras(locale);
   const { stores, dishes } = await getOpenDishes(t, locale, await getCustomerLocation());
@@ -20,9 +18,9 @@ export default async function FeedPage({ searchParams }: { searchParams: Promise
     <>
       <Header />
       <main className="mx-auto flex w-full max-w-lg flex-col gap-5 px-4 pb-28 pt-6">
-        <PageTitle title={x.feed.title} subtitle={x.feed.subtitle} art="/art/money_bag.webp" back={x.back} />
+        <PageTitle title={x.crave.title} subtitle={x.crave.subtitle} art="/art/real/burger.webp" back={x.back} />
         {dishes.length ? (
-          <MealBuilder start={start} stores={stores} dishes={dishes} locale={locale} x={{ ...x.feed, added: x.addedToCart, viewCart: x.viewCart, otherStore: x.otherStoreInCart, mins: t.ui.mins }} />
+          <CraveDeck stores={stores} dishes={dishes} locale={locale} x={{ ...x.crave, added: x.addedToCart, viewCart: x.viewCart, otherStore: x.otherStoreInCart }} />
         ) : (
           <p className="card text-center text-muted">{x.noOpen}</p>
         )}

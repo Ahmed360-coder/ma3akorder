@@ -7,6 +7,10 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
 import {
   Bike,
+  Flame,
+  Mic,
+  TrendingUp,
+  Users,
   Sparkles,
   Dices,
   Heart,
@@ -26,6 +30,7 @@ import {
   X,
   type LucideIcon, UtensilsCrossed } from "lucide-react";
 import { useCart } from "./cart-provider";
+import type { DiscoverIcon, DiscoverMenu } from "./discover/links";
 import { LogoMark } from "./logo";
 
 type Role =
@@ -56,7 +61,7 @@ export type SideMenuLabels = {
   help: string;
   byline: string;
   // Discover pages (Spin & Eat, Feed us for…, Rewards, Favourites).
-  discover?: { title: string; spin: string; feed: string; rewards: string; favorites: string; guide: string };
+  discover?: DiscoverMenu;
 };
 type Props = {
   role: Role;
@@ -64,6 +69,17 @@ type Props = {
   labels: SideMenuLabels;
   langToggle: React.ReactNode;
   whatsapp: string | null;
+};
+const DISCOVER_ICONS: Record<DiscoverIcon, LucideIcon> = {
+  users: Users,
+  mic: Mic,
+  flame: Flame,
+  trending: TrendingUp,
+  dices: Dices,
+  piggy: PiggyBank,
+  trophy: Trophy,
+  heart: Heart,
+  utensils: UtensilsCrossed,
 };
 type Entry = { href: string; label: string; Icon: LucideIcon; badge?: number };
 
@@ -95,15 +111,7 @@ function useEntries({ role, signedIn, labels }: Props) {
       : []),
   ];
   // Standout features, in their own group so they are easy to find.
-  const discover: Entry[] = labels.discover
-    ? [
-        { href: "/spin", label: labels.discover.spin, Icon: Dices },
-        { href: "/feed", label: labels.discover.feed, Icon: PiggyBank },
-        { href: "/rewards", label: labels.discover.rewards, Icon: Trophy },
-        { href: "/favorites", label: labels.discover.favorites, Icon: Heart },
-        { href: "/nearby", label: labels.discover.guide, Icon: UtensilsCrossed },
-      ]
-    : [];
+  const discover: Entry[] = (labels.discover?.items ?? []).map((d) => ({ href: d.href, label: d.label, Icon: DISCOVER_ICONS[d.icon] }));
   return { shop, discover, work };
 }
 

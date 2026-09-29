@@ -15,6 +15,7 @@ import { searchLabels } from "@/lib/search-data";
 import { BRAND_COLOR } from "@/lib/brand";
 import { WelcomeBack } from "@/components/welcome-back";
 import { DiscoverRow } from "@/components/discover/discover-row";
+import { discoverMenu } from "@/components/discover/links";
 import { getExtras } from "@/lib/i18n/extras";
 
 // Phone status bar matches the top band.
@@ -56,7 +57,7 @@ export default async function Home() {
     language: t.ui.language,
     help: t.site.support,
     byline: t.site.byline,
-    discover: (({ title, spin, feed, rewards, favorites, guide }) => ({ title, spin: spin.title, feed: feed.title, rewards: rewards.title, favorites: favorites.title, guide: guide.title }))(getExtras(locale).discover),
+    discover: discoverMenu(getExtras(locale).discover),
   };
   const menu = { role, signedIn: !!user, labels: menuLabels, langToggle: <LanguageToggle label={t.switchLanguage} />, whatsapp: SUPPORT_WHATSAPP };
 
