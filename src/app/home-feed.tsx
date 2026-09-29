@@ -148,7 +148,7 @@ export function HomeFeed({
         {again.length > 0 && (
           <section className="flex flex-col gap-3">
             <h2 className="text-xl font-extrabold">{labels.orderAgain}</h2>
-            <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
+            <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
               {again.map((s) => (
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-24 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span className="relative">
@@ -188,7 +188,7 @@ export function HomeFeed({
         </section>
 
         {/* Swipeable banners for what makes M3akOrder different. */}
-        <section className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
+        <section className="-mx-4 flex snap-x scroll-px-4 snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
           {labels.promos.map((p, i) => (
             <Link
               key={p.title}

@@ -313,7 +313,7 @@ export function SearchScreen({
 
 function StoreTiles({ stores, mins }: { stores: StoreCard[]; mins: string }) {
   return (
-    <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
+    <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
       {stores.map((s, i) => (
         <Link key={s.id} href={`/stores/${s.id}`} className={`stagger flex w-28 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95 ${s.isOpen ? "" : "opacity-60"}`} style={{ "--i": i } as React.CSSProperties}>
           <CategoryBadge category={s.category} className="h-28 w-28 rounded-3xl border border-line" iconClass="h-11 w-11" />

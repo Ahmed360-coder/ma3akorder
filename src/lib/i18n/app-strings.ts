@@ -23,7 +23,7 @@ const enApp = {
     mins: "min",
     freeDelivery: "Free delivery",
     back: "Back",
-    searchAll: "Search food, groceries and more",
+    searchAll: "Search food & groceries",
     craving: "What are you craving today?",
     recent: "Recent searches",
     popular: "Popular searches",
