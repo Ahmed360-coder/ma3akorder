@@ -8,6 +8,8 @@ import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { formatEGP, pickName } from "@/lib/format";
 import type { Business, Item } from "@/lib/types";
+import { getDemoState } from "@/lib/demo";
+import { getCurrentProfile } from "@/lib/profile";
 import { AddToCart } from "./add-to-cart";
 import { WorthBadge, type ValueScore } from "@/components/worth-badge";
 
@@ -17,6 +19,8 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
   const supabase = await createClient();
   const { data: store } = await supabase.from("businesses").select("*").eq("id", id).maybeSingle<Business>();
   if (!store) notFound();
+  // Hidden demo stores stay reachable for the admin only.
+  if (store.is_demo && !(await getDemoState(supabase)).showDemo && (await getCurrentProfile()).profile?.role !== "admin") notFound();
   const { data } = await supabase.from("items").select("*").eq("business_id", id).order("sort_order").order("created_at");
   const items = (data ?? []) as Item[];
   const { data: scoreRows } = await supabase.rpc("item_value_scores", { p_business_id: id });

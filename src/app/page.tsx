@@ -68,6 +68,7 @@ export default async function Home() {
         location={{ t: t.location, locale, current: loc }}
         labels={{
           brand: t.brand,
+          demo: t.ui.demo,
           deliverTo: t.ui.deliverTo,
           area: loc?.label || lastArea || t.ui.yourArea,
           search: t.ui.searchAll,

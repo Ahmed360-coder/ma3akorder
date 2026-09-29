@@ -16,6 +16,7 @@ export type Business = {
   lat: number | null;
   lng: number | null;
   delivery_radius_km: number;
+  is_demo: boolean;
   is_open: boolean;
   min_order: number;
   delivery_fee: number;

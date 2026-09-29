@@ -8,7 +8,8 @@ import { getCurrentProfile, type Profile } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
 import { formatEGP, formatTime } from "@/lib/format";
 import type { Business, Order } from "@/lib/types";
-import { setBusinessStatus, setProfileStatus } from "./actions";
+import { setBusinessStatus, setHideDemoStores, setProfileStatus } from "./actions";
+import { getDemoState } from "@/lib/demo";
 
 export default async function AdminPage() {
   const { t, locale } = await getDictionary();
@@ -17,10 +18,11 @@ export default async function AdminPage() {
   if (profile?.role !== "admin") redirect("/account");
 
   const supabase = await createClient();
-  const [{ data: stores }, { data: people }, { data: orders }] = await Promise.all([
+  const [{ data: stores }, { data: people }, { data: orders }, demo] = await Promise.all([
     supabase.from("businesses").select("*").eq("status", "pending").order("created_at"),
     supabase.from("profiles").select("*").eq("approval_status", "pending").eq("onboarded", true).order("created_at"),
     supabase.from("orders").select("*, businesses(name_ar)").order("created_at", { ascending: false }).limit(30),
+    getDemoState(supabase),
   ]);
 
   return (
@@ -29,6 +31,20 @@ export default async function AdminPage() {
       <RealtimeRefresh channel="admin" tables={[{ table: "orders" }]} />
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-6">
         <h1 className="text-2xl font-bold">{t.admin.title}</h1>
+
+        <section className="card flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="font-bold">{t.admin.demoTitle}</div>
+            <div className={`text-sm ${demo.showDemo ? "text-warning" : "text-positive"}`}>
+              {demo.showDemo ? t.admin.demoShown : demo.realStores > 0 ? t.admin.demoAutoHidden : t.admin.demoHidden}
+            </div>
+          </div>
+          {demo.realStores === 0 && (
+            <ActionButton action={setHideDemoStores.bind(null, !demo.hiddenByAdmin)} className={demo.hiddenByAdmin ? "btn-ghost" : "btn-primary"}>
+              {demo.hiddenByAdmin ? t.admin.demoShow : t.admin.demoHide}
+            </ActionButton>
+          )}
+        </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="font-bold">{t.admin.pendingStores}</h2>

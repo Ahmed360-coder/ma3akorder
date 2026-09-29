@@ -19,3 +19,10 @@ export async function setProfileStatus(id: string, status: Status) {
   revalidatePath("/admin");
   return { error: error?.message ?? null };
 }
+
+export async function setHideDemoStores(hide: boolean) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("app_settings").update({ value: hide, updated_at: new Date().toISOString() }).eq("key", "hide_demo_stores");
+  revalidatePath("/", "layout");
+  return { error: error?.message ?? null };
+}

@@ -2,6 +2,7 @@
 
 const enApp = {
   ui: {
+    demo: "Demo",
     home: "Home",
     search: "Search stores or areas",
     all: "All",
@@ -269,6 +270,12 @@ const enApp = {
     reject: "Reject",
     suspend: "Suspend",
     nothing: "Nothing waiting.",
+    demoTitle: "Demo stores",
+    demoShown: "Customers can see the demo stores. They hide by themselves once a real store is approved.",
+    demoHidden: "Hidden from customers.",
+    demoAutoHidden: "Hidden, because a real store is live.",
+    demoHide: "Hide demo stores",
+    demoShow: "Show demo stores",
   },
 };
 
@@ -276,6 +283,7 @@ export type AppStrings = typeof enApp;
 
 const arApp: AppStrings = {
   ui: {
+    demo: "تجريبي",
     home: "الرئيسية",
     search: "دوّر على محل أو منطقة",
     all: "الكل",
@@ -543,6 +551,12 @@ const arApp: AppStrings = {
     reject: "رفض",
     suspend: "إيقاف",
     nothing: "مفيش حاجة مستنية.",
+    demoTitle: "المحلات التجريبية",
+    demoShown: "العملاء شايفين المحلات التجريبية. هتختفي لوحدها أول ما محل حقيقي يتوافق عليه.",
+    demoHidden: "مخفية عن العملاء.",
+    demoAutoHidden: "مخفية، عشان فيه محل حقيقي شغال.",
+    demoHide: "اخفي المحلات التجريبية",
+    demoShow: "اظهر المحلات التجريبية",
   },
 };
 
