@@ -4,9 +4,25 @@ import { useState } from "react";
 import { useGeolocation } from "@/lib/use-geolocation";
 import { mapsLink } from "@/lib/location";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { MapPin, mapsEnabled } from "@/components/map-pin";
+
+// Where the map opens before the store has a spot: central Cairo.
+const CAIRO = { lat: 30.0444, lng: 31.2357 };
 
 // Lets the owner save the store's spot by standing in it. Sent with the store form as lat/lng.
-export function StoreLocationField({ t, lat, lng, radius }: { t: Dictionary["location"]; lat: number | null; lng: number | null; radius: number }) {
+export function StoreLocationField({
+  t,
+  lat,
+  lng,
+  radius,
+  locale,
+}: {
+  t: Dictionary["location"];
+  lat: number | null;
+  lng: number | null;
+  radius: number;
+  locale: "ar" | "en";
+}) {
   const { locate, busy, error } = useGeolocation();
   const [pos, setPos] = useState(lat != null && lng != null ? { lat, lng } : null);
   return (
@@ -35,6 +51,12 @@ export function StoreLocationField({ t, lat, lng, radius }: { t: Dictionary["loc
           <span className="text-sm text-muted">{t.storeSpotMissing}</span>
         )}
       </div>
+      {mapsEnabled && (
+        <>
+          <p className="text-sm text-muted">{t.movePinStore}</p>
+          <MapPin value={pos ?? CAIRO} locale={locale} onChange={setPos} />
+        </>
+      )}
       {error && <p role="alert" className="text-sm text-warning">{error === "denied" ? t.denied : t.unavailable}</p>}
       <label className="flex flex-col gap-2 text-sm font-semibold">
         {t.radius}

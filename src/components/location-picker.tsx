@@ -5,6 +5,7 @@ import { AREAS, type Loc } from "@/lib/location";
 import { setMyLocation } from "@/lib/location-actions";
 import { useGeolocation } from "@/lib/use-geolocation";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { MapPin, mapsEnabled } from "./map-pin";
 
 // "Deliver to" bar: shares the phone's location, or falls back to picking an area.
 // Self-contained so it can be placed anywhere (header, home, cart).
@@ -24,22 +25,26 @@ export function LocationPicker({
   const { locate, busy, error } = useGeolocation();
   const [open, setOpen] = useState(startOpen || !current);
   const [pending, start] = useTransition();
+  // With Google Maps on, a spot is first shown on the map to fine-tune, then confirmed.
+  const [draft, setDraft] = useState<Loc | null>(null);
 
   const save = (loc: Loc) =>
     start(async () => {
       await setMyLocation(loc);
+      setDraft(null);
       setOpen(false);
       onDone?.();
     });
+  const propose = (loc: Loc) => (mapsEnabled ? setDraft(loc) : save(loc));
 
   const useMine = async () => {
     const pos = await locate();
-    if (pos) save({ ...pos, label: t.myLocation, precise: true });
+    if (pos) propose({ ...pos, label: t.myLocation, precise: true });
   };
 
   const pickArea = (key: string) => {
     const a = AREAS.find((x) => x.key === key);
-    if (a) save({ lat: a.lat, lng: a.lng, label: locale === "ar" ? a.ar : a.en });
+    if (a) propose({ lat: a.lat, lng: a.lng, label: locale === "ar" ? a.ar : a.en });
   };
 
   return (
@@ -71,6 +76,15 @@ export function LocationPicker({
               </option>
             ))}
           </select>
+        </div>
+      )}
+      {open && draft && (
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-muted">{t.movePin}</p>
+          <MapPin value={draft} locale={locale} onChange={(pos) => setDraft((d) => (d ? { ...d, ...pos } : d))} />
+          <button type="button" className="btn-primary" disabled={pending} onClick={() => save({ ...draft, precise: true })}>
+            {pending ? "…" : t.confirmSpot}
+          </button>
         </div>
       )}
       {error && open && <p role="alert" className="text-sm text-warning">{error === "denied" ? t.denied : t.unavailable}</p>}

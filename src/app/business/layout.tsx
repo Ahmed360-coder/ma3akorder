@@ -9,7 +9,7 @@ import { OpenSwitch } from "./open-switch";
 import { BusinessTabs } from "./tabs";
 
 export default async function BusinessLayout({ children }: { children: React.ReactNode }) {
-  const { t } = await getDictionary();
+  const { t, locale } = await getDictionary();
   const { user, profile } = await getCurrentProfile();
   if (!user) redirect("/login");
   if (!profile?.onboarded) redirect("/onboarding");
@@ -25,7 +25,7 @@ export default async function BusinessLayout({ children }: { children: React.Rea
           <h1 className="mb-1 text-2xl font-bold">{t.business.createTitle}</h1>
           <p className="mb-6 text-muted">{t.business.createNote}</p>
           <form action={createBusiness} className="flex flex-col gap-4">
-            <StoreFields t={t} />
+            <StoreFields t={t} locale={locale} />
             <button className="btn-primary">{t.common.save}</button>
           </form>
         </main>

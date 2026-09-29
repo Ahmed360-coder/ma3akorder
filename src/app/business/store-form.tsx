@@ -5,7 +5,7 @@ import { StoreLocationField } from "./store-location-field";
 const CATEGORIES = ["restaurant", "bakery", "grocery", "pharmacy", "cafe", "other"] as const;
 
 // Shared fields for creating a store and editing its settings.
-export function StoreFields({ t, business }: { t: Dictionary; business?: Business | null }) {
+export function StoreFields({ t, business, locale }: { t: Dictionary; business?: Business | null; locale: "ar" | "en" }) {
   const b = business;
   return (
     <>
@@ -41,7 +41,7 @@ export function StoreFields({ t, business }: { t: Dictionary; business?: Busines
         {t.business.address}
         <input name="address" className="input" defaultValue={b?.address ?? ""} />
       </label>
-      <StoreLocationField t={t.location} lat={b?.lat ?? null} lng={b?.lng ?? null} radius={Number(b?.delivery_radius_km ?? 3)} />
+      <StoreLocationField t={t.location} lat={b?.lat ?? null} lng={b?.lng ?? null} radius={Number(b?.delivery_radius_km ?? 3)} locale={locale} />
       <label className="flex flex-col gap-2 text-sm font-semibold">
         {t.business.description} <span className="font-normal text-muted">({t.common.optional})</span>
         <textarea name="description" rows={2} className="input h-auto py-3" defaultValue={b?.description ?? ""} />
