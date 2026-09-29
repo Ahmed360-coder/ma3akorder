@@ -7,6 +7,10 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
 import {
   Bike,
+  Dices,
+  Heart,
+  PiggyBank,
+  Trophy,
   House,
   LogIn,
   Menu,
@@ -50,6 +54,8 @@ export type SideMenuLabels = {
   workspace: string;
   language: string;
   help: string;
+  // Discover pages (Spin & Eat, Feed us for…, Rewards, Favourites).
+  discover?: { spin: string; feed: string; rewards: string; favorites: string };
 };
 type Props = {
   role: Role;
@@ -65,6 +71,14 @@ function useEntries({ role, signedIn, labels }: Props) {
   const shop: Entry[] = [
     { href: "/", label: labels.home, Icon: House },
     { href: "/search", label: labels.search, Icon: Search },
+    ...(labels.discover
+      ? [
+          { href: "/spin", label: labels.discover.spin, Icon: Dices },
+          { href: "/feed", label: labels.discover.feed, Icon: PiggyBank },
+          { href: "/rewards", label: labels.discover.rewards, Icon: Trophy },
+          { href: "/favorites", label: labels.discover.favorites, Icon: Heart },
+        ]
+      : []),
     ...(signedIn
       ? [
           { href: "/orders", label: labels.orders, Icon: ReceiptText },

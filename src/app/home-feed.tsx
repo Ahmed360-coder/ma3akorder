@@ -59,6 +59,7 @@ export function HomeFeed({
   location,
   menu,
   searchLabels,
+  discover,
 }: {
   stores: StoreCard[];
   againIds: string[];
@@ -67,6 +68,8 @@ export function HomeFeed({
   location: LocationProps;
   menu: Omit<React.ComponentProps<typeof SideMenuButton>, "className">;
   searchLabels: SearchLabels;
+  // Extra rows placed under the category tiles (the Discover features).
+  discover?: React.ReactNode;
 }) {
   // No location yet: show the picker straight away so nearby stores can come first.
   const [picking, setPicking] = useState(!location.current);
@@ -154,6 +157,8 @@ export function HomeFeed({
             );
           })}
         </section>
+
+        {discover}
 
         {again.length > 0 && (
           <section className="flex flex-col gap-3">
