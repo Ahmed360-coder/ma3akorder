@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Bike, ShoppingBag, Store } from "lucide-react";
 import { Header } from "@/components/header";
 import { getDictionary } from "@/lib/i18n/server";
 import { getCurrentProfile } from "@/lib/profile";
@@ -11,6 +12,7 @@ export default async function OnboardingPage() {
   if (profile?.onboarded) redirect("/account");
 
   const roles = ["customer", "business_owner", "driver"] as const;
+  const icons = { customer: ShoppingBag, business_owner: Store, driver: Bike };
 
   return (
     <>
@@ -23,15 +25,21 @@ export default async function OnboardingPage() {
             <input name="full_name" className="input" defaultValue={profile?.full_name ?? ""} autoComplete="name" required />
           </label>
           <fieldset className="flex flex-col gap-3">
-            {roles.map((role, i) => (
-              <label key={role} className="card flex cursor-pointer items-start gap-3 has-[:checked]:border-accent">
-                <input type="radio" name="role" value={role} defaultChecked={i === 0} className="mt-1.5 accent-[var(--accent)]" />
+            {roles.map((role, i) => {
+              const Icon = icons[role];
+              return (
+              <label key={role} className="card stagger flex cursor-pointer items-center gap-3 transition has-[:checked]:border-accent has-[:checked]:bg-accent/5" style={{ "--i": i } as React.CSSProperties}>
+                <input type="radio" name="role" value={role} defaultChecked={i === 0} className="peer sr-only" />
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-surface-2 text-muted transition peer-checked:bg-accent peer-checked:text-accent-ink">
+                  <Icon className="h-6 w-6" aria-hidden="true" />
+                </span>
                 <span>
                   <span className="block font-bold">{t.onboarding[role].title}</span>
                   <span className="text-sm text-muted">{t.onboarding[role].body}</span>
                 </span>
               </label>
-            ))}
+              );
+            })}
           </fieldset>
           <button className="btn-primary">{t.onboarding.continue}</button>
         </form>

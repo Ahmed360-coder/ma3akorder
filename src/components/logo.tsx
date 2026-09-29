@@ -1,8 +1,14 @@
 // Placeholder mark: a shopping bag with a speech-bubble tail ("معاك" = "with you").
-export function LogoMark({ className = "h-10 w-10" }: { className?: string }) {
+export function LogoMark({ className = "h-9 w-9 drop-shadow-[0_6px_14px_rgba(255,138,61,0.35)]" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-      <rect width="64" height="64" rx="16" fill="var(--accent)" />
+      <defs>
+        <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="var(--accent-2)" />
+          <stop offset="1" stopColor="var(--accent)" />
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="18" fill="url(#logo-g)" />
       <path
         d="M20 24h24l-2 22a4 4 0 0 1-4 3.6H26a4 4 0 0 1-4-3.6z"
         fill="none"
@@ -18,9 +24,9 @@ export function LogoMark({ className = "h-10 w-10" }: { className?: string }) {
 
 export function Logo({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center gap-3">
+    <span className="inline-flex items-center gap-2.5">
       <LogoMark />
-      <span className="hidden text-xl font-bold tracking-tight sm:inline">{name}</span>
+      <span className="text-lg font-extrabold tracking-tight">{name}</span>
     </span>
   );
 }

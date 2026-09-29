@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, m } from "motion/react";
+import { Mail, Smartphone } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -113,13 +115,19 @@ export function LoginForm({ t }: { t: Dictionary["login"] }) {
             role="tab"
             aria-selected={tab === key}
             onClick={() => setTab(key)}
-            className={`h-10 rounded-lg text-sm font-semibold ${tab === key ? "bg-surface-2 text-foreground" : "text-muted"}`}
+            className={`relative h-10 rounded-lg text-sm font-semibold transition-colors ${tab === key ? "text-foreground" : "text-muted"}`}
           >
-            {key === "phone" ? t.phoneTab : t.emailTab}
+            {tab === key && <m.span layoutId="login-tab" className="absolute inset-0 rounded-lg border border-line bg-surface-2" />}
+            <span className="relative inline-flex items-center gap-2">
+              {key === "phone" ? <Smartphone className="h-4 w-4" aria-hidden="true" /> : <Mail className="h-4 w-4" aria-hidden="true" />}
+              {key === "phone" ? t.phoneTab : t.emailTab}
+            </span>
           </button>
         ))}
       </div>
 
+      <AnimatePresence mode="wait" initial={false}>
+      <m.div key={tab + (codeSentTo ? "-code" : "")} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }}>
       {tab === "phone" ? (
         codeSentTo ? (
           <form className="flex flex-col gap-3" onSubmit={(e) => (e.preventDefault(), verifyCode())}>
@@ -157,6 +165,8 @@ export function LoginForm({ t }: { t: Dictionary["login"] }) {
           </button>
         </form>
       )}
+      </m.div>
+      </AnimatePresence>
 
       {error && <p role="alert" className="rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">{error}</p>}
       {notice && <p className="rounded-xl border border-positive/40 bg-positive/10 p-3 text-sm text-positive">{notice}</p>}

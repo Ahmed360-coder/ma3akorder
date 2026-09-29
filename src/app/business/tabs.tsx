@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { m } from "motion/react";
 
 export function BusinessTabs({ labels }: { labels: { orders: string; menu: string; settings: string } }) {
   const path = usePathname();
@@ -16,9 +17,10 @@ export function BusinessTabs({ labels }: { labels: { orders: string; menu: strin
         <Link
           key={tab.href}
           href={tab.href}
-          className={`flex-1 rounded-lg py-2 text-center text-sm font-semibold ${path === tab.href ? "bg-surface-2 text-foreground" : "text-muted"}`}
+          className={`relative flex-1 rounded-lg py-2 text-center text-sm font-semibold transition-colors ${path === tab.href ? "text-foreground" : "text-muted"}`}
         >
-          {tab.label}
+          {path === tab.href && <m.span layoutId="business-tab" className="absolute inset-0 rounded-lg bg-surface-2" />}
+          <span className="relative">{tab.label}</span>
         </Link>
       ))}
     </nav>

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, m } from "motion/react";
+import { Banknote, CreditCard, Minus, Plus, ShoppingBag, Store, Trash2 } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { fill, formatEGP } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -29,7 +31,10 @@ export function Checkout({
 
   if (!cart || cart.lines.length === 0) {
     return (
-      <div className="card flex flex-col items-start gap-3">
+      <div className="card flex flex-col items-center gap-4 py-10 text-center">
+        <span className="float-slow grid h-20 w-20 place-items-center rounded-3xl bg-accent/10 text-accent">
+          <ShoppingBag className="h-10 w-10" aria-hidden="true" />
+        </span>
         <p className="text-muted">{t.cart.empty}</p>
         <Link href="/" className="btn-primary">
           {t.cart.browse}
@@ -68,24 +73,40 @@ export function Checkout({
   return (
     <div className="flex flex-col gap-5">
       <section className="card flex flex-col gap-3">
-        <h2 className="font-bold">{cart.businessName}</h2>
+        <h2 className="flex items-center gap-2 font-bold">
+          <Store className="h-5 w-5 text-accent" aria-hidden="true" />
+          {cart.businessName}
+        </h2>
         <ul className="flex flex-col gap-3">
-          {cart.lines.map((l) => (
-            <li key={l.itemId} className="flex items-center justify-between gap-3">
-              <span className="min-w-0 flex-1 truncate">{l.name}</span>
-              <div className="flex items-center gap-1 rounded-lg border border-line">
-                <button className="h-8 w-8" onClick={() => setQty(l.itemId, l.qty - 1)} aria-label="-">−</button>
-                <span className="min-w-5 text-center font-bold">{l.qty}</span>
-                <button className="h-8 w-8" onClick={() => setQty(l.itemId, l.qty + 1)} aria-label="+">+</button>
-              </div>
-              <span className="w-20 text-end text-sm">{formatEGP(l.price * l.qty, locale)}</span>
-            </li>
-          ))}
+          <AnimatePresence initial={false}>
+            {cart.lines.map((l) => (
+              <m.li
+                key={l.itemId}
+                layout
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0, x: 40 }}
+                className="flex items-center justify-between gap-3"
+              >
+                <span className="min-w-0 flex-1 truncate">{l.name}</span>
+                <div className="flex items-center gap-0.5 rounded-xl border border-line bg-surface-2/60 p-0.5">
+                  <button className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty - 1)} aria-label="-">
+                    {l.qty === 1 ? <Trash2 className="h-4 w-4 text-danger" /> : <Minus className="h-4 w-4" />}
+                  </button>
+                  <span className="min-w-5 text-center font-bold">{l.qty}</span>
+                  <button className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty + 1)} aria-label="+">
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+                <span className="w-20 text-end text-sm font-semibold">{formatEGP(l.price * l.qty, locale)}</span>
+              </m.li>
+            ))}
+          </AnimatePresence>
         </ul>
         <dl className="flex flex-col gap-1 border-t border-line pt-3 text-sm">
           <div className="flex justify-between"><dt className="text-muted">{t.cart.subtotal}</dt><dd>{formatEGP(subtotal, locale)}</dd></div>
           <div className="flex justify-between"><dt className="text-muted">{t.cart.deliveryFee}</dt><dd>{formatEGP(cart.deliveryFee, locale)}</dd></div>
-          <div className="flex justify-between text-base font-bold"><dt>{t.cart.total}</dt><dd>{formatEGP(total, locale)}</dd></div>
+          <div className="mt-1 flex justify-between border-t border-dashed border-line pt-2 text-lg font-extrabold"><dt>{t.cart.total}</dt><dd className="text-accent-2">{formatEGP(total, locale)}</dd></div>
         </dl>
         {cart.deliveryFee > 0 && cart.deliveryFee / subtotal >= 0.25 && (
           <p className="rounded-xl bg-warning/10 p-3 text-sm text-warning">
@@ -135,8 +156,19 @@ export function Checkout({
             {t.cart.phone}
             <input name="phone" type="tel" dir="ltr" className="input" defaultValue={defaults.phone ?? ""} required />
           </label>
+          <h2 className="mt-2 font-bold">{t.ui.payment}</h2>
+          <div className="grid gap-2">
+            <div className="flex items-center gap-3 rounded-2xl border border-accent bg-accent/10 p-3">
+              <Banknote className="h-6 w-6 text-accent" aria-hidden="true" />
+              <span className="flex-1 font-bold">{t.ui.cashOnDelivery}</span>
+              <span className="grid h-5 w-5 place-items-center rounded-full border-2 border-accent"><span className="h-2.5 w-2.5 rounded-full bg-accent" /></span>
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl border border-line p-3 text-muted opacity-70" aria-disabled="true">
+              <CreditCard className="h-6 w-6" aria-hidden="true" />
+              <span className="flex-1 text-sm font-semibold">{t.ui.cardSoon}</span>
+            </div>
+          </div>
           <div className="card flex flex-col gap-2 p-4">
-            <span className="font-bold">💵 {t.cart.cash}</span>
             <label className="flex flex-col gap-1.5 text-sm font-semibold">
               {t.cart.payWith} <span className="font-normal text-muted">{t.cart.payWithHint} ({t.common.optional})</span>
               <select name="change" className="input" defaultValue="">
