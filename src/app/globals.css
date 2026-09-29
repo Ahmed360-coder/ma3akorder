@@ -124,6 +124,31 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.2s linear infinite;
 }
+/* Page background picture, fixed behind every page (a fixed layer, since phones ignore background-attachment: fixed).
+   To use a photo instead of the doodles, put it in /public/bg and set --page-photo: url(/bg/<file>.webp) on :root. */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.page-bg::before,
+.page-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.page-bg::before {
+  background: var(--page-photo, none) center / cover no-repeat;
+  opacity: 0.16;
+}
+.page-bg::after {
+  background: url(/bg/food-doodles.svg) 0 0 / 320px repeat;
+  opacity: var(--doodle-opacity, 0.07);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.55) 100%);
+  mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.55) 100%);
+}
+
 /* Room for the phone tab bar so it never covers the footer. */
 @media (max-width: 767px) {
   body:has(.bottom-nav) { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
