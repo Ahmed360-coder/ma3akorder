@@ -10,7 +10,6 @@ import { SideMenuButton } from "@/components/side-menu";
 import { Art, CATEGORY_ART, CATEGORY_TINT, StoreBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
-import { GOOGLE_MAPS_KEY } from "@/lib/site";
 import type { Loc } from "@/lib/location";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { LocationPicker } from "@/components/location-picker";
@@ -19,8 +18,6 @@ import type { SearchLabels } from "@/app/search/search-screen";
 
 export type HomeLabels = {
   brand: string;
-  nearbyEntry: string;
-  nearbyEntryBody: string;
   demo: string;
   deliverTo: string;
   area: string;
@@ -202,16 +199,6 @@ export function HomeFeed({
           {stores.length > 0 && shown.length === 0 && <p className="card text-center text-muted">{labels.noMatch}</p>}
         </section>
 
-        {/* Directory of real restaurants from Google; ordering from them happens on their own sites. */}
-        {GOOGLE_MAPS_KEY && (
-          <Link href="/nearby" className="card flex items-center justify-between gap-3 transition hover:border-accent/50 active:scale-[0.99]">
-            <span className="min-w-0">
-              <span className="block font-extrabold">{labels.nearbyEntry}</span>
-              <span className="block text-sm text-muted">{labels.nearbyEntryBody}</span>
-            </span>
-            <MapPin className="h-6 w-6 shrink-0 text-accent" aria-hidden="true" />
-          </Link>
-        )}
 
         {/* Swipeable banners for what makes M3akOrder different. */}
         <section className="-mx-4 flex snap-x scroll-px-4 snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">

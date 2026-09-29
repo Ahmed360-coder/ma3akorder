@@ -7,14 +7,15 @@ const TILES = [
   { key: "feed", href: "/feed", art: "/art/money_bag.webp", bg: "linear-gradient(135deg, #3cc878, #0a7a3c)" },
   { key: "rewards", href: "/rewards", art: "/art/trophy.webp", bg: "linear-gradient(135deg, #f7b733, #c97a12)" },
   { key: "favorites", href: "/favorites", art: "/art/red_heart.webp", bg: "linear-gradient(135deg, #f472b6, #be123c)" },
+  { key: "guide", href: "/nearby", art: "/art/pizza.webp", bg: "linear-gradient(135deg, #6b3fd4, #3b1f8f)" },
 ] as const;
 
-// Home page row linking to Spin & Eat, Feed us for…, Rewards and Favourites.
+// Home page row linking to Spin & Eat, Feed us for…, Rewards, Favourites and the Restaurant guide.
 export function DiscoverRow({ x }: { x: Extras["discover"] }) {
   return (
     <section className="flex flex-col gap-3">
       <h2 className="text-xl font-extrabold">{x.title}</h2>
-      <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0">
+      <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0">
         {TILES.map((tile, i) => {
           const text = x[tile.key];
           return (

@@ -54,7 +54,7 @@ export default async function Home() {
     workspace: t.ui.workspace,
     language: t.ui.language,
     help: t.site.support,
-    discover: (({ title, spin, feed, rewards, favorites }) => ({ title, spin: spin.title, feed: feed.title, rewards: rewards.title, favorites: favorites.title }))(getExtras(locale).discover),
+    discover: (({ title, spin, feed, rewards, favorites, guide }) => ({ title, spin: spin.title, feed: feed.title, rewards: rewards.title, favorites: favorites.title, guide: guide.title }))(getExtras(locale).discover),
   };
   const menu = { role, signedIn: !!user, labels: menuLabels, langToggle: <LanguageToggle label={t.switchLanguage} />, whatsapp: SUPPORT_WHATSAPP };
 
@@ -76,8 +76,6 @@ export default async function Home() {
         location={{ t: t.location, locale, current: loc }}
         labels={{
           brand: t.brand,
-          nearbyEntry: t.nearby.entry,
-          nearbyEntryBody: t.nearby.entryBody,
           demo: t.ui.demo,
           deliverTo: t.ui.deliverTo,
           area: loc?.label || lastArea || t.ui.yourArea,

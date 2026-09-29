@@ -24,8 +24,7 @@ import {
   UserRound,
   Wallet,
   X,
-  type LucideIcon,
-} from "lucide-react";
+  type LucideIcon, UtensilsCrossed } from "lucide-react";
 import { useCart } from "./cart-provider";
 import { LogoMark } from "./logo";
 
@@ -56,7 +55,7 @@ export type SideMenuLabels = {
   language: string;
   help: string;
   // Discover pages (Spin & Eat, Feed us for…, Rewards, Favourites).
-  discover?: { title: string; spin: string; feed: string; rewards: string; favorites: string };
+  discover?: { title: string; spin: string; feed: string; rewards: string; favorites: string; guide: string };
 };
 type Props = {
   role: Role;
@@ -101,6 +100,7 @@ function useEntries({ role, signedIn, labels }: Props) {
         { href: "/feed", label: labels.discover.feed, Icon: PiggyBank },
         { href: "/rewards", label: labels.discover.rewards, Icon: Trophy },
         { href: "/favorites", label: labels.discover.favorites, Icon: Heart },
+        { href: "/nearby", label: labels.discover.guide, Icon: UtensilsCrossed },
       ]
     : [];
   return { shop, discover, work };
