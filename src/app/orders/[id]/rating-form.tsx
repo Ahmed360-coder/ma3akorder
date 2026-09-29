@@ -1,5 +1,6 @@
 "use client";
 
+import { Star } from "lucide-react";
 import { useActionState, useState } from "react";
 import { rateOrder } from "./actions";
 
@@ -32,9 +33,9 @@ export function RatingForm({
             aria-checked={stars === n}
             aria-label={`${n} ${labels.stars}`}
             onClick={() => setStars(n)}
-            className={`text-3xl transition ${n <= stars ? "text-accent" : "text-surface-2"}`}
+            className={`transition active:scale-90 ${n <= stars ? "text-warning" : "text-line"}`}
           >
-            ★
+            <Star className="h-8 w-8" fill="currentColor" strokeWidth={1.5} />
           </button>
         ))}
       </div>

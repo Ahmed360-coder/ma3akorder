@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import { Check } from "lucide-react";
 import { Header } from "@/components/header";
 import { ActionButton } from "@/components/action-button";
 import { OrderCard } from "@/components/order-card";
@@ -67,7 +68,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
                     i < reached ? "bg-positive text-accent-ink" : i === reached ? "bg-accent text-accent-ink ring-4 ring-accent/25 animate-pulse" : "bg-surface-2 text-muted"
                   }`}
                 >
-                  {i < reached ? "✓" : i + 1}
+                  {i < reached ? <Check className="h-4 w-4" strokeWidth={3} /> : i + 1}
                 </span>
                 <span className={i <= reached ? "font-bold" : "text-muted"}>{t.statuses[s]}</span>
               </li>

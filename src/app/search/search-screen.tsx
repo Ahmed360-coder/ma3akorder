@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
-import { ArrowRight, History, Search, ShoppingBag, TrendingUp, X } from "lucide-react";
+import { Apple, ArrowRight, CakeSlice, Coffee, Croissant, Drumstick, Hamburger, History, Pill, Pizza, Scale, Search, SearchX, ShoppingBag, TrendingUp, X, type LucideIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useCart } from "@/components/cart-provider";
-import { CATEGORY_TINT } from "@/components/category-icon";
-import { EMOJI } from "../home-feed";
+import { CategoryBadge } from "@/components/category-icon";
 import { formatEGP } from "@/lib/format";
 import type { StoreCard } from "@/lib/stores";
 import type { BusinessCategory } from "@/lib/types";
@@ -23,15 +22,15 @@ const TAB_CATS: Record<Tab, BusinessCategory[] | null> = {
   groceries: ["grocery", "other"],
   pharmacies: ["pharmacy"],
 };
-const CRAVINGS: { key: Craving; emoji: string; tab: Tab }[] = [
-  { key: "coffee", emoji: "☕", tab: "food" },
-  { key: "burgers", emoji: "🍔", tab: "food" },
-  { key: "desserts", emoji: "🍰", tab: "food" },
-  { key: "pizza", emoji: "🍕", tab: "food" },
-  { key: "chicken", emoji: "🍗", tab: "food" },
-  { key: "bread", emoji: "🥖", tab: "food" },
-  { key: "fruit", emoji: "🍎", tab: "groceries" },
-  { key: "medicine", emoji: "💊", tab: "pharmacies" },
+const CRAVINGS: { key: Craving; Icon: LucideIcon; tint: string; tab: Tab }[] = [
+  { key: "coffee", Icon: Coffee, tint: "#8a5a3c", tab: "food" },
+  { key: "burgers", Icon: Hamburger, tint: "#e8590c", tab: "food" },
+  { key: "desserts", Icon: CakeSlice, tint: "#db2777", tab: "food" },
+  { key: "pizza", Icon: Pizza, tint: "#dc2626", tab: "food" },
+  { key: "chicken", Icon: Drumstick, tint: "#c97a12", tab: "food" },
+  { key: "bread", Icon: Croissant, tint: "#b45309", tab: "food" },
+  { key: "fruit", Icon: Apple, tint: "#12a150", tab: "groceries" },
+  { key: "medicine", Icon: Pill, tint: "#2f6fdf", tab: "pharmacies" },
 ];
 const RECENT_KEY = "m3akorder.recent-searches";
 
@@ -189,7 +188,7 @@ export function SearchScreen({
             <m.div key="results" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-8">
               {storeHits.length === 0 && itemHits.length === 0 && (
                 <div className="flex flex-col items-center gap-3 py-12 text-center text-muted">
-                  <span className="text-5xl">🔍</span>
+                  <SearchX className="h-12 w-12" strokeWidth={1.5} aria-hidden="true" />
                   {labels.noMatch}
                 </div>
               )}
@@ -202,9 +201,7 @@ export function SearchScreen({
                       return (
                         <li key={i.id} className="stagger" style={{ "--i": n } as React.CSSProperties}>
                           <Link href={`/stores/${s.id}`} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition hover:border-accent/50 active:scale-[0.99]">
-                            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl text-2xl" style={{ background: `${CATEGORY_TINT[s.category]}33` }}>
-                              {EMOJI[s.category]}
-                            </span>
+                            <CategoryBadge category={s.category} className="h-12 w-12 rounded-xl" iconClass="h-6 w-6" />
                             <span className="min-w-0 flex-1">
                               <span className="block truncate font-bold">{i.name}</span>
                               <span className="block truncate text-xs text-muted">{s.name}</span>
@@ -237,8 +234,8 @@ export function SearchScreen({
                       className="stagger flex w-20 shrink-0 flex-col items-center gap-2"
                       style={{ "--i": i } as React.CSSProperties}
                     >
-                      <span className="grid h-20 w-20 place-items-center rounded-full border border-line bg-[radial-gradient(circle_at_50%_35%,var(--surface-2),var(--surface))] text-[2.6rem] shadow-lg shadow-black/10">
-                        <span className="drop-shadow-[0_6px_8px_rgba(0,0,0,0.18)]">{c.emoji}</span>
+                      <span className="grid h-20 w-20 place-items-center rounded-full border border-line shadow-sm" style={{ color: c.tint, background: `color-mix(in oklab, ${c.tint} 10%, white)` }}>
+                        <c.Icon className="h-9 w-9" strokeWidth={1.75} aria-hidden="true" />
                       </span>
                       <span className="text-xs font-semibold text-muted">{labels.cravings[c.key]}</span>
                     </m.button>
@@ -295,9 +292,11 @@ export function SearchScreen({
                   <Link
                     href={`/stores/${spotlight.id}`}
                     className="relative isolate flex min-h-40 flex-col justify-end overflow-hidden rounded-3xl p-5 text-white shadow-xl shadow-black/10 transition active:scale-[0.99]"
-                    style={{ background: `radial-gradient(120% 120% at 100% 0%, ${CATEGORY_TINT[spotlight.category]}, var(--accent-deep) 70%)` }}
+                    style={{ background: "linear-gradient(135deg, var(--accent-2), var(--accent) 45%, var(--accent-deep))" }}
                   >
-                    <span className="float-slow absolute end-5 top-4 -z-10 text-7xl drop-shadow-[0_12px_14px_rgba(0,0,0,0.18)]">{EMOJI[spotlight.category]}</span>
+                    <span className="float-slow absolute end-5 top-5 -z-10 grid h-20 w-20 place-items-center rounded-3xl bg-white/15 backdrop-blur-sm">
+                      <Scale className="h-10 w-10" strokeWidth={1.75} aria-hidden="true" />
+                    </span>
                     <span className="w-fit rounded-lg bg-black/25 px-2 py-0.5 text-xs font-bold backdrop-blur">{spotlight.name}</span>
                     <span className="mt-2 text-2xl font-extrabold">{labels.promo.title}</span>
                     <span className="mt-1 max-w-xs text-sm opacity-90">{labels.promo.body}</span>
@@ -317,9 +316,7 @@ function StoreTiles({ stores, mins }: { stores: StoreCard[]; mins: string }) {
     <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
       {stores.map((s, i) => (
         <Link key={s.id} href={`/stores/${s.id}`} className={`stagger flex w-28 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95 ${s.isOpen ? "" : "opacity-60"}`} style={{ "--i": i } as React.CSSProperties}>
-          <span className="grid h-28 w-28 place-items-center rounded-3xl border border-white/10 text-5xl shadow-lg shadow-black/10" style={{ background: `linear-gradient(145deg, ${CATEGORY_TINT[s.category]}, ${CATEGORY_TINT[s.category]}77)` }}>
-            <span className="drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)]">{EMOJI[s.category]}</span>
-          </span>
+          <CategoryBadge category={s.category} className="h-28 w-28 rounded-3xl border border-line" iconClass="h-11 w-11" />
           <span className="line-clamp-1 text-sm font-bold">{s.name}</span>
           <span className="text-xs text-muted">
             {s.prep}–{s.prep + 15} {mins}

@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { ChevronDown, MapPin, Search, ShoppingBag, Star, X } from "lucide-react";
+import { ChevronDown, MapPin, PiggyBank, Scale, Search, ShoppingBag, Star, Store, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
-import { CATEGORY_TINT } from "@/components/category-icon";
+import { CATEGORY_TINT, CategoryBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
 
@@ -32,14 +32,12 @@ export type HomeLabels = {
 };
 
 const CATEGORIES: BusinessCategory[] = ["restaurant", "bakery", "grocery", "pharmacy", "cafe", "other"];
-// Emoji render as colourful 3D-style art on phones, with zero image downloads.
-export const EMOJI: Record<BusinessCategory, string> = { restaurant: "🍔", bakery: "🥐", grocery: "🛒", pharmacy: "💊", cafe: "☕", other: "🛍️" };
 const PROMO_BG = [
   "linear-gradient(120deg, #0a7a3c, #3cc878)",
-  "linear-gradient(120deg, #6b3fd4, #b58cff)",
-  "linear-gradient(120deg, #c2410c, #ffb35c)",
+  "linear-gradient(120deg, #1d4ed8, #60a5fa)",
+  "linear-gradient(120deg, #c2410c, #fb923c)",
 ];
-const PROMO_EMOJI = ["⚖️", "💰", "🏪"];
+const PROMO_ICONS = [Scale, PiggyBank, Store];
 
 export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: StoreCard[]; againIds: string[]; labels: HomeLabels; langToggle: React.ReactNode }) {
   const { count } = useCart();
@@ -113,14 +111,14 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
                 onClick={() => pick(c)}
                 aria-pressed={active}
                 className={`stagger relative flex flex-col items-center gap-1 rounded-3xl border pb-3 pt-5 transition ${active ? "border-accent bg-accent/10" : "border-line bg-surface hover:border-accent/40"}`}
-                style={{ "--i": i, backgroundImage: active ? undefined : `radial-gradient(90% 70% at 50% 30%, ${CATEGORY_TINT[c]}26, transparent 70%)` } as React.CSSProperties}
+                style={{ "--i": i } as React.CSSProperties}
               >
                 <span
                   className={`absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg px-2 py-0.5 text-[10px] font-bold ${n ? "bg-positive text-accent-ink" : "border border-line bg-background text-muted"}`}
                 >
                   {n ? labels.openCount.replace("{n}", String(n)) : labels.soon}
                 </span>
-                <span className="text-[2.6rem] leading-none drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] transition-transform duration-300 group-hover:scale-110">{EMOJI[c]}</span>
+                <CategoryBadge category={c} className="mt-1 h-14 w-14 rounded-2xl" />
                 <span className="text-sm font-bold">{labels.tiles[c]}</span>
               </m.button>
             );
@@ -133,12 +131,9 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
             <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
               {again.map((s) => (
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-24 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
-                  <span
-                    className="relative grid h-24 w-24 place-items-center rounded-3xl border border-white/10 text-4xl shadow-lg shadow-black/10"
-                    style={{ background: `linear-gradient(145deg, ${CATEGORY_TINT[s.category]}, ${CATEGORY_TINT[s.category]}88)` }}
-                  >
-                    {EMOJI[s.category]}
-                    {s.fee === 0 && <span className="absolute -bottom-2 rounded-md bg-positive px-1.5 text-[10px] font-bold text-accent-ink">{labels.freeDelivery}</span>}
+                  <span className="relative">
+                    <CategoryBadge category={s.category} className="h-24 w-24 rounded-3xl border border-line" iconClass="h-10 w-10" />
+                    {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-positive px-1.5 text-[10px] font-bold text-accent-ink">{labels.freeDelivery}</span>}
                   </span>
                   <span className="line-clamp-2 text-xs font-semibold">{s.name}</span>
                 </Link>
@@ -183,7 +178,14 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
             >
               <span className="text-lg font-extrabold leading-tight">{p.title}</span>
               <span className="mt-1 text-sm leading-snug opacity-90">{p.body}</span>
-              <span className="float-slow absolute end-4 top-1/2 -mt-8 text-6xl drop-shadow-[0_10px_12px_rgba(0,0,0,0.18)]">{PROMO_EMOJI[i]}</span>
+              {(() => {
+                const Icon = PROMO_ICONS[i % PROMO_ICONS.length];
+                return (
+                  <span className="float-slow absolute end-4 top-1/2 -mt-9 grid h-18 w-18 place-items-center rounded-2xl bg-white/15 backdrop-blur-sm">
+                    <Icon className="h-9 w-9" strokeWidth={1.75} aria-hidden="true" />
+                  </span>
+                );
+              })()}
             </Link>
           ))}
         </section>
@@ -199,8 +201,8 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
       href={`/stores/${s.id}`}
       className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface transition hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
     >
-      <span className="relative grid w-28 shrink-0 place-items-center text-5xl" style={{ background: `linear-gradient(145deg, ${tint}, ${tint}77)` }}>
-        <span className="drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)]">{EMOJI[s.category]}</span>
+      <span className="grid w-24 shrink-0 place-items-center border-e border-line" style={{ background: `color-mix(in oklab, ${tint} 8%, white)` }}>
+        <CategoryBadge category={s.category} className="h-14 w-14 rounded-2xl bg-white shadow-sm" />
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
         <span className="flex items-center gap-1.5 text-xs font-semibold">
