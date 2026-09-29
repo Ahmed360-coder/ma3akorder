@@ -74,8 +74,8 @@ export function RewardsBoard({ r, x, userKey }: { r: Rewards; x: Extras["rewards
           </div>
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-xs font-semibold uppercase tracking-wide text-muted">{x.level} {r.level + 1}/{LEVELS.length}</div>
-          <div className="text-gradient text-2xl font-extrabold">{x.levels[r.level]}</div>
+          <div className="text-sm font-semibold text-muted">{x.level} {r.level + 1}/{LEVELS.length}</div>
+          <div className="text-2xl font-extrabold text-accent">{x.levels[r.level]}</div>
           <p className="mt-1 text-sm text-muted">{nextName ? fill(x.next, { n: (r.nextAt ?? 0) - r.points, level: nextName }) : x.maxLevel}</p>
           <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-warm/10 px-3 py-1 text-sm font-bold text-warm-deep">
             <Flame className={`h-4 w-4 ${r.streak ? "animate-pulse" : ""}`} aria-hidden="true" /> {r.streak} {x.streakBody}

@@ -248,7 +248,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
         </span>
         <span className="flex min-w-0 items-center gap-2">
           <span className="truncate text-lg font-extrabold">{s.name}</span>
-          {s.isDemo && <span className="shrink-0 rounded-md border border-warning/50 px-1.5 text-[10px] font-bold uppercase text-warning">{labels.demo}</span>}
+          {s.isDemo && <span className="shrink-0 rounded-md border border-warning/50 px-1.5 text-[11px] font-bold text-warning">{labels.demo}</span>}
         </span>
         <span className="flex flex-wrap items-center gap-x-2 text-sm text-muted">
           <span>

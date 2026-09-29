@@ -173,7 +173,7 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
         <ul className="flex flex-col gap-0.5">{shop.map(item)}</ul>
         {discover.length > 0 && labels.discover && (
           <div>
-            <p className="mb-1 flex items-center gap-2 px-3 text-xs font-bold uppercase tracking-wide text-muted">
+            <p className="mb-1 flex items-center gap-2 px-3 text-sm font-bold text-muted">
               <Sparkles className="h-3.5 w-3.5 text-warm" aria-hidden="true" />
               {labels.discover.title}
             </p>
@@ -182,7 +182,7 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
         )}
         {work.length > 0 && (
           <div>
-            <p className="mb-1 px-3 text-xs font-bold uppercase tracking-wide text-muted">
+            <p className="mb-1 px-3 text-sm font-bold text-muted">
               {labels.workspace}
             </p>
             <ul className="flex flex-col gap-0.5">{work.map(item)}</ul>

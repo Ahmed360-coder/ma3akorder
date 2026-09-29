@@ -91,7 +91,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
           {items.map((item, i) => {
             const soldOut = !item.is_available;
             return (
-              <li key={item.id} className={`card stagger flex items-center gap-4 p-3 ${soldOut ? "opacity-50" : ""}`} style={{ "--i": i } as React.CSSProperties}>
+              <li key={item.id} className={`card flex items-center gap-4 p-3 ${soldOut ? "opacity-50" : ""}`} style={{ "--i": i } as React.CSSProperties}>
                 {item.photo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={item.photo_url} alt="" loading="lazy" className="h-18 w-18 shrink-0 rounded-xl object-cover" />

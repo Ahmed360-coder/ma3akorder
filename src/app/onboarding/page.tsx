@@ -28,7 +28,7 @@ export default async function OnboardingPage() {
             {roles.map((role, i) => {
               const Icon = icons[role];
               return (
-              <label key={role} className="card stagger flex cursor-pointer items-center gap-3 transition has-[:checked]:border-accent has-[:checked]:bg-accent/5" style={{ "--i": i } as React.CSSProperties}>
+              <label key={role} className="card flex cursor-pointer items-center gap-3 transition has-[:checked]:border-accent has-[:checked]:bg-accent/5" style={{ "--i": i } as React.CSSProperties}>
                 <input type="radio" name="role" value={role} defaultChecked={i === 0} className="peer sr-only" />
                 <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-surface-2 text-muted transition peer-checked:bg-accent peer-checked:text-accent-ink">
                   <Icon className="h-6 w-6" aria-hidden="true" />
