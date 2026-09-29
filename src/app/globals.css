@@ -1,21 +1,27 @@
 @import "tailwindcss";
 
-/* Green and white theme with warm orange for actions, prices and offers (orange reads as "tasty").
-   Every colour in the app comes from these tokens. */
+/* Tomato red and white theme (warm colours read as "tasty").
+   To change the main colour, edit the three --brand values below (and BRAND_COLOR in src/lib/brand.ts
+   plus the fill in src/app/icon.svg). Everything else in the app follows these tokens. */
 :root {
-  --background: #f6faf7;
+  --brand: #f2542d;
+  --brand-light: #ff7b52;
+  --brand-dark: #c4381a;
+
+  --background: #fbf8f6;
   --surface: #ffffff;
-  --surface-2: #edf5f0;
-  --line: #dfe9e3;
-  --foreground: #102219;
-  --muted: #5d7066;
-  --accent: #12a150;
-  --accent-2: #3cc878;
-  --accent-deep: #0a7a3c;
+  --surface-2: #f8efea;
+  --line: #efe2da;
+  --foreground: #221512;
+  --muted: #6e5f59;
+  --accent: var(--brand);
+  --accent-2: var(--brand-light);
+  --accent-deep: var(--brand-dark);
   --accent-ink: #ffffff;
-  --warm: #f26a0f;
-  --warm-2: #ff8a2b;
-  --warm-deep: #c2410c;
+  /* Buttons, prices and offers use the same brand family. */
+  --warm: var(--brand);
+  --warm-2: var(--brand-light);
+  --warm-deep: var(--brand-dark);
   /* Soft beige behind the realistic pictures, like the big delivery apps. */
   --tile: #f4eee6;
   /* Fast food picture behind every page (made in Higgsfield); the doodle pattern is the fallback. */
@@ -76,7 +82,7 @@ body {
 @utility card {
   @apply rounded-2xl border border-line p-5;
   background: var(--surface);
-  box-shadow: 0 1px 2px rgb(16 34 25 / 0.04), 0 10px 30px -20px rgb(16 34 25 / 0.25);
+  box-shadow: 0 1px 2px rgb(34 21 18 / 0.04), 0 10px 30px -20px rgb(34 21 18 / 0.25);
 }
 @utility chip {
   @apply inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 text-sm font-semibold text-muted transition;

@@ -12,12 +12,13 @@ import { SUPPORT_WHATSAPP } from "@/lib/site";
 import { fill } from "@/lib/format";
 import { getCustomerLocation } from "@/lib/location-server";
 import { searchLabels } from "@/lib/search-data";
+import { BRAND_COLOR } from "@/lib/brand";
 import { WelcomeBack } from "@/components/welcome-back";
 import { DiscoverRow } from "@/components/discover/discover-row";
 import { getExtras } from "@/lib/i18n/extras";
 
-// Phone status bar matches the green top band.
-export const viewport: Viewport = { themeColor: "#12a150" };
+// Phone status bar matches the top band.
+export const viewport: Viewport = { themeColor: BRAND_COLOR };
 
 export default async function Home() {
   const { t, locale } = await getDictionary();
