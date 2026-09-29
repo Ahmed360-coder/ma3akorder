@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: "Order from nearby shops in Egypt, track your spending, and check what's worth it.",
 };
 
-export const viewport: Viewport = { themeColor: "#0c100f" };
+export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { locale, dir } = await getDictionary();

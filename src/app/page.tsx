@@ -8,8 +8,8 @@ import { getStoreCards } from "@/lib/stores";
 import type { DeliveryAddress } from "@/lib/types";
 import { HomeFeed } from "./home-feed";
 
-// Phone status bar matches the orange top band.
-export const viewport: Viewport = { themeColor: "#ff8a3d" };
+// Phone status bar matches the green top band.
+export const viewport: Viewport = { themeColor: "#12a150" };
 
 export default async function Home() {
   const { t, locale } = await getDictionary();

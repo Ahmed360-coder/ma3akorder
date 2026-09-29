@@ -209,7 +209,7 @@ export function SearchScreen({
                               <span className="block truncate font-bold">{i.name}</span>
                               <span className="block truncate text-xs text-muted">{s.name}</span>
                             </span>
-                            <span className="shrink-0 font-bold text-accent-2">{formatEGP(i.price, locale)}</span>
+                            <span className="shrink-0 font-bold text-accent">{formatEGP(i.price, locale)}</span>
                           </Link>
                         </li>
                       );
@@ -237,8 +237,8 @@ export function SearchScreen({
                       className="stagger flex w-20 shrink-0 flex-col items-center gap-2"
                       style={{ "--i": i } as React.CSSProperties}
                     >
-                      <span className="grid h-20 w-20 place-items-center rounded-full border border-line bg-[radial-gradient(circle_at_50%_35%,var(--surface-2),var(--surface))] text-[2.6rem] shadow-lg shadow-black/30">
-                        <span className="drop-shadow-[0_6px_8px_rgba(0,0,0,0.45)]">{c.emoji}</span>
+                      <span className="grid h-20 w-20 place-items-center rounded-full border border-line bg-[radial-gradient(circle_at_50%_35%,var(--surface-2),var(--surface))] text-[2.6rem] shadow-lg shadow-black/10">
+                        <span className="drop-shadow-[0_6px_8px_rgba(0,0,0,0.18)]">{c.emoji}</span>
                       </span>
                       <span className="text-xs font-semibold text-muted">{labels.cravings[c.key]}</span>
                     </m.button>
@@ -294,10 +294,10 @@ export function SearchScreen({
                   <h2 className="text-xl font-extrabold">{labels.spotlight}</h2>
                   <Link
                     href={`/stores/${spotlight.id}`}
-                    className="relative isolate flex min-h-40 flex-col justify-end overflow-hidden rounded-3xl p-5 text-white shadow-xl shadow-black/40 transition active:scale-[0.99]"
-                    style={{ background: `radial-gradient(120% 120% at 100% 0%, ${CATEGORY_TINT[spotlight.category]}, #1f7a5c 70%)` }}
+                    className="relative isolate flex min-h-40 flex-col justify-end overflow-hidden rounded-3xl p-5 text-white shadow-xl shadow-black/10 transition active:scale-[0.99]"
+                    style={{ background: `radial-gradient(120% 120% at 100% 0%, ${CATEGORY_TINT[spotlight.category]}, var(--accent-deep) 70%)` }}
                   >
-                    <span className="float-slow absolute end-5 top-4 -z-10 text-7xl drop-shadow-[0_12px_14px_rgba(0,0,0,0.4)]">{EMOJI[spotlight.category]}</span>
+                    <span className="float-slow absolute end-5 top-4 -z-10 text-7xl drop-shadow-[0_12px_14px_rgba(0,0,0,0.18)]">{EMOJI[spotlight.category]}</span>
                     <span className="w-fit rounded-lg bg-black/25 px-2 py-0.5 text-xs font-bold backdrop-blur">{spotlight.name}</span>
                     <span className="mt-2 text-2xl font-extrabold">{labels.promo.title}</span>
                     <span className="mt-1 max-w-xs text-sm opacity-90">{labels.promo.body}</span>
@@ -317,8 +317,8 @@ function StoreTiles({ stores, mins }: { stores: StoreCard[]; mins: string }) {
     <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
       {stores.map((s, i) => (
         <Link key={s.id} href={`/stores/${s.id}`} className={`stagger flex w-28 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95 ${s.isOpen ? "" : "opacity-60"}`} style={{ "--i": i } as React.CSSProperties}>
-          <span className="grid h-28 w-28 place-items-center rounded-3xl border border-white/10 text-5xl shadow-lg shadow-black/30" style={{ background: `linear-gradient(145deg, ${CATEGORY_TINT[s.category]}, ${CATEGORY_TINT[s.category]}77)` }}>
-            <span className="drop-shadow-[0_8px_10px_rgba(0,0,0,0.35)]">{EMOJI[s.category]}</span>
+          <span className="grid h-28 w-28 place-items-center rounded-3xl border border-white/10 text-5xl shadow-lg shadow-black/10" style={{ background: `linear-gradient(145deg, ${CATEGORY_TINT[s.category]}, ${CATEGORY_TINT[s.category]}77)` }}>
+            <span className="drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)]">{EMOJI[s.category]}</span>
           </span>
           <span className="line-clamp-1 text-sm font-bold">{s.name}</span>
           <span className="text-xs text-muted">

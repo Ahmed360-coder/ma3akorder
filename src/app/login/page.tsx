@@ -11,7 +11,7 @@ export default async function LoginPage() {
       <Header />
       <main className="mx-auto w-full max-w-md px-4 pb-16 pt-8">
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
-          <LogoMark className="float-slow h-16 w-16 drop-shadow-[0_12px_30px_rgba(255,138,61,0.45)]" />
+          <LogoMark className="float-slow h-16 w-16 drop-shadow-[0_12px_30px_rgba(18,161,80,0.4)]" />
           <h1 className="text-2xl font-extrabold">{t.login.title}</h1>
         </div>
         <div className="card">

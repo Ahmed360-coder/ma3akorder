@@ -35,7 +35,7 @@ const CATEGORIES: BusinessCategory[] = ["restaurant", "bakery", "grocery", "phar
 // Emoji render as colourful 3D-style art on phones, with zero image downloads.
 export const EMOJI: Record<BusinessCategory, string> = { restaurant: "🍔", bakery: "🥐", grocery: "🛒", pharmacy: "💊", cafe: "☕", other: "🛍️" };
 const PROMO_BG = [
-  "linear-gradient(120deg, #1f7a5c, #4fd1a5)",
+  "linear-gradient(120deg, #0a7a3c, #3cc878)",
   "linear-gradient(120deg, #6b3fd4, #b58cff)",
   "linear-gradient(120deg, #c2410c, #ffb35c)",
 ];
@@ -62,7 +62,7 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
   return (
     <>
       {/* Top band: address, cart and search, like the big delivery apps. */}
-      <section className="relative isolate text-accent-ink" style={{ background: "linear-gradient(160deg, var(--accent-2), var(--accent) 55%, #f0641e)" }}>
+      <section className="relative isolate text-accent-ink" style={{ background: "linear-gradient(160deg, var(--accent-2), var(--accent) 50%, var(--accent-deep))" }}>
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-10 pt-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5">
@@ -78,7 +78,7 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
             </div>
             <div className="flex shrink-0 items-center gap-1 [&_button]:text-accent-ink [&_button:hover]:bg-accent-ink/10">
               <span className="md:hidden">{langToggle}</span>
-              <Link href="/cart" aria-label={labels.cart} className="relative grid h-12 w-12 place-items-center rounded-full bg-background text-foreground shadow-lg shadow-black/20 transition active:scale-90">
+              <Link href="/cart" aria-label={labels.cart} className="relative grid h-12 w-12 place-items-center rounded-full bg-background text-foreground shadow-lg shadow-black/10 transition active:scale-90">
                 <ShoppingBag className="h-5 w-5" />
                 {count > 0 && (
                   <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-accent px-1 text-[10px] font-bold text-accent-ink">
@@ -89,7 +89,7 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
             </div>
           </div>
           {/* Tapping search opens the full search screen. */}
-          <Link href="/search" className="relative flex h-13 w-full items-center rounded-full bg-background ps-12 text-base text-muted shadow-xl shadow-black/25 transition active:scale-[0.99]">
+          <Link href="/search" className="relative flex h-13 w-full items-center rounded-full bg-background ps-12 text-base text-muted shadow-xl shadow-black/10 transition active:scale-[0.99]">
             <Search className="absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2" aria-hidden="true" />
             {labels.search}
           </Link>
@@ -120,7 +120,7 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
                 >
                   {n ? labels.openCount.replace("{n}", String(n)) : labels.soon}
                 </span>
-                <span className="text-[2.6rem] leading-none drop-shadow-[0_8px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:scale-110">{EMOJI[c]}</span>
+                <span className="text-[2.6rem] leading-none drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] transition-transform duration-300 group-hover:scale-110">{EMOJI[c]}</span>
                 <span className="text-sm font-bold">{labels.tiles[c]}</span>
               </m.button>
             );
@@ -134,7 +134,7 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
               {again.map((s) => (
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-24 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span
-                    className="relative grid h-24 w-24 place-items-center rounded-3xl border border-white/10 text-4xl shadow-lg shadow-black/30"
+                    className="relative grid h-24 w-24 place-items-center rounded-3xl border border-white/10 text-4xl shadow-lg shadow-black/10"
                     style={{ background: `linear-gradient(145deg, ${CATEGORY_TINT[s.category]}, ${CATEGORY_TINT[s.category]}88)` }}
                   >
                     {EMOJI[s.category]}
@@ -178,12 +178,12 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
             <Link
               key={p.title}
               href={p.href ?? "#stores"}
-              className="relative flex h-32 w-[85%] shrink-0 snap-center flex-col justify-center overflow-hidden rounded-3xl p-5 pe-24 text-white shadow-lg shadow-black/30 transition active:scale-[0.98] sm:w-[calc(33.333%-0.5rem)]"
+              className="relative flex h-32 w-[85%] shrink-0 snap-center flex-col justify-center overflow-hidden rounded-3xl p-5 pe-24 text-white shadow-lg shadow-black/10 transition active:scale-[0.98] sm:w-[calc(33.333%-0.5rem)]"
               style={{ background: PROMO_BG[i % PROMO_BG.length] }}
             >
               <span className="text-lg font-extrabold leading-tight">{p.title}</span>
               <span className="mt-1 text-sm leading-snug opacity-90">{p.body}</span>
-              <span className="float-slow absolute end-4 top-1/2 -mt-8 text-6xl drop-shadow-[0_10px_12px_rgba(0,0,0,0.35)]">{PROMO_EMOJI[i]}</span>
+              <span className="float-slow absolute end-4 top-1/2 -mt-8 text-6xl drop-shadow-[0_10px_12px_rgba(0,0,0,0.18)]">{PROMO_EMOJI[i]}</span>
             </Link>
           ))}
         </section>
@@ -200,7 +200,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
       className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface transition hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
     >
       <span className="relative grid w-28 shrink-0 place-items-center text-5xl" style={{ background: `linear-gradient(145deg, ${tint}, ${tint}77)` }}>
-        <span className="drop-shadow-[0_8px_10px_rgba(0,0,0,0.35)]">{EMOJI[s.category]}</span>
+        <span className="drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)]">{EMOJI[s.category]}</span>
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
         <span className="flex items-center gap-1.5 text-xs font-semibold">
@@ -219,7 +219,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
             <>
               <span>·</span>
               <span className="inline-flex items-center gap-0.5 font-semibold text-foreground">
-                <Star className="h-3.5 w-3.5 fill-accent text-accent" aria-hidden="true" />
+                <Star className="h-3.5 w-3.5 fill-warning text-warning" aria-hidden="true" />
                 {s.rating.avg.toFixed(1)}
               </span>
             </>

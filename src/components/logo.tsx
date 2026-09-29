@@ -1,5 +1,5 @@
 // Placeholder mark: a shopping bag with a speech-bubble tail ("معاك" = "with you").
-export function LogoMark({ className = "h-9 w-9 drop-shadow-[0_6px_14px_rgba(255,138,61,0.35)]" }: { className?: string }) {
+export function LogoMark({ className = "h-9 w-9 drop-shadow-[0_6px_14px_rgba(18,161,80,0.35)]" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
       <defs>

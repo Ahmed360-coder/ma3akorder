@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
-/* Dark is the default theme. A light theme can be added later by redefining these tokens. */
+/* Green and white theme. Every colour in the app comes from these tokens. */
 :root {
-  --background: #0c100f;
-  --surface: #151b19;
-  --surface-2: #1d2522;
-  --line: #2a3431;
-  --foreground: #eef3f1;
-  --muted: #98a6a1;
-  --accent: #ff8a3d;
-  --accent-2: #ffb35c;
-  --accent-ink: #1a0d04;
-  --positive: #4fd1a5;
-  --warning: #f5c35b;
-  --danger: #ff6b6b;
-  color-scheme: dark;
+  --background: #f6faf7;
+  --surface: #ffffff;
+  --surface-2: #edf5f0;
+  --line: #dfe9e3;
+  --foreground: #102219;
+  --muted: #5d7066;
+  --accent: #12a150;
+  --accent-2: #3cc878;
+  --accent-deep: #0a7a3c;
+  --accent-ink: #ffffff;
+  --positive: #0f9a4c;
+  --warning: #c77700;
+  --danger: #dc3b3b;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -26,6 +27,7 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
+  --color-accent-deep: var(--accent-deep);
   --color-accent-ink: var(--accent-ink);
   --color-positive: var(--positive);
   --color-warning: var(--warning);
@@ -36,7 +38,7 @@
 body {
   /* A soft warm glow at the top of every page; a fixed gradient costs nothing to scroll. */
   background:
-    radial-gradient(60rem 28rem at 50% -12rem, color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%),
+    radial-gradient(60rem 28rem at 50% -12rem, color-mix(in oklab, var(--accent) 9%, transparent), transparent 70%),
     var(--background);
   background-attachment: fixed;
   color: var(--foreground);
@@ -61,8 +63,8 @@ body {
 }
 @utility card {
   @apply rounded-2xl border border-line p-5;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--surface-2) 55%, var(--surface)), var(--surface));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 10px 30px -18px rgb(0 0 0 / 0.8);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(16 34 25 / 0.04), 0 10px 30px -20px rgb(16 34 25 / 0.25);
 }
 @utility chip {
   @apply inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 text-sm font-semibold text-muted transition;
@@ -73,7 +75,7 @@ body {
   backdrop-filter: saturate(160%) blur(14px);
 }
 @utility text-gradient {
-  background: linear-gradient(120deg, var(--foreground) 20%, var(--accent-2) 60%, var(--accent));
+  background: linear-gradient(120deg, var(--foreground) 20%, var(--accent) 60%, var(--accent-deep));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
