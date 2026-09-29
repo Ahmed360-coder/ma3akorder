@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { MapPin } from "lucide-react";
+import { MapPin as PinIcon } from "lucide-react";
 import { AREAS, type Loc } from "@/lib/location";
 import { setMyLocation } from "@/lib/location-actions";
 import { useGeolocation } from "@/lib/use-geolocation";
@@ -52,7 +52,7 @@ export function LocationPicker({
     <div className="card flex flex-col gap-3" data-location-picker>
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
-          <MapPin aria-hidden="true" className="h-4 w-4 text-accent" />
+          <PinIcon aria-hidden="true" className="h-4 w-4 text-accent" />
           <span className="text-sm text-muted">{t.deliverTo}</span>
           <span className="truncate font-bold">{current?.label ?? t.noLocation}</span>
         </div>
