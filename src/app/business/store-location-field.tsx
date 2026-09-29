@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MapPin } from "lucide-react";
 import { useGeolocation } from "@/lib/use-geolocation";
 import { mapsLink } from "@/lib/location";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -25,7 +26,7 @@ export function StoreLocationField({ t, lat, lng, radius }: { t: Dictionary["loc
             if (p) setPos(p);
           }}
         >
-          📍 {busy ? t.finding : t.useMine}
+          <MapPin aria-hidden="true" className="inline h-4 w-4" /> {busy ? t.finding : t.useMine}
         </button>
         {pos ? (
           <a href={mapsLink(pos.lat, pos.lng)} target="_blank" rel="noopener noreferrer" className="text-sm text-positive underline underline-offset-4">

@@ -1,4 +1,5 @@
 import { formatEGP, formatTime } from "@/lib/format";
+import { MapPin } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Order, OrderItem } from "@/lib/types";
 import { mapsLink } from "@/lib/location";
@@ -68,7 +69,7 @@ export function OrderCard({
               <>
                 {" · "}
                 <a href={mapsLink(a.lat, a.lng)} target="_blank" rel="noopener noreferrer" className="text-accent underline">
-                  📍 {t.location.openMap}
+                  <MapPin aria-hidden="true" className="inline h-4 w-4" /> {t.location.openMap}
                 </a>
               </>
             )}

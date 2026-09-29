@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { MapPin } from "lucide-react";
 import { Header } from "@/components/header";
 import { ActionButton } from "@/components/action-button";
 import { OrderCard } from "@/components/order-card";
@@ -57,7 +58,7 @@ export default async function DriverPage() {
         <>
           {" · "}
           <a href={mapsLink(o.businesses.lat, o.businesses.lng)} target="_blank" rel="noopener noreferrer" className="text-accent underline">
-            📍 {t.location.openMap}
+            <MapPin aria-hidden="true" className="inline h-4 w-4" /> {t.location.openMap}
           </a>
         </>
       )}
