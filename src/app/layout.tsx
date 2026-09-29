@@ -3,6 +3,7 @@ import { Cairo } from "next/font/google";
 import { getDictionary } from "@/lib/i18n/server";
 import { CartProvider } from "@/components/cart-provider";
 import { Footer } from "@/components/footer";
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import "./globals.css";
 
 // Cairo covers both Arabic and Latin, so the two languages look consistent.
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <CartProvider>
           <div className="page-in flex flex-1 flex-col">{children}</div>
           <Footer />
+          <WhatsAppButton />
         </CartProvider>
       </body>
     </html>
