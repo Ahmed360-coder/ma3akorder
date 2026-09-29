@@ -231,6 +231,9 @@ const enApp = {
     storeSpotMissing: "Not set yet",
     radius: "Delivery range (km)",
     openMap: "Open in Maps",
+    movePin: "Move the map so the pin sits on your door.",
+    movePinStore: "Move the map so the pin sits on your shop.",
+    confirmSpot: "Confirm this spot",
   },
   site: {
     privacy: "Privacy",
@@ -489,6 +492,9 @@ const arApp: AppStrings = {
     storeSpotMissing: "لسه متحددش",
     radius: "مسافة التوصيل (كم)",
     openMap: "افتح الخريطة",
+    movePin: "حرّك الخريطة لحد ما الدبوس يبقى على باب بيتك.",
+    movePinStore: "حرّك الخريطة لحد ما الدبوس يبقى على المحل.",
+    confirmSpot: "أكّد المكان ده",
   },
   site: {
     privacy: "الخصوصية",

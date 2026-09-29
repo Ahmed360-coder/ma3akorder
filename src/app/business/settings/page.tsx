@@ -4,11 +4,11 @@ import { SettingsForm } from "./settings-form";
 import { StoreFields } from "../store-form";
 
 export default async function BusinessSettingsPage() {
-  const { t } = await getDictionary();
+  const { t, locale } = await getDictionary();
   const business = await getMyBusiness();
   return (
     <SettingsForm saveLabel={t.common.save} savedLabel={t.common.saved}>
-      <StoreFields t={t} business={business} />
+      <StoreFields t={t} business={business} locale={locale} />
     </SettingsForm>
   );
 }
