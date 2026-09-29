@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatEGP, pickName } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Business, BusinessCategory } from "@/lib/types";
+import { formatKm, sortByDistance, type Loc } from "@/lib/location";
 
 export type StoreCard = {
   id: string;
@@ -14,10 +15,15 @@ export type StoreCard = {
   feeText: string;
   prep: number;
   rating: { avg: number; n: number } | null;
+  // Set when the customer shared a location and the store saved its spot.
+  distanceKm: number | null;
+  distanceText: string | null;
+  inRange: boolean;
 };
 
 // Approved stores with their average rating, shaped for the home and search screens.
-export async function getStoreCards(t: Dictionary, locale: string): Promise<StoreCard[]> {
+// With a customer location, open stores come first, nearest first, and out-of-range ones last.
+export async function getStoreCards(t: Dictionary, locale: string, loc: Loc | null = null): Promise<StoreCard[]> {
   const supabase = await createClient();
   const [{ data }, { data: ratingRows }] = await Promise.all([
     supabase.from("businesses").select("*").eq("status", "approved").order("is_open", { ascending: false }).order("name_ar"),
@@ -28,7 +34,9 @@ export async function getStoreCards(t: Dictionary, locale: string): Promise<Stor
     const cur = ratings.get(r.business_id) ?? { sum: 0, n: 0 };
     ratings.set(r.business_id, { sum: cur.sum + r.stars, n: cur.n + 1 });
   }
-  return ((data ?? []) as Business[]).map((s) => {
+  const sorted = sortByDistance((data ?? []) as Business[], loc);
+  const ordered = [...sorted.filter((s) => s.is_open), ...sorted.filter((s) => !s.is_open)];
+  return ordered.map((s) => {
     const r = ratings.get(s.id);
     return {
       id: s.id,
@@ -41,6 +49,9 @@ export async function getStoreCards(t: Dictionary, locale: string): Promise<Stor
       feeText: formatEGP(s.delivery_fee, locale),
       prep: s.prep_minutes,
       rating: r ? { avg: r.sum / r.n, n: r.n } : null,
+      distanceKm: s.distance_km,
+      distanceText: s.distance_km == null ? null : formatKm(s.distance_km, locale === "ar" ? "ar" : "en"),
+      inRange: s.in_range,
     };
   });
 }

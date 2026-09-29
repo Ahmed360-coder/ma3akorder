@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getStoreCards } from "@/lib/stores";
 import type { DeliveryAddress } from "@/lib/types";
 import { HomeFeed } from "./home-feed";
+import { getCustomerLocation } from "@/lib/location-server";
 
 // Phone status bar matches the green top band.
 export const viewport: Viewport = { themeColor: "#12a150" };
@@ -15,8 +16,9 @@ export default async function Home() {
   const { t, locale } = await getDictionary();
   const supabase = await createClient();
   const { user } = await getCurrentProfile();
+  const loc = await getCustomerLocation();
   const [cards, { data: recent }] = await Promise.all([
-    getStoreCards(t, locale),
+    getStoreCards(t, locale, loc),
     user
       ? supabase.from("orders").select("business_id, delivery_address").eq("customer_id", user.id).order("created_at", { ascending: false }).limit(30)
       : Promise.resolve({ data: [] as { business_id: string; delivery_address: DeliveryAddress }[] }),
@@ -31,10 +33,11 @@ export default async function Home() {
         stores={cards}
         againIds={againIds}
         langToggle={<LanguageToggle label={t.switchLanguage} />}
+        location={{ t: t.location, locale, current: loc }}
         labels={{
           brand: t.brand,
           deliverTo: t.ui.deliverTo,
-          area: lastArea || t.ui.yourArea,
+          area: loc?.label || lastArea || t.ui.yourArea,
           search: t.ui.searchAll,
           cart: t.nav.cart,
           orderAgain: t.ui.orderAgain,

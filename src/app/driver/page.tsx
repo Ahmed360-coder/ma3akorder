@@ -7,10 +7,11 @@ import { getDictionary } from "@/lib/i18n/server";
 import { getCurrentProfile } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
 import { formatEGP } from "@/lib/format";
+import { mapsLink } from "@/lib/location";
 import { claimDelivery, setOrderStatus } from "@/lib/order-actions";
 import type { Order, OrderItem } from "@/lib/types";
 
-type Row = Order & { businesses: { name_ar: string; area: string; address: string | null; phone: string | null } | null };
+type Row = Order & { businesses: { name_ar: string; area: string; address: string | null; phone: string | null; lat: number | null; lng: number | null } | null };
 
 export default async function DriverPage() {
   const { t, locale } = await getDictionary();
@@ -31,7 +32,7 @@ export default async function DriverPage() {
   }
 
   const supabase = await createClient();
-  const select = "*, businesses(name_ar, area, address, phone)";
+  const select = "*, businesses(name_ar, area, address, phone, lat, lng)";
   const [{ data: openRows }, { data: mineRows }] = await Promise.all([
     supabase.from("orders").select(select).is("driver_id", null).in("status", ["accepted", "preparing", "ready"]).order("created_at"),
     supabase.from("orders").select(select).eq("driver_id", user.id).in("status", ["accepted", "preparing", "ready", "picked_up"]).order("created_at"),
@@ -50,6 +51,14 @@ export default async function DriverPage() {
         <>
           {" · "}
           <a href={`tel:${o.businesses.phone}`} dir="ltr" className="underline">{o.businesses.phone}</a>
+        </>
+      )}
+      {o.businesses?.lat != null && o.businesses?.lng != null && (
+        <>
+          {" · "}
+          <a href={mapsLink(o.businesses.lat, o.businesses.lng)} target="_blank" rel="noopener noreferrer" className="text-accent underline">
+            📍 {t.location.openMap}
+          </a>
         </>
       )}
     </p>

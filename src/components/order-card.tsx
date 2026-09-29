@@ -1,6 +1,7 @@
 import { formatEGP, formatTime } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Order, OrderItem } from "@/lib/types";
+import { mapsLink } from "@/lib/location";
 
 const TONE: Record<string, string> = {
   placed: "bg-accent/15 text-accent",
@@ -63,6 +64,14 @@ export function OrderCard({
           </div>
           <div>
             {t.orders.deliverTo}: {[a.area, a.street, a.floor_apt, a.landmark].filter(Boolean).join("، ")}
+            {a.lat != null && a.lng != null && (
+              <>
+                {" · "}
+                <a href={mapsLink(a.lat, a.lng)} target="_blank" rel="noopener noreferrer" className="text-accent underline">
+                  📍 {t.location.openMap}
+                </a>
+              </>
+            )}
           </div>
           {order.cash_change_for && (
             <div>

@@ -9,6 +9,9 @@ import { LogoMark } from "@/components/logo";
 import { CATEGORY_TINT, CategoryBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
+import type { Loc } from "@/lib/location";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { LocationPicker } from "@/components/location-picker";
 
 export type HomeLabels = {
   brand: string;
@@ -39,7 +42,23 @@ const PROMO_BG = [
 ];
 const PROMO_ICONS = [Scale, PiggyBank, Store];
 
-export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: StoreCard[]; againIds: string[]; labels: HomeLabels; langToggle: React.ReactNode }) {
+type LocationProps = { t: Dictionary["location"]; locale: "ar" | "en"; current: Loc | null };
+
+export function HomeFeed({
+  stores,
+  againIds,
+  labels,
+  langToggle,
+  location,
+}: {
+  stores: StoreCard[];
+  againIds: string[];
+  labels: HomeLabels;
+  langToggle: React.ReactNode;
+  location: LocationProps;
+}) {
+  // No location yet: show the picker straight away so nearby stores can come first.
+  const [picking, setPicking] = useState(!location.current);
   const { count } = useCart();
   const [cat, setCat] = useState<BusinessCategory | null>(null);
   const listRef = useRef<HTMLElement>(null);
@@ -65,14 +84,14 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5">
               <LogoMark className="h-9 w-9 shrink-0 md:hidden [&_rect]:fill-accent-ink [&_path]:stroke-accent [&_circle]:fill-accent" />
-              <div className="min-w-0 leading-tight">
+              <button type="button" onClick={() => setPicking((v) => !v)} aria-expanded={picking} className="min-w-0 text-start leading-tight">
                 <span className="block text-xs font-semibold opacity-75">{labels.deliverTo}</span>
                 <span className="flex items-center gap-1 truncate text-lg font-extrabold">
                   <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
                   <span className="truncate">{labels.area}</span>
                   <ChevronDown className="h-4 w-4 shrink-0 opacity-70" aria-hidden="true" />
                 </span>
-              </div>
+              </button>
             </div>
             <div className="flex shrink-0 items-center gap-1 [&_button]:text-accent-ink [&_button:hover]:bg-accent-ink/10">
               <span className="md:hidden">{langToggle}</span>
@@ -99,6 +118,7 @@ export function HomeFeed({ stores, againIds, labels, langToggle }: { stores: Sto
       </section>
 
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-4">
+        {picking && <LocationPicker {...location} startOpen onDone={() => setPicking(false)} />}
         {/* Category tiles */}
         <section className="grid grid-cols-3 gap-3 sm:grid-cols-6">
           {CATEGORIES.map((c, i) => {
@@ -217,6 +237,15 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
           </span>
           <span>·</span>
           <span className={s.fee === 0 ? "font-semibold text-positive" : ""}>{s.fee === 0 ? labels.freeDelivery : s.feeText}</span>
+          {s.distanceText && (
+            <>
+              <span>·</span>
+              <span className={`inline-flex items-center gap-0.5 ${s.inRange ? "text-foreground" : "text-warning"}`}>
+                <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                {s.distanceText}
+              </span>
+            </>
+          )}
           {s.rating && (
             <>
               <span>·</span>

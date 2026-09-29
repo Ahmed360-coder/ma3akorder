@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { DeliveryAddress } from "@/lib/types";
 import { getMonthSpend } from "@/lib/spending";
 import { Checkout } from "./checkout";
+import { getCustomerLocation } from "@/lib/location-server";
 
 export default async function CartPage() {
   const { t, locale } = await getDictionary();
@@ -27,12 +28,13 @@ export default async function CartPage() {
     lastAddress = (data?.delivery_address as DeliveryAddress) ?? null;
     lastPhone = lastPhone ?? data?.customer_phone ?? null;
   }
+  const loc = await getCustomerLocation();
   return (
     <>
       <Header />
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
         <h1 className="mb-5 text-2xl font-bold">{t.cart.title}</h1>
-        <Checkout t={t} locale={locale} signedIn={!!user} defaults={{ address: lastAddress, phone: lastPhone }} budgetLeft={budgetLeft} />
+        <Checkout t={t} locale={locale} signedIn={!!user} defaults={{ address: lastAddress, phone: lastPhone }} budgetLeft={budgetLeft} loc={loc} />
       </main>
     </>
   );

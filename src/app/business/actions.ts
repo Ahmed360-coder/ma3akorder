@@ -16,6 +16,14 @@ function num(form: FormData, key: string, fallback = 0) {
   return Number.isFinite(v) && v >= 0 ? v : fallback;
 }
 
+// Empty means "not set"; anything outside Egypt's rough bounds is ignored.
+function coord(form: FormData, key: string, min: number, max: number) {
+  const raw = String(form.get(key) ?? "").trim();
+  if (!raw) return null;
+  const v = Number(raw);
+  return Number.isFinite(v) && v >= min && v <= max ? v : null;
+}
+
 function storeFields(form: FormData) {
   const category = String(form.get("category"));
   return {
@@ -29,6 +37,9 @@ function storeFields(form: FormData) {
     min_order: num(form, "min_order"),
     delivery_fee: num(form, "delivery_fee"),
     prep_minutes: Math.max(1, Math.round(num(form, "prep_minutes", 20))),
+    lat: coord(form, "lat", 21, 32),
+    lng: coord(form, "lng", 24, 37),
+    delivery_radius_km: Math.min(30, Math.max(0.5, num(form, "delivery_radius_km", 3))),
   };
 }
 

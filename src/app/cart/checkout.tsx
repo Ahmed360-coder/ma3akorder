@@ -9,6 +9,7 @@ import { useCart } from "@/components/cart-provider";
 import { fill, formatEGP } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { DeliveryAddress } from "@/lib/types";
+import type { Loc } from "@/lib/location";
 import { placeOrder } from "./actions";
 
 export function Checkout({
@@ -17,12 +18,14 @@ export function Checkout({
   signedIn,
   defaults,
   budgetLeft,
+  loc,
 }: {
   t: Dictionary;
   locale: string;
   signedIn: boolean;
   defaults: { address: DeliveryAddress | null; phone: string | null };
   budgetLeft: number | null;
+  loc: Loc | null;
 }) {
   const { cart, subtotal, setQty, clear } = useCart();
   const router = useRouter();
@@ -58,6 +61,8 @@ export function Checkout({
           street: String(form.get("street") ?? ""),
           floor_apt: String(form.get("floor_apt") ?? ""),
           landmark: String(form.get("landmark") ?? ""),
+          // Only a real GPS fix helps the driver; an area's centre would mislead them.
+          ...(loc?.precise ? { lat: loc.lat, lng: loc.lng } : {}),
         },
         phone: String(form.get("phone") ?? ""),
         cashChangeFor: change ? Number(change) : null,
@@ -136,7 +141,7 @@ export function Checkout({
           <h2 className="font-bold">{t.cart.address}</h2>
           <label className="flex flex-col gap-1.5 text-sm font-semibold">
             {t.cart.area}
-            <input name="area" className="input" defaultValue={defaults.address?.area ?? ""} required />
+            <input name="area" className="input" defaultValue={defaults.address?.area ?? (loc && !loc.precise ? loc.label : "") ?? ""} required />
           </label>
           <label className="flex flex-col gap-1.5 text-sm font-semibold">
             {t.cart.street}

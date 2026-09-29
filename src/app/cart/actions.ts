@@ -1,11 +1,12 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import type { DeliveryAddress } from "@/lib/types";
 
 export type PlaceOrderInput = {
   businessId: string;
   items: { item_id: string; quantity: number }[];
-  address: { area: string; street?: string; floor_apt?: string; landmark?: string };
+  address: DeliveryAddress;
   phone: string;
   cashChangeFor: number | null;
   notes: string;
