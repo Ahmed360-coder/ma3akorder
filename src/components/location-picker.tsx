@@ -8,15 +8,28 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 // "Deliver to" bar: shares the phone's location, or falls back to picking an area.
 // Self-contained so it can be placed anywhere (header, home, cart).
-export function LocationPicker({ t, locale, current }: { t: Dictionary["location"]; locale: "ar" | "en"; current: Loc | null }) {
+export function LocationPicker({
+  t,
+  locale,
+  current,
+  startOpen,
+  onDone,
+}: {
+  t: Dictionary["location"];
+  locale: "ar" | "en";
+  current: Loc | null;
+  startOpen?: boolean;
+  onDone?: () => void;
+}) {
   const { locate, busy, error } = useGeolocation();
-  const [open, setOpen] = useState(!current);
+  const [open, setOpen] = useState(startOpen || !current);
   const [pending, start] = useTransition();
 
   const save = (loc: Loc) =>
     start(async () => {
       await setMyLocation(loc);
       setOpen(false);
+      onDone?.();
     });
 
   const useMine = async () => {

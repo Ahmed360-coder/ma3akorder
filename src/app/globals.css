@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
-/* Dark is the default theme. A light theme can be added later by redefining these tokens. */
+/* Green and white theme. Every colour in the app comes from these tokens. */
 :root {
-  --background: #0c100f;
-  --surface: #151b19;
-  --surface-2: #1d2522;
-  --line: #2a3431;
-  --foreground: #eef3f1;
-  --muted: #98a6a1;
-  --accent: #ff8a3d;
-  --accent-ink: #1a0d04;
-  --positive: #4fd1a5;
-  --warning: #f5c35b;
-  --danger: #ff6b6b;
-  color-scheme: dark;
+  --background: #f6faf7;
+  --surface: #ffffff;
+  --surface-2: #edf5f0;
+  --line: #dfe9e3;
+  --foreground: #102219;
+  --muted: #5d7066;
+  --accent: #12a150;
+  --accent-2: #3cc878;
+  --accent-deep: #0a7a3c;
+  --accent-ink: #ffffff;
+  --positive: #0f9a4c;
+  --warning: #c77700;
+  --danger: #dc3b3b;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -24,6 +26,8 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-deep: var(--accent-deep);
   --color-accent-ink: var(--accent-ink);
   --color-positive: var(--positive);
   --color-warning: var(--warning);
@@ -32,7 +36,11 @@
 }
 
 body {
-  background: var(--background);
+  /* A soft warm glow at the top of every page; a fixed gradient costs nothing to scroll. */
+  background:
+    radial-gradient(60rem 28rem at 50% -12rem, color-mix(in oklab, var(--accent) 9%, transparent), transparent 70%),
+    var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-tap-highlight-color: transparent;
@@ -43,15 +51,34 @@ body {
 }
 @utility btn-primary {
   @apply btn bg-accent text-accent-ink hover:brightness-110;
+  background-image: linear-gradient(135deg, var(--accent-2), var(--accent));
+  box-shadow: 0 8px 24px -10px color-mix(in oklab, var(--accent) 70%, transparent), inset 0 1px 0 rgb(255 255 255 / 0.25);
 }
 @utility btn-ghost {
   @apply btn border border-line bg-surface text-foreground hover:bg-surface-2;
 }
 @utility input {
-  @apply h-12 w-full rounded-xl border border-line bg-surface px-4 text-foreground outline-none placeholder:text-muted focus:border-accent;
+  @apply h-12 w-full rounded-xl border border-line bg-surface px-4 text-foreground outline-none transition placeholder:text-muted focus:border-accent;
+  &:focus { box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent); }
 }
 @utility card {
-  @apply rounded-2xl border border-line bg-surface p-5;
+  @apply rounded-2xl border border-line p-5;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(16 34 25 / 0.04), 0 10px 30px -20px rgb(16 34 25 / 0.25);
+}
+@utility chip {
+  @apply inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 text-sm font-semibold text-muted transition;
+}
+@utility glass {
+  background: color-mix(in oklab, var(--background) 78%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+}
+@utility text-gradient {
+  background: linear-gradient(120deg, var(--foreground) 20%, var(--accent) 60%, var(--accent-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Gentle motion. Kept short and cheap (opacity/transform only) for low-end Android phones. */
@@ -68,8 +95,25 @@ body {
   40% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -14px, 0) scale(1.05); }
+}
+@utility float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+/* Lists reveal one after another; each item sets --i. */
+@utility stagger {
+  animation: fade-up 0.35s ease-out both;
+  animation-delay: calc(min(var(--i, 0), 12) * 45ms);
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* Opacity only: a transform here would break position:fixed (tab bar, cart bar) inside the page. */
 @utility page-in {
-  animation: fade-up 0.25s ease-out both;
+  animation: fade-in 0.25s ease-out both;
 }
 @utility pop {
   animation: pop 0.3s ease-out;
@@ -80,8 +124,15 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.2s linear infinite;
 }
-.card {
-  animation: fade-up 0.3s ease-out both;
+/* Room for the phone tab bar so it never covers the footer. */
+@media (max-width: 767px) {
+  body:has(.bottom-nav) { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
+  /* Keep the WhatsApp help button clear of the tab bar and the floating cart bar. */
+  body:has(.bottom-nav) .whatsapp-fab { bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
+  body:has(.cart-bar) .whatsapp-fab { bottom: calc(9rem + env(safe-area-inset-bottom)); }
+}
+@media (min-width: 768px) {
+  body:has(.cart-bar) .whatsapp-fab { bottom: 6.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

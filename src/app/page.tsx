@@ -1,82 +1,64 @@
-import Link from "next/link";
+import type { Viewport } from "next";
 import { Header } from "@/components/header";
+import { LanguageToggle } from "@/components/language-toggle";
 import { getDictionary } from "@/lib/i18n/server";
+import { getCurrentProfile } from "@/lib/profile";
 import { createClient } from "@/lib/supabase/server";
-import { formatEGP, pickName } from "@/lib/format";
-import type { Business } from "@/lib/types";
-import { LocationPicker } from "@/components/location-picker";
+import { getStoreCards } from "@/lib/stores";
+import type { DeliveryAddress } from "@/lib/types";
+import { HomeFeed } from "./home-feed";
 import { getCustomerLocation } from "@/lib/location-server";
-import { formatKm, sortByDistance } from "@/lib/location";
+
+// Phone status bar matches the green top band.
+export const viewport: Viewport = { themeColor: "#12a150" };
 
 export default async function Home() {
   const { t, locale } = await getDictionary();
   const supabase = await createClient();
-  const { data } = await supabase.from("businesses").select("*").eq("status", "approved").order("is_open", { ascending: false }).order("name_ar");
+  const { user } = await getCurrentProfile();
   const loc = await getCustomerLocation();
-  // Nearest first once we know where the customer is; open stores stay ahead of closed ones.
-  const sorted = sortByDistance((data ?? []) as Business[], loc);
-  const stores = [...sorted.filter((s) => s.is_open), ...sorted.filter((s) => !s.is_open)];
-  const { data: ratingRows } = await supabase.from("ratings").select("business_id, stars").eq("target", "business");
-  const ratings = new Map<string, { sum: number; n: number }>();
-  for (const r of ratingRows ?? []) {
-    const cur = ratings.get(r.business_id) ?? { sum: 0, n: 0 };
-    ratings.set(r.business_id, { sum: cur.sum + r.stars, n: cur.n + 1 });
-  }
-
-  const features = [t.features.budget, t.features.worth, t.features.local];
+  const [cards, { data: recent }] = await Promise.all([
+    getStoreCards(t, locale, loc),
+    user
+      ? supabase.from("orders").select("business_id, delivery_address").eq("customer_id", user.id).order("created_at", { ascending: false }).limit(30)
+      : Promise.resolve({ data: [] as { business_id: string; delivery_address: DeliveryAddress }[] }),
+  ]);
+  const againIds = [...new Set((recent ?? []).map((o) => o.business_id as string))].slice(0, 8);
+  const lastArea = ((recent ?? [])[0]?.delivery_address as DeliveryAddress | undefined)?.area;
 
   return (
     <>
-      <Header />
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 pb-16 pt-8">
-        <section className="flex flex-col gap-4">
-          <h1 className="max-w-2xl text-3xl font-bold leading-tight sm:text-5xl">{t.tagline}</h1>
-        </section>
-
-        <section className="flex flex-col gap-4">
-          <LocationPicker t={t.location} locale={locale} current={loc} />
-          <h2 className="text-xl font-bold">{t.stores.title}</h2>
-          {stores.length === 0 && <p className="card text-muted">{t.stores.none}</p>}
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {stores.map((s) => (
-              <Link key={s.id} href={`/stores/${s.id}`} className={`card flex flex-col gap-2 transition hover:border-accent ${s.is_open && s.in_range ? "" : "opacity-60"}`}>
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-lg font-bold">{pickName(locale, s.name_ar, s.name_en)}</span>
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${s.is_open ? "bg-positive/15 text-positive" : "bg-surface-2 text-muted"}`}>
-                    {s.is_open ? t.common.open : t.common.closed}
-                  </span>
-                </div>
-                <span className="text-sm text-muted">
-                  {t.categories[s.category]} · {s.area}
-                  {ratings.get(s.id) && (
-                    <>
-                      {" · "}
-                      <span className="text-accent">★</span> {(ratings.get(s.id)!.sum / ratings.get(s.id)!.n).toFixed(1)} ({ratings.get(s.id)!.n})
-                    </>
-                  )}
-                </span>
-                {s.distance_km != null && (
-                  <span className={`text-sm ${s.in_range ? "text-foreground" : "text-warning"}`}>
-                    📍 {formatKm(s.distance_km, locale)} {s.in_range ? t.location.away : `· ${t.location.outOfRange}`}
-                  </span>
-                )}
-                <span className="text-sm text-muted">
-                  {t.stores.deliveryFee} {formatEGP(s.delivery_fee, locale)} · {s.prep_minutes} {t.stores.prep}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="grid gap-3 sm:grid-cols-3">
-          {features.map((f) => (
-            <div key={f.title} className="card">
-              <h2 className="mb-1 font-bold">{f.title}</h2>
-              <p className="text-sm text-muted">{f.body}</p>
-            </div>
-          ))}
-        </section>
-      </main>
+      <Header hideOnPhone />
+      <HomeFeed
+        stores={cards}
+        againIds={againIds}
+        langToggle={<LanguageToggle label={t.switchLanguage} />}
+        location={{ t: t.location, locale, current: loc }}
+        labels={{
+          brand: t.brand,
+          deliverTo: t.ui.deliverTo,
+          area: loc?.label || lastArea || t.ui.yourArea,
+          search: t.ui.searchAll,
+          cart: t.nav.cart,
+          orderAgain: t.ui.orderAgain,
+          nearYou: t.stores.title,
+          none: t.stores.none,
+          noMatch: t.ui.noMatch,
+          open: t.common.open,
+          closed: t.common.closed,
+          openCount: t.ui.openCount,
+          soon: t.ui.soon,
+          mins: t.ui.mins,
+          freeDelivery: t.ui.freeDelivery,
+          all: t.ui.all,
+          tiles: t.ui.tiles,
+          promos: [
+            { ...t.ui.promos.worth, href: cards.find((c) => c.isOpen) ? `/stores/${cards.find((c) => c.isOpen)!.id}` : undefined },
+            { ...t.ui.promos.budget, href: user ? "/spending" : "/login" },
+            { ...t.ui.promos.local },
+          ],
+        }}
+      />
     </>
   );
 }

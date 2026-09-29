@@ -54,11 +54,17 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
 
         {!failed && (
           <ol className="card flex flex-col gap-3">
+            <li aria-hidden="true" className="mb-1 h-2 overflow-hidden rounded-full bg-surface-2">
+              <span
+                className="block h-full rounded-full transition-[width] duration-700 ease-out"
+                style={{ width: `${Math.max(8, (reached / (STEPS.length - 1)) * 100)}%`, background: "linear-gradient(90deg, var(--accent-2), var(--accent))" }}
+              />
+            </li>
             {STEPS.map((s, i) => (
               <li key={s} className="flex items-center gap-3">
                 <span
                   className={`grid h-7 w-7 place-items-center rounded-full text-xs font-bold ${
-                    i < reached ? "bg-positive text-accent-ink" : i === reached ? "animate-pulse bg-accent text-accent-ink" : "bg-surface-2 text-muted"
+                    i < reached ? "bg-positive text-accent-ink" : i === reached ? "bg-accent text-accent-ink ring-4 ring-accent/25 animate-pulse" : "bg-surface-2 text-muted"
                   }`}
                 >
                   {i < reached ? "✓" : i + 1}
