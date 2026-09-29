@@ -34,7 +34,7 @@ export function BottomNav({ labels, signedIn }: { labels: Labels; signedIn: bool
               <Link href={href} className={`relative flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-semibold transition-colors ${active ? "text-accent" : "text-muted"}`}>
                 {active && <m.span layoutId="bottom-nav-pill" className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-accent" />}
                 <span className="relative">
-                  <Icon className="h-6 w-6" strokeWidth={active ? 2.4 : 1.8} />
+                  <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
                   {!!badge && (
                     <span key={badge} className="pop absolute -end-2.5 -top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-ink">
                       {badge}

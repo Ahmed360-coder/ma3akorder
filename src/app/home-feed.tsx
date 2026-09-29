@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { ChevronDown, MapPin, PiggyBank, Scale, Search, ShoppingBag, Star, Store, X } from "lucide-react";
+import { ChevronDown, MapPin, Search, ShoppingBag, Star, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
 import { SideMenuButton } from "@/components/side-menu";
-import { CATEGORY_TINT, CategoryBadge } from "@/components/category-icon";
+import { Art, CATEGORY_ART, CATEGORY_TINT, CategoryBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
 import type { Loc } from "@/lib/location";
@@ -42,7 +42,7 @@ const PROMO_BG = [
   "linear-gradient(120deg, #1d4ed8, #60a5fa)",
   "linear-gradient(120deg, #c2410c, #fb923c)",
 ];
-const PROMO_ICONS = [Scale, PiggyBank, Store];
+const PROMO_ART = ["/art/balance_scale.webp", "/art/money_bag.webp", "/art/convenience_store.webp"];
 
 type LocationProps = { t: Dictionary["location"]; locale: "ar" | "en"; current: Loc | null };
 
@@ -126,7 +126,7 @@ export function HomeFeed({
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-4">
         {picking && <LocationPicker {...location} startOpen onDone={() => setPicking(false)} />}
         {/* Category tiles */}
-        <section className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+        <section className="grid grid-cols-3 gap-x-2.5 gap-y-4 pt-1 sm:grid-cols-6">
           {CATEGORIES.map((c, i) => {
             const n = openBy.get(c) ?? 0;
             const active = cat === c;
@@ -136,7 +136,7 @@ export function HomeFeed({
                 whileTap={{ scale: 0.94 }}
                 onClick={() => pick(c)}
                 aria-pressed={active}
-                className={`stagger relative flex flex-col items-center gap-1 rounded-3xl border pb-3 pt-5 transition ${active ? "border-accent bg-accent/10" : "border-line bg-surface hover:border-accent/40"}`}
+                className={`stagger relative flex flex-col items-center gap-1 rounded-2xl border pb-2.5 pt-4 transition ${active ? "border-accent bg-accent/10" : "border-line bg-surface hover:border-accent/40"}`}
                 style={{ "--i": i } as React.CSSProperties}
               >
                 <span
@@ -144,8 +144,8 @@ export function HomeFeed({
                 >
                   {n ? labels.openCount.replace("{n}", String(n)) : labels.soon}
                 </span>
-                <CategoryBadge category={c} className="mt-1 h-14 w-14 rounded-2xl" />
-                <span className="text-sm font-bold">{labels.tiles[c]}</span>
+                <Art src={CATEGORY_ART[c]} className="h-11 w-11 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
+                <span className="text-xs font-bold">{labels.tiles[c]}</span>
               </m.button>
             );
           })}
@@ -156,9 +156,9 @@ export function HomeFeed({
             <h2 className="text-xl font-extrabold">{labels.orderAgain}</h2>
             <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
               {again.map((s) => (
-                <Link key={s.id} href={`/stores/${s.id}`} className="flex w-24 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
+                <Link key={s.id} href={`/stores/${s.id}`} className="flex w-20 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span className="relative">
-                    <CategoryBadge category={s.category} className="h-24 w-24 rounded-3xl border border-line" iconClass="h-10 w-10" />
+                    <CategoryBadge category={s.category} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
                     {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-positive px-1.5 text-[10px] font-bold text-accent-ink">{labels.freeDelivery}</span>}
                   </span>
                   <span className="line-clamp-2 text-xs font-semibold">{s.name}</span>
@@ -205,10 +205,9 @@ export function HomeFeed({
               <span className="text-lg font-extrabold leading-tight">{p.title}</span>
               <span className="mt-1 text-sm leading-snug opacity-90">{p.body}</span>
               {(() => {
-                const Icon = PROMO_ICONS[i % PROMO_ICONS.length];
                 return (
-                  <span className="float-slow absolute end-4 top-1/2 -mt-9 grid h-18 w-18 place-items-center rounded-2xl bg-white/15 backdrop-blur-sm">
-                    <Icon className="h-9 w-9" strokeWidth={1.75} aria-hidden="true" />
+                  <span className="float-slow absolute end-4 top-1/2 -mt-8 grid h-16 w-16 place-items-center rounded-2xl bg-white/20">
+                    <Art src={PROMO_ART[i % PROMO_ART.length]} className="h-11 w-11" />
                   </span>
                 );
               })()}
@@ -227,8 +226,8 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
       href={`/stores/${s.id}`}
       className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface transition hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
     >
-      <span className="grid w-24 shrink-0 place-items-center border-e border-line" style={{ background: `color-mix(in oklab, ${tint} 8%, white)` }}>
-        <CategoryBadge category={s.category} className="h-14 w-14 rounded-2xl bg-white shadow-sm" />
+      <span className="grid w-20 shrink-0 place-items-center border-e border-line" style={{ background: `color-mix(in oklab, ${tint} 8%, white)` }}>
+        <Art src={CATEGORY_ART[s.category]} className="h-11 w-11 drop-shadow-[0_4px_6px_rgba(0,0,0,0.12)]" />
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
         <span className="flex items-center gap-1.5 text-xs font-semibold">

@@ -3,7 +3,7 @@ import { Bike, Clock, Lock, ShoppingCart } from "lucide-react";
 import { Header } from "@/components/header";
 import { RealtimeRefresh } from "@/components/realtime-refresh";
 import { CartBar } from "@/components/cart-bar";
-import { CategoryIcon, CATEGORY_TINT } from "@/components/category-icon";
+import { Art, CATEGORY_ART, CATEGORY_TINT } from "@/components/category-icon";
 import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { formatEGP, pickName } from "@/lib/format";
@@ -39,10 +39,10 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
           className="relative isolate overflow-hidden rounded-3xl border border-line p-5 sm:p-7"
           style={{ background: `radial-gradient(120% 120% at 100% 0%, ${tint}40, transparent 55%), var(--surface)` }}
         >
-          <CategoryIcon category={store.category} className="absolute -bottom-8 -end-6 -z-10 h-44 w-44 opacity-10" style={{ color: tint }} strokeWidth={1.2} />
+          <Art src={CATEGORY_ART[store.category]} className="absolute -bottom-6 -end-4 -z-10 h-32 w-32 opacity-15" />
           <div className="flex items-center gap-4">
-            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl border border-white/10 bg-background/60 backdrop-blur" style={{ color: tint }}>
-              <CategoryIcon category={store.category} className="h-8 w-8" />
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/10 bg-background/60 backdrop-blur" style={{ color: tint }}>
+              <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
             </span>
             <div className="min-w-0">
               <h1 className="text-2xl font-extrabold sm:text-3xl">{name}</h1>
@@ -80,10 +80,10 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
               <li key={item.id} className={`card stagger flex items-center gap-4 p-3 ${soldOut ? "opacity-50" : ""}`} style={{ "--i": i } as React.CSSProperties}>
                 {item.photo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.photo_url} alt="" loading="lazy" className="h-22 w-22 shrink-0 rounded-xl object-cover" />
+                  <img src={item.photo_url} alt="" loading="lazy" className="h-18 w-18 shrink-0 rounded-xl object-cover" />
                 ) : (
-                  <span className="grid h-22 w-22 shrink-0 place-items-center rounded-xl" style={{ background: `linear-gradient(135deg, ${tint}30, ${tint}08)`, color: tint }}>
-                    <CategoryIcon category={store.category} className="h-8 w-8 opacity-80" />
+                  <span className="grid h-18 w-18 shrink-0 place-items-center rounded-xl" style={{ background: `linear-gradient(135deg, ${tint}30, ${tint}08)`, color: tint }}>
+                    <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
