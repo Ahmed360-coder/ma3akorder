@@ -5,30 +5,61 @@ import { ExternalLink, MapPin, Search, Star } from "lucide-react";
 import { GOOGLE_MAPS_KEY } from "@/lib/site";
 import { formatKm } from "@/lib/location";
 import { findNearbyRestaurants, type NearbyPlace } from "@/lib/nearby-places";
+import { findOsmRestaurants } from "@/lib/osm-places";
+import { onMapsAuthFailure } from "@/lib/google-maps";
 import { fill } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type Cuisine = keyof Dictionary["nearby"]["cuisines"];
 // Each chip runs a Google text search, so Egyptian favourites like koshary work too.
-const CUISINES: { key: Cuisine; query?: string; art?: string }[] = [
+// `osm` holds the words matched against OpenStreetMap names and cuisine tags when Google is off.
+const CUISINES: { key: Cuisine; query?: string; osm?: string[]; art?: string }[] = [
   { key: "all" },
-  { key: "burger", query: "burger", art: "/art/hamburger.webp" },
-  { key: "pizza", query: "pizza", art: "/art/pizza.webp" },
-  { key: "shawarma", query: "shawarma" },
-  { key: "chicken", query: "fried chicken", art: "/art/poultry_leg.webp" },
-  { key: "koshary", query: "koshary" },
-  { key: "grill", query: "grill kebab kofta" },
-  { key: "seafood", query: "seafood fish restaurant" },
-  { key: "asian", query: "sushi chinese asian restaurant" },
-  { key: "cafe", query: "cafe coffee", art: "/art/hot_beverage.webp" },
-  { key: "sweets", query: "desserts sweets", art: "/art/shortcake.webp" },
-  { key: "bakery", query: "bakery", art: "/art/croissant.webp" },
+  { key: "burger", query: "burger", osm: ["burger", "برجر", "بيرجر"], art: "/art/hamburger.webp" },
+  { key: "pizza", query: "pizza", osm: ["pizza", "بيتزا"], art: "/art/pizza.webp" },
+  { key: "shawarma", query: "shawarma", osm: ["shawarma", "kebab", "شاورما", "syrian", "سوري"] },
+  { key: "chicken", query: "fried chicken", osm: ["chicken", "فراخ", "دجاج", "kfc"], art: "/art/poultry_leg.webp" },
+  { key: "koshary", query: "koshary", osm: ["koshar", "koshary", "كشري", "egyptian", "foul", "فول"] },
+  { key: "grill", query: "grill kebab kofta", osm: ["grill", "kebab", "kofta", "barbecue", "مشويات", "كباب", "كفتة"] },
+  { key: "seafood", query: "seafood fish restaurant", osm: ["seafood", "fish", "سمك", "أسماك", "اسماك"] },
+  { key: "asian", query: "sushi chinese asian restaurant", osm: ["sushi", "chinese", "asian", "japanese", "thai", "سوشي", "صيني"] },
+  { key: "cafe", query: "cafe coffee", osm: ["cafe", "coffee", "كافيه", "قهوة"], art: "/art/hot_beverage.webp" },
+  { key: "sweets", query: "desserts sweets", osm: ["dessert", "ice cream", "confectionery", "pastry", "حلويات", "حلواني"], art: "/art/shortcake.webp" },
+  { key: "bakery", query: "bakery", osm: ["bakery", "مخبز", "فرن", "bread"], art: "/art/croissant.webp" },
 ];
+
+// Once Google refuses the key on this page, go straight to OpenStreetMap for the rest of the visit.
+let googleOff = false;
+
+// Google Places first (photos and ratings); OpenStreetMap if Google is refused, fails, or hangs.
+async function findRestaurants(center: { lat: number; lng: number }, locale: string, query: string | undefined, osmTerms: string[] | undefined, radiusM: number) {
+  const osm = () => findOsmRestaurants(center, locale, { terms: osmTerms, radiusM }).then((rows) => ({ rows, source: "osm" as const }));
+  if (!GOOGLE_MAPS_KEY || googleOff) return osm();
+  let stop = () => {};
+  const refused = new Promise<never>((_, reject) => {
+    const timer = setTimeout(() => reject(new Error("timeout")), 10000);
+    const off = onMapsAuthFailure(() => reject(new Error("key refused")));
+    stop = () => {
+      clearTimeout(timer);
+      off();
+    };
+  });
+  try {
+    const rows = await Promise.race([findNearbyRestaurants(GOOGLE_MAPS_KEY, center, locale, { query, radiusM }), refused]);
+    return { rows, source: "google" as const };
+  } catch {
+    googleOff = true;
+    return osm();
+  } finally {
+    stop();
+  }
+}
 const RADII = [3000, 6000, 10000];
 
 export function NearbyList({ t, locale, center }: { t: Dictionary["nearby"]; locale: "ar" | "en"; center: { lat: number; lng: number } }) {
   const [places, setPlaces] = useState<NearbyPlace[] | null>(null);
   const [failed, setFailed] = useState(false);
+  const [source, setSource] = useState<"google" | "osm">("google");
   const [cuisine, setCuisine] = useState<Cuisine>("all");
   const [typed, setTyped] = useState("");
   const [query, setQuery] = useState("");
@@ -37,20 +68,26 @@ export function NearbyList({ t, locale, center }: { t: Dictionary["nearby"]; loc
   const { lat, lng } = center;
 
   // What to ask Google: the search box wins over the chip.
-  const ask = query || CUISINES.find((c) => c.key === cuisine)?.query;
+  const chip = CUISINES.find((c) => c.key === cuisine);
+  const ask = query || chip?.query;
+  const osmTerms = query ? query.split(/\s+/) : chip?.osm;
+  const osmKey = osmTerms?.join("|");
 
   useEffect(() => {
-    if (!GOOGLE_MAPS_KEY) return;
     let cancelled = false;
     setPlaces(null);
     setFailed(false);
-    findNearbyRestaurants(GOOGLE_MAPS_KEY, { lat, lng }, locale, { query: ask, radiusM: radius })
-      .then((rows) => !cancelled && setPlaces(rows))
+    findRestaurants({ lat, lng }, locale, ask, osmKey?.split("|"), radius)
+      .then((r) => {
+        if (cancelled) return;
+        setPlaces(r.rows);
+        setSource(r.source);
+      })
       .catch(() => !cancelled && setFailed(true));
     return () => {
       cancelled = true;
     };
-  }, [lat, lng, locale, ask, radius]);
+  }, [lat, lng, locale, ask, osmKey, radius]);
 
   const shown = useMemo(() => {
     if (!places) return null;
@@ -59,8 +96,6 @@ export function NearbyList({ t, locale, center }: { t: Dictionary["nearby"]; loc
     const score = (p: NearbyPlace) => (p.rating ?? 0) - 1 / Math.sqrt(p.ratings + 1);
     return [...places].sort((a, b) => score(b) - score(a));
   }, [places, sort]);
-
-  if (!GOOGLE_MAPS_KEY) return <p className="card text-muted">{t.notReady}</p>;
 
   const nextRadius = RADII[RADII.indexOf(radius) + 1];
 
@@ -143,7 +178,7 @@ export function NearbyList({ t, locale, center }: { t: Dictionary["nearby"]; loc
         <ul className="grid gap-3 sm:grid-cols-2">
           {shown.map((p) => (
             <li key={p.id} className="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
-              <a href={p.website ?? p.mapsUrl ?? "#"} target="_blank" rel="noopener noreferrer" className="relative block aspect-[3/2] max-w-full bg-surface-2">
+              <a href={p.website ?? p.mapsUrl ?? "#"} target="_blank" rel="noopener noreferrer" className={`relative block max-w-full bg-surface-2 ${p.photo ? "aspect-[3/2]" : p.open != null ? "h-10" : "hidden"}`}>
                 {p.photo && (
                   // Google photos can't be cached or resized by us, so a plain lazy img is used.
                   // eslint-disable-next-line @next/next/no-img-element
@@ -210,10 +245,20 @@ export function NearbyList({ t, locale, center }: { t: Dictionary["nearby"]; loc
         </button>
       )}
 
-      {/* Google requires this attribution wherever Places data is shown without a Google map. */}
-      <p className="text-center text-xs text-muted" translate="no">
-        {t.source} · Google Maps
-      </p>
+      {/* Google requires this attribution wherever Places data is shown without a Google map;
+          OpenStreetMap's licence requires its own credit when its data is shown instead. */}
+      {source === "google" ? (
+        <p className="text-center text-xs text-muted" translate="no">
+          {t.source} · Google Maps
+        </p>
+      ) : (
+        <p className="text-center text-xs text-muted">
+          {t.sourceOsm} ·{" "}
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline" translate="no">
+            © OpenStreetMap contributors
+          </a>
+        </p>
+      )}
     </div>
   );
 }
