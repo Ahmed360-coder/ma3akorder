@@ -6,6 +6,7 @@ import { getCustomerLocation } from "@/lib/location-server";
 import { getOpenDishes } from "@/lib/discover";
 import { PageTitle } from "@/components/discover/page-title";
 import { SpinMachine } from "./spin-machine";
+import { EmptyState } from "@/components/empty-state";
 
 export const metadata: Metadata = { title: "Spin & Eat" };
 
@@ -22,7 +23,7 @@ export default async function SpinPage() {
         {dishes.length ? (
           <SpinMachine stores={stores} dishes={dishes} locale={locale} x={{ ...x.spin, noOpen: x.noOpen, added: x.addedToCart, viewCart: x.viewCart, otherStore: x.otherStoreInCart }} />
         ) : (
-          <p className="card text-center text-muted">{x.noOpen}</p>
+          <EmptyState text={x.noOpen} />
         )}
       </main>
     </>

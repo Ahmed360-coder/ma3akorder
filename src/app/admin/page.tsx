@@ -30,7 +30,7 @@ export default async function AdminPage() {
       <Header />
       <RealtimeRefresh channel="admin" tables={[{ table: "orders" }]} />
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-6">
-        <h1 className="text-2xl font-bold">{t.admin.title}</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight">{t.admin.title}</h1>
 
         {/* Admin only: the kit shows sample menus for restaurants that haven't joined yet. */}
         <section className="card flex flex-wrap items-center justify-between gap-3">

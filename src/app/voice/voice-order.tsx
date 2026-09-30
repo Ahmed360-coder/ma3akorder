@@ -11,6 +11,7 @@ import { fill, formatEGP } from "@/lib/format";
 import { DishArt } from "@/components/discover/dish-art";
 import { useFillCart } from "@/components/discover/use-fill-cart";
 import { matches, parseRequest } from "./parse";
+import { EmptyState } from "@/components/empty-state";
 
 type Labels = Extras["voice"] & { noOpen: string; viewCart: string; otherStore: string };
 
@@ -162,7 +163,7 @@ export function VoiceOrder({ stores, dishes, locale, x }: { stores: DiscoverStor
         </div>
       )}
 
-      {!dishes.length && <p className="card text-center text-muted">{x.noOpen}</p>}
+      {!dishes.length && <EmptyState text={x.noOpen} />}
 
       {parsed && dishes.length > 0 && (
         <section className="flex flex-col gap-3">

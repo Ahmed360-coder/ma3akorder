@@ -10,12 +10,13 @@ export async function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
     <>
       <Header />
       <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 pb-16 pt-8">
-        <div>
-          <h1 className="text-3xl font-bold">{kind === "privacy" ? L.privacyTitle : L.termsTitle}</h1>
+        <div className="glass rounded-3xl border border-line/70 p-5 shadow-sm">
+          <h1 className="text-3xl font-extrabold tracking-tight">{kind === "privacy" ? L.privacyTitle : L.termsTitle}</h1>
           <p className="text-sm text-muted">
             {L.updated}: {LEGAL_UPDATED}
           </p>
         </div>
+        <div className="card flex flex-col gap-6">
         {L[kind].map((s) => (
           <section key={s.h} className="flex flex-col gap-2">
             <h2 className="text-lg font-bold">{s.h}</h2>
@@ -24,6 +25,7 @@ export async function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             ))}
           </section>
         ))}
+        </div>
       </main>
     </>
   );

@@ -26,7 +26,7 @@ export default async function AccountPage() {
     <>
       <Header />
       <main className="mx-auto flex w-full max-w-md flex-col gap-5 px-4 pb-16 pt-8">
-        <h1 className="text-2xl font-bold">{profile.full_name ?? t.account.title}</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight">{profile.full_name ?? t.account.title}</h1>
         <dl className="card grid grid-cols-2 gap-4">
           <div>
             <dt className="text-sm text-muted">{t.account.role}</dt>

@@ -41,7 +41,7 @@ export default async function SpendingPage() {
     <>
       <Header />
       <main className="mx-auto flex w-full max-w-lg flex-col gap-5 px-4 pb-16 pt-6">
-        <h1 className="text-2xl font-bold">{t.spending.title}</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight">{t.spending.title}</h1>
 
         <section className="card flex flex-col gap-3">
           <div className="flex items-end justify-between gap-2">

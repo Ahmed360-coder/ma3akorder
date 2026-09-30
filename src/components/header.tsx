@@ -26,7 +26,7 @@ export async function Header({ hideOnPhone = false }: { hideOnPhone?: boolean } 
 
   return (
     <>
-      <header className={`glass sticky top-0 z-20 border-b border-line/70 ${hideOnPhone ? "hidden md:block" : ""}`}>
+      <header className={`glass sticky top-0 z-20 border-b border-line/70 lg:top-4 lg:mb-2 lg:rounded-2xl lg:border lg:shadow-sm ${hideOnPhone ? "hidden md:block" : ""}`}>
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
           <div className="flex shrink-0 items-center gap-1">
             {/* Phones and tablets: the side menu opens from here on every page (computers keep it pinned). */}

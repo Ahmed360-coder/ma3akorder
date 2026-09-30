@@ -25,7 +25,7 @@ export default async function OrdersPage() {
     <>
       <Header />
       <main className="mx-auto flex w-full max-w-lg flex-col gap-3 px-4 pb-16 pt-6">
-        <h1 className="mb-2 text-2xl font-bold">{t.orders.title}</h1>
+        <h1 className="mb-2 text-2xl font-extrabold tracking-tight">{t.orders.title}</h1>
         {orders.length === 0 && <p className="card text-muted">{t.orders.none}</p>}
         {orders.map((o) => (
           <Link key={o.id} href={`/orders/${o.id}`} className="card flex flex-col gap-1 hover:border-accent">

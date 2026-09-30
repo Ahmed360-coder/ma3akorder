@@ -6,6 +6,7 @@ import { getCustomerLocation } from "@/lib/location-server";
 import { getOpenDishes } from "@/lib/discover";
 import { PageTitle } from "@/components/discover/page-title";
 import { MealBuilder } from "./meal-builder";
+import { EmptyState } from "@/components/empty-state";
 
 export const metadata: Metadata = { title: "Feed us for…" };
 
@@ -24,7 +25,7 @@ export default async function FeedPage({ searchParams }: { searchParams: Promise
         {dishes.length ? (
           <MealBuilder start={start} stores={stores} dishes={dishes} locale={locale} x={{ ...x.feed, added: x.addedToCart, viewCart: x.viewCart, otherStore: x.otherStoreInCart, mins: t.ui.mins }} />
         ) : (
-          <p className="card text-center text-muted">{x.noOpen}</p>
+          <EmptyState text={x.noOpen} />
         )}
       </main>
     </>

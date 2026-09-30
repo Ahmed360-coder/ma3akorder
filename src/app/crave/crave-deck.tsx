@@ -10,6 +10,7 @@ import { fill, formatEGP } from "@/lib/format";
 import { DishArt } from "@/components/discover/dish-art";
 import { Confetti } from "@/components/discover/confetti";
 import { useFillCart } from "@/components/discover/use-fill-cart";
+import { EmptyState } from "@/components/empty-state";
 
 type Labels = Extras["crave"] & { added: string; viewCart: string; otherStore: string };
 
@@ -124,7 +125,7 @@ export function CraveDeck({ stores, dishes, locale, x }: { stores: DiscoverStore
             )}
           </m.section>
         ) : (
-          <p className="card text-center text-muted">{x.empty}</p>
+          <EmptyState text={x.empty} />
         )}
 
         {liked.length > 1 && (

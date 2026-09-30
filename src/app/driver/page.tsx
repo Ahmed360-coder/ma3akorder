@@ -70,7 +70,7 @@ export default async function DriverPage() {
       <Header />
       <RealtimeRefresh channel={`driver-${user.id}`} tables={[{ table: "orders" }]} chimeOnInsert={false} />
       <main className="mx-auto flex w-full max-w-lg flex-col gap-6 px-4 pb-16 pt-6">
-        <h1 className="text-2xl font-bold">{t.driver.title}</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight">{t.driver.title}</h1>
 
         {mine.length > 0 && (
           <section className="flex flex-col gap-3">

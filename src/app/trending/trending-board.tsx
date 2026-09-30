@@ -11,6 +11,7 @@ import type { BusinessCategory } from "@/lib/types";
 import { fill, formatEGP } from "@/lib/format";
 import { DishArt } from "@/components/discover/dish-art";
 import { useFillCart } from "@/components/discover/use-fill-cart";
+import { EmptyState } from "@/components/empty-state";
 
 export type TrendRow = { dish: Dish; orders: number; storeName: string; category: BusinessCategory };
 type Labels = Extras["trending"] & { viewCart: string; otherStore: string };
@@ -57,7 +58,7 @@ export function TrendingBoard({ today, week, rows, fallback, openStores, locale,
 
       {!rows.length && (
         <>
-          <p className="card text-center text-muted">{x.empty}</p>
+          <EmptyState text={x.empty} art="/art/real/fries.webp" />
           {fallback.length > 0 && <h2 className="text-lg font-bold">{x.fallback}</h2>}
         </>
       )}

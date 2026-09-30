@@ -52,7 +52,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
       <main className="mx-auto flex w-full max-w-lg flex-col gap-5 px-4 pb-16 pt-6">
         <div>
           <p className="text-sm text-muted">{t.orders.store}</p>
-          <h1 className="text-2xl font-bold">{storeName}</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">{storeName}</h1>
         </div>
 
         {!failed && (

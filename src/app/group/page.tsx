@@ -11,6 +11,7 @@ import { getCustomerLocation } from "@/lib/location-server";
 import { getStoreCards } from "@/lib/stores";
 import { PageTitle } from "@/components/discover/page-title";
 import { startGroupOrder } from "./actions";
+import { EmptyState } from "@/components/empty-state";
 
 export const metadata: Metadata = { title: "Order together" };
 
@@ -31,7 +32,7 @@ export default async function GroupStartPage() {
             <Link href="/login" className="btn-primary h-10 shrink-0 px-4">{x.group.signInBtn}</Link>
           </div>
         ) : !stores.length ? (
-          <p className="card text-center text-muted">{x.noOpen}</p>
+          <EmptyState text={x.noOpen} />
         ) : (
           <section className="flex flex-col gap-3">
             <h2 className="text-lg font-bold">{x.group.pick}</h2>

@@ -18,7 +18,7 @@ export default async function OnboardingPage() {
     <>
       <Header />
       <main className="mx-auto w-full max-w-md px-4 pb-16 pt-8">
-        <h1 className="mb-6 text-2xl font-bold">{t.onboarding.title}</h1>
+        <h1 className="mb-6 text-2xl font-extrabold tracking-tight">{t.onboarding.title}</h1>
         <form action={completeOnboarding} className="flex flex-col gap-4">
           <label className="flex flex-col gap-2 text-sm font-semibold">
             {t.onboarding.nameLabel}

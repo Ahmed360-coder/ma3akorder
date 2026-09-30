@@ -87,6 +87,10 @@ button:not(:disabled), [role="button"], a[href], summary, select, label[for], in
   &::after { content: ""; position: absolute; inset: -6px; }
 }
 
+/* Page headings sit over the food photo, so they get a soft halo in the page colour to stay readable. */
+main h1, main h1 + p { text-shadow: 0 0 2px var(--background), 0 0 14px var(--background); }
+.card h1, .card h1 + p, .glass h1, .glass h1 + p { text-shadow: none; }
+
 @utility btn {
   @apply inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 font-semibold transition active:scale-[0.97] disabled:opacity-50;
 }

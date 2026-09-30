@@ -33,7 +33,7 @@ export default async function CartPage() {
     <>
       <Header />
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
-        <h1 className="mb-5 text-2xl font-bold">{t.cart.title}</h1>
+        <h1 className="mb-5 text-2xl font-extrabold tracking-tight">{t.cart.title}</h1>
         <Checkout t={t} locale={locale} signedIn={!!user} defaults={{ address: lastAddress, phone: lastPhone }} budgetLeft={budgetLeft} loc={loc} />
       </main>
     </>
