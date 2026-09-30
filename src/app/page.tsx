@@ -7,15 +7,13 @@ import { createClient } from "@/lib/supabase/server";
 import { getStoreCards } from "@/lib/stores";
 import type { DeliveryAddress } from "@/lib/types";
 import { HomeFeed } from "./home-feed";
-import { SidePanel, type SideMenuLabels } from "@/components/side-menu";
-import { SUPPORT_WHATSAPP } from "@/lib/site";
+import { getMenuProps } from "@/components/menu-props";
 import { fill } from "@/lib/format";
 import { getCustomerLocation } from "@/lib/location-server";
 import { searchLabels } from "@/lib/search-data";
 import { BRAND_COLOR } from "@/lib/brand";
 import { WelcomeBack } from "@/components/welcome-back";
 import { DiscoverRow } from "@/components/discover/discover-row";
-import { discoverMenu } from "@/components/discover/links";
 import { getExtras } from "@/lib/i18n/extras";
 
 // Phone status bar matches the top band.
@@ -35,40 +33,13 @@ export default async function Home() {
   const againIds = [...new Set((recent ?? []).map((o) => o.business_id as string))].slice(0, 8);
   const lastArea = ((recent ?? [])[0]?.delivery_address as DeliveryAddress | undefined)?.area;
 
-  const role = profile?.onboarded ? profile.role : null;
+  const menu = await getMenuProps();
   const firstName = profile?.full_name?.split(" ")[0];
-  const menuLabels: SideMenuLabels = {
-    brand: t.brand,
-    menu: t.ui.menu,
-    close: t.ui.close,
-    greeting: user && firstName ? fill(t.ui.hello, { name: firstName }) : t.ui.guest,
-    guestNote: t.ui.guestNote,
-    signIn: t.getStarted,
-    home: t.ui.home,
-    search: t.ui.searchNav,
-    orders: t.nav.orders,
-    spending: t.nav.spending,
-    cart: t.nav.cart,
-    account: t.nav.account,
-    business: t.nav.business,
-    driver: t.nav.driver,
-    admin: t.nav.admin,
-    workspace: t.ui.workspace,
-    language: t.ui.language,
-    help: t.site.support,
-    byline: t.site.byline,
-    discover: discoverMenu(getExtras(locale).discover),
-  };
-  const menu = { role, signedIn: !!user, labels: menuLabels, langToggle: <LanguageToggle label={t.switchLanguage} />, whatsapp: SUPPORT_WHATSAPP };
 
   return (
     <>
       <Header hideOnPhone />
       {user && firstName && <WelcomeBack title={fill(t.ui.welcomeBack, { name: firstName })} body={t.ui.welcomeBackBody} close={t.ui.close} />}
-      {/* Computers get the menu as a side panel; phones open it as a drawer from the top band. */}
-      <div className="mx-auto flex w-full max-w-7xl gap-6 lg:px-4 lg:pt-4">
-        <SidePanel {...menu} />
-        <div className="min-w-0 flex-1">
       <HomeFeed
         menu={menu}
         searchLabels={searchLabels(t)}
@@ -103,8 +74,6 @@ export default async function Home() {
           ],
         }}
       />
-        </div>
-      </div>
     </>
   );
 }

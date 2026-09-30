@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 export type Role = "customer" | "business_owner" | "business_staff" | "driver" | "admin";
@@ -15,7 +16,8 @@ export type Profile = {
   monthly_budget: number | null;
 };
 
-export async function getCurrentProfile() {
+// Cached per request: the header, side menu and page all ask for it.
+export const getCurrentProfile = cache(async () => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -23,4 +25,4 @@ export async function getCurrentProfile() {
   if (!user) return { user: null, profile: null };
   const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single<Profile>();
   return { user, profile: data };
-}
+});

@@ -314,7 +314,7 @@ export function SideMenuButton(props: Props & { className?: string }) {
 // Computers: the same menu as a fixed side panel.
 export function SidePanel(props: Props) {
   return (
-    <aside className="sticky top-[4.25rem] hidden h-[calc(100dvh-5.25rem)] w-64 shrink-0 overflow-y-auto rounded-3xl border border-line bg-surface p-3 shadow-sm lg:block">
+    <aside className="sticky top-4 hidden h-[calc(100dvh-2rem)] w-64 self-start shrink-0 overflow-y-auto rounded-3xl border border-line bg-surface p-3 shadow-sm lg:block">
       <MenuBody {...props} />
     </aside>
   );

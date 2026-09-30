@@ -5,6 +5,7 @@ import { CartProvider } from "@/components/cart-provider";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
 // Cairo covers both Arabic and Latin, so the two languages look consistent.
@@ -25,7 +26,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <div aria-hidden="true" className="page-bg" />
         <MotionProvider>
           <CartProvider>
-            <div className="page-in flex flex-1 flex-col">{children}</div>
+            <AppShell>
+              <div className="page-in flex flex-1 flex-col">{children}</div>
+            </AppShell>
             <Footer />
             <WhatsAppButton />
           </CartProvider>
