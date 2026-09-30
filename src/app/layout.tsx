@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { AppShell } from "@/components/app-shell";
+import { Splash, SPLASH_SCRIPT } from "@/components/splash";
 import "./globals.css";
 
 // Cairo covers both Arabic and Latin, so the two languages look consistent.
@@ -19,10 +20,14 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { locale, dir } = await getDictionary();
+  const { t, locale, dir } = await getDictionary();
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SPLASH_SCRIPT }} />
+      </head>
       <body className={`${cairo.variable} flex min-h-dvh flex-col antialiased`}>
+        <Splash name={t.brand} tagline={t.tagline} byline={t.site.byline} />
         <div aria-hidden="true" className="page-bg" />
         <MotionProvider>
           <CartProvider>
