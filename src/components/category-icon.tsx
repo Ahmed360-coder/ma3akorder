@@ -56,8 +56,20 @@ export function StoreBadge({ category, logo, name, className = "h-14 w-14 rounde
 // Name keywords (English and Arabic) mapped to the closest realistic picture, first match wins.
 // null marks foods we have no fitting picture for yet, so they get a plain icon instead of a wrong picture.
 const NAME_ART: [RegExp, string | null][] = [
-  [/fish|sea ?bass|tilapia|shrimp|calamari|seafood|sea breeze|سمك|أسماك|قاروص|بلطي|جمبري|كاليماري|صيادية/i, null],
-  [/shawarma|شاورما|koshary|كشري|juice|smoothie|lemon|عصير|سموذي|ليمون|fries|محمرة/i, null],
+  [/fish|sea ?bass|tilapia|sea breeze|سمك|أسماك|قاروص|بلطي/i, "/art/real/fish.webp"],
+  [/calamari|shrimp|seafood|كاليماري|جمبري|صيادية/i, "/art/real/calamari.webp"],
+  [/shawarma|شاورما/i, "/art/real/shawarma.webp"],
+  [/juice|smoothie|lemon|عصير|سموذي|ليمون/i, "/art/real/juice.webp"],
+  [/milkshake|shake|ميلك شيك/i, "/art/real/milkshake.webp"],
+  [/fries|محمرة/i, "/art/real/fries.webp"],
+  [/pasta|penne|macaroni|مكرونة/i, "/art/real/pasta.webp"],
+  [/(?<!fruit )salad|fattoush|سلطة|فتوش/i, "/art/real/salad.webp"],
+  [/kofta|meatball|كفتة/i, "/art/real/kofta.webp"],
+  [/waffle|crepe|وافل|كريب/i, "/art/real/waffle.webp"],
+  [/ice ?cream|gelato|آيس كريم|جيلاتو/i, "/art/real/ice-cream.webp"],
+  [/\broses?\b|\bflowers?\b|bouquet|bloom|ورد|بوكيه/i, "/art/real/flowers.webp"],
+  [/\bnuts\b|peanut|مكسرات|سوداني/i, "/art/real/nuts.webp"],
+  [/koshary|كشري/i, null],
   [/pizza|بيتزا/i, "/art/real/pizza.webp"],
   [/burger|برجر/i, "/art/real/burger.webp"],
   [/croissant|كرواسون/i, "/art/real/bakery.webp"],
