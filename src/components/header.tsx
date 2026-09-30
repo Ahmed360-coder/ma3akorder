@@ -33,7 +33,7 @@ export async function Header({ hideOnPhone = false }: { hideOnPhone?: boolean } 
             {!hideOnPhone && (
               <SideMenuButton
                 {...menu}
-                className="-ms-2 flex h-12 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl text-foreground transition hover:bg-surface active:scale-95 lg:hidden"
+                className="-ms-1 flex h-12 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl bg-accent/10 text-accent transition hover:bg-accent/15 active:scale-95 lg:hidden"
               />
             )}
             <Link href="/" aria-label={t.brand} className="shrink-0 transition active:scale-95">
