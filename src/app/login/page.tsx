@@ -12,7 +12,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <Header />
       <main className="mx-auto w-full max-w-md px-4 pb-16 pt-8">
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
-          <LogoMark className="float-slow h-16 w-16 drop-shadow-[0_12px_30px_rgba(203,32,45,0.35)]" />
+          <LogoMark className="float-slow h-16 w-16 drop-shadow-[0_12px_30px_rgba(12,21,40,0.3)]" />
           <div>
             <h1 className="text-2xl font-extrabold">{t.login.title}</h1>
             <p className="mt-1 text-sm text-muted">{t.login.subtitle}</p>

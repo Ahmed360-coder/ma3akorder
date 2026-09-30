@@ -134,12 +134,12 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
               className="absolute inset-0 -z-10 rounded-xl bg-accent/10"
             />
           )}
-          <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${active ? "bg-accent text-white shadow-md shadow-accent/30" : "bg-surface-2 text-accent"}`}>
+          <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${active ? "bg-warm text-warm-ink shadow-md shadow-warm/40" : "bg-surface-2 text-accent"}`}>
             <e.Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.3 : 2} aria-hidden="true" />
           </span>
           <span className="flex-1">{e.label}</span>
           {!!e.badge && (
-            <span className="grid h-6 min-w-6 place-items-center rounded-full bg-warm px-1.5 text-xs font-bold text-white">
+            <span className="grid h-6 min-w-6 place-items-center rounded-full bg-warm px-1.5 text-xs font-bold text-warm-ink">
               {e.badge}
             </span>
           )}

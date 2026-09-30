@@ -43,8 +43,8 @@ export type HomeLabels = {
 const CATEGORIES: BusinessCategory[] = ["restaurant", "bakery", "grocery", "pharmacy", "cafe", "other"];
 const PROMO_BG = [
   "linear-gradient(120deg, var(--brand-dark), var(--brand-light))",
-  "linear-gradient(120deg, #b45309, #f59e0b)",
-  "linear-gradient(120deg, #b91c1c, #f59e0b)",
+  "linear-gradient(120deg, #8a6410, #d9a82e)",
+  "linear-gradient(120deg, #0c1528, #34507f)",
 ];
 const PROMO_ART = ["/art/balance_scale.webp", "/art/money_bag.webp", "/art/convenience_store.webp"];
 
@@ -116,7 +116,7 @@ export function HomeFeed({
                 <ShoppingBag className="h-5 w-5" aria-hidden="true" />
                 <span className="text-[10px] font-bold leading-none">{labels.cart}</span>
                 {count > 0 && (
-                  <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-warm px-1 text-[10px] font-bold text-white">
+                  <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-warm px-1 text-[10px] font-bold text-warm-ink">
                     {count}
                   </span>
                 )}
@@ -180,7 +180,7 @@ export function HomeFeed({
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-20 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span className="relative">
                     <StoreBadge category={s.category} logo={s.logo} name={s.name} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
-                    {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-warm px-1.5 text-[10px] font-bold text-white">{labels.freeDelivery}</span>}
+                    {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-warm px-1.5 text-[10px] font-bold text-warm-ink">{labels.freeDelivery}</span>}
                   </span>
                   <span className="line-clamp-2 text-xs font-semibold">{s.name}</span>
                 </Link>
@@ -261,7 +261,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
           {s.isOpen ? labels.open : labels.closed}
         </span>
         {s.fee === 0 && (
-          <span className="absolute bottom-3 end-3 rounded-full bg-warm px-2.5 py-1 text-xs font-bold text-white shadow-md">{labels.freeDelivery}</span>
+          <span className="absolute bottom-3 end-3 rounded-full bg-warm px-2.5 py-1 text-xs font-bold text-warm-ink shadow-md">{labels.freeDelivery}</span>
         )}
       </span>
       <span className="relative flex flex-1 flex-col gap-1.5 px-4 pb-4 pt-9">

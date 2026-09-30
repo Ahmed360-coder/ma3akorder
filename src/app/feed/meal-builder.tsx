@@ -58,7 +58,7 @@ export function MealBuilder({ start, stores, dishes, locale, x }: { start?: { pe
         </label>
         <div className="flex flex-wrap gap-2">
           {QUICK.map((q) => (
-            <button key={q} className={`chip h-8 ${budget === q ? "border-warm bg-warm text-white" : ""}`} onClick={() => setBudget(q)}>
+            <button key={q} className={`chip h-8 ${budget === q ? "border-warm bg-warm text-warm-ink" : ""}`} onClick={() => setBudget(q)}>
               {formatEGP(q, locale)}
             </button>
           ))}

@@ -32,11 +32,11 @@ export function BottomNav({ labels, signedIn }: { labels: Labels; signedIn: bool
           return (
             <li key={href} className="relative isolate flex-1">
               <Link href={href} className={`relative flex flex-col items-center gap-0.5 rounded-[1.2rem] py-2 text-[11px] font-bold transition-colors ${active ? "text-accent" : "text-muted"}`}>
-                {active && <m.span layoutId="bottom-nav-pill" transition={{ type: "spring", duration: 0.35, bounce: 0.15 }} className="absolute inset-0 -z-10 rounded-[1.2rem] bg-accent/10" />}
+                {active && <m.span layoutId="bottom-nav-pill" transition={{ type: "spring", duration: 0.35, bounce: 0.15 }} className="absolute inset-0 -z-10 rounded-[1.2rem] bg-warm/25" />}
                 <span className="relative">
                   <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
                   {!!badge && (
-                    <span key={badge} className="pop absolute -end-2.5 -top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-warm px-1 text-[10px] font-bold text-white">
+                    <span key={badge} className="pop absolute -end-2.5 -top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-warm px-1 text-[10px] font-bold text-warm-ink">
                       {badge}
                     </span>
                   )}

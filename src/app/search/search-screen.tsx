@@ -205,7 +205,7 @@ export function SearchScreen({
             <ShoppingBag className="h-5 w-5" aria-hidden="true" />
             <span className="text-[10px] font-bold leading-none text-muted">{labels.cart}</span>
             {count > 0 && (
-              <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-warm px-1 text-[10px] font-bold text-white">
+              <span key={count} className="pop absolute -bottom-0.5 -end-0.5 grid h-5 min-w-5 place-items-center rounded-full border-2 border-background bg-warm px-1 text-[10px] font-bold text-warm-ink">
                 {count}
               </span>
             )}

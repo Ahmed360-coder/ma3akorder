@@ -19,7 +19,7 @@ export function Splash({ name, tagline, byline }: { name: string; tagline: strin
   if (gone) return null;
   return (
     <div className="splash" aria-hidden="true" onClick={() => setGone(true)}>
-      {/* Moving crimson backdrop: slow light rays, three drifting glows and a fine dot grid. */}
+      {/* Moving navy backdrop: slow light rays, three drifting glows and a fine dot grid. */}
       <span className="splash-bg">
         <span className="splash-rays" />
         <span className="splash-glow splash-glow-1" />

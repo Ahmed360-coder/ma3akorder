@@ -3,15 +3,15 @@ import { Art } from "@/components/category-icon";
 import type { Extras } from "@/lib/i18n/extras";
 
 const TILES = [
-  { key: "group", href: "/group", art: "/art/real/pizza.webp", bg: "linear-gradient(135deg, #e8474f, #9c1520)" },
-  { key: "voice", href: "/voice", art: "/art/real/coffee.webp", bg: "linear-gradient(135deg, #3b82f6, #1e3a8a)" },
-  { key: "crave", href: "/crave", art: "/art/real/burger.webp", bg: "linear-gradient(135deg, #fb7185, #9f1239)" },
-  { key: "trending", href: "/trending", art: "/art/real/chicken.webp", bg: "linear-gradient(135deg, #f59e0b, #b45309)" },
-  { key: "spin", href: "/spin", art: "/art/slot_machine.webp", bg: "linear-gradient(135deg, #ff8a2b, #e8590c)" },
-  { key: "feed", href: "/feed", art: "/art/money_bag.webp", bg: "linear-gradient(135deg, #3cc878, #0a7a3c)" },
-  { key: "rewards", href: "/rewards", art: "/art/trophy.webp", bg: "linear-gradient(135deg, #f7b733, #c97a12)" },
-  { key: "favorites", href: "/favorites", art: "/art/red_heart.webp", bg: "linear-gradient(135deg, #f472b6, #be123c)" },
-  { key: "guide", href: "/nearby", art: "/art/pizza.webp", bg: "linear-gradient(135deg, #6b3fd4, #3b1f8f)" },
+  { key: "group", href: "/group", art: "/art/real/pizza.webp", bg: "linear-gradient(135deg, #34507f, #0c1528)" },
+  { key: "voice", href: "/voice", art: "/art/real/coffee.webp", bg: "linear-gradient(135deg, #c9971c, #7a560b)" },
+  { key: "crave", href: "/crave", art: "/art/real/burger.webp", bg: "linear-gradient(135deg, #34507f, #0c1528)" },
+  { key: "trending", href: "/trending", art: "/art/real/chicken.webp", bg: "linear-gradient(135deg, #c9971c, #7a560b)" },
+  { key: "spin", href: "/spin", art: "/art/slot_machine.webp", bg: "linear-gradient(135deg, #34507f, #0c1528)" },
+  { key: "feed", href: "/feed", art: "/art/money_bag.webp", bg: "linear-gradient(135deg, #c9971c, #7a560b)" },
+  { key: "rewards", href: "/rewards", art: "/art/trophy.webp", bg: "linear-gradient(135deg, #34507f, #0c1528)" },
+  { key: "favorites", href: "/favorites", art: "/art/red_heart.webp", bg: "linear-gradient(135deg, #c9971c, #7a560b)" },
+  { key: "guide", href: "/nearby", art: "/art/pizza.webp", bg: "linear-gradient(135deg, #34507f, #0c1528)" },
 ] as const;
 
 // Home page row linking to every standout feature (same list as the side menu Discover group).
