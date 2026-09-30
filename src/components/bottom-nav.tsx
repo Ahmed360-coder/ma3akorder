@@ -25,14 +25,14 @@ export function BottomNav({ labels, signedIn }: { labels: Labels; signedIn: bool
   ];
 
   return (
-    <nav className="bottom-nav glass fixed inset-x-0 bottom-0 z-30 border-t border-line pb-[env(safe-area-inset-bottom)] md:hidden">
-      <ul className="mx-auto flex max-w-md items-stretch justify-around px-2">
+    <nav className="bottom-nav fixed inset-x-3 bottom-[calc(0.6rem+env(safe-area-inset-bottom))] z-30 md:hidden">
+      <ul className="glass mx-auto flex max-w-md items-stretch justify-around rounded-[1.6rem] border border-line/80 p-1.5 shadow-[0_18px_40px_-16px_rgba(34,21,18,0.35)]">
         {tabs.map(({ href, label, Icon, match, badge }) => {
           const active = match(path);
           return (
-            <li key={href} className="flex-1">
-              <Link href={href} className={`relative flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-semibold transition-colors ${active ? "text-accent" : "text-muted"}`}>
-                {active && <m.span layoutId="bottom-nav-pill" className="absolute inset-x-3 top-0 h-0.5 rounded-full bg-accent" />}
+            <li key={href} className="relative isolate flex-1">
+              <Link href={href} className={`relative flex flex-col items-center gap-0.5 rounded-[1.2rem] py-2 text-[11px] font-bold transition-colors ${active ? "text-accent" : "text-muted"}`}>
+                {active && <m.span layoutId="bottom-nav-pill" transition={{ type: "spring", duration: 0.35, bounce: 0.15 }} className="absolute inset-0 -z-10 rounded-[1.2rem] bg-accent/10" />}
                 <span className="relative">
                   <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
                   {!!badge && (

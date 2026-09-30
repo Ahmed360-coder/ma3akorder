@@ -126,7 +126,7 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
         <Link
           href={e.href}
           onClick={onNavigate}
-          className={`relative flex h-12 items-center gap-3 rounded-xl px-3 font-semibold transition ${active ? "text-accent" : "text-foreground hover:bg-surface-2"}`}
+          className={`relative flex h-12 items-center gap-3 rounded-xl px-2 font-semibold transition ${active ? "text-accent" : "text-foreground hover:bg-surface-2"}`}
         >
           {active && (
             <m.span
@@ -134,11 +134,9 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
               className="absolute inset-0 -z-10 rounded-xl bg-accent/10"
             />
           )}
-          <e.Icon
-            className="h-5 w-5 shrink-0"
-            strokeWidth={active ? 2.2 : 1.8}
-            aria-hidden="true"
-          />
+          <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${active ? "bg-accent text-white shadow-md shadow-accent/30" : "bg-surface-2 text-accent"}`}>
+            <e.Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.3 : 2} aria-hidden="true" />
+          </span>
           <span className="flex-1">{e.label}</span>
           {!!e.badge && (
             <span className="grid h-6 min-w-6 place-items-center rounded-full bg-warm px-1.5 text-xs font-bold text-white">
@@ -153,12 +151,10 @@ function MenuBody(props: Props & { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col gap-4">
       <div
-        className="rounded-2xl p-4 text-accent-ink"
-        style={{
-          background:
-            "linear-gradient(135deg, var(--accent-2), var(--accent) 55%, var(--accent-deep))",
-        }}
+        className="hero-band relative isolate shrink-0 overflow-hidden rounded-2xl p-4 text-accent-ink"
       >
+        <span aria-hidden="true" className="hero-rays" />
+        <span aria-hidden="true" className="hero-dots" />
         <p className="text-lg font-extrabold leading-tight">
           {labels.greeting}
         </p>

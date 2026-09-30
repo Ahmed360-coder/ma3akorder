@@ -16,7 +16,7 @@ export function CartBar({ label, itemsLabel, locale }: { label: string; itemsLab
           initial={{ y: 90, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 90, opacity: 0 }}
-          className="cart-bar fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-30 px-4 md:bottom-6"
+          className="cart-bar fixed inset-x-0 bottom-[calc(5.6rem+env(safe-area-inset-bottom))] z-30 px-4 md:bottom-6"
         >
           <Link href="/cart" className="btn-primary mx-auto flex h-14 w-full max-w-lg justify-between rounded-2xl px-4">
             <span className="inline-flex items-center gap-2">

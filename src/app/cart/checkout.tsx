@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
-import { Banknote, CreditCard, Minus, Plus, ShoppingBag, Store, Trash2 } from "lucide-react";
+import { Banknote, CreditCard, Minus, Plus, Store, Trash2 } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { fill, formatEGP } from "@/lib/format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { DeliveryAddress } from "@/lib/types";
 import type { Loc } from "@/lib/location";
 import { placeOrder } from "./actions";
+import { Art, NameArt } from "@/components/category-icon";
 
 export function Checkout({
   t,
@@ -35,8 +36,8 @@ export function Checkout({
   if (!cart || cart.lines.length === 0) {
     return (
       <div className="card flex flex-col items-center gap-4 py-10 text-center">
-        <span className="float-slow grid h-20 w-20 place-items-center rounded-3xl bg-accent/10 text-accent">
-          <ShoppingBag className="h-10 w-10" aria-hidden="true" />
+        <span className="grid h-20 w-20 place-items-center rounded-3xl bg-tile">
+          <Art src="/art/real/shops.webp" className="h-14 w-14" />
         </span>
         <p className="text-muted">{t.cart.empty}</p>
         <Link href="/" className="btn-primary">
@@ -93,7 +94,13 @@ export function Checkout({
                 exit={{ opacity: 0, height: 0, x: 40 }}
                 className="flex items-center justify-between gap-3"
               >
-                <span className="min-w-0 flex-1 truncate">{l.name}</span>
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-tile">
+                  <NameArt name={l.name} category="restaurant" className="h-9 w-9" />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="line-clamp-2 text-sm font-semibold leading-snug">{l.name}</span>
+                  <span className="text-sm font-bold text-warm-deep">{formatEGP(l.price * l.qty, locale)}</span>
+                </span>
                 <div className="flex items-center gap-0.5 rounded-xl border border-line bg-surface-2/60 p-0.5">
                   <button className="hit grid h-9 w-9 place-items-center rounded-lg hover:bg-surface active:scale-90" onClick={() => setQty(l.itemId, l.qty - 1)} aria-label={l.qty === 1 ? t.ui.removeItem : t.ui.removeOne} title={l.qty === 1 ? t.ui.removeItem : t.ui.removeOne}>
                     {l.qty === 1 ? <Trash2 className="h-4 w-4 text-danger" /> : <Minus className="h-4 w-4" />}
@@ -103,7 +110,6 @@ export function Checkout({
                     <Plus className="h-4 w-4" />
                   </button>
                 </div>
-                <span className="w-20 text-end text-sm font-semibold">{formatEGP(l.price * l.qty, locale)}</span>
               </m.li>
             ))}
           </AnimatePresence>

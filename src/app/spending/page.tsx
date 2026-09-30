@@ -5,6 +5,7 @@ import { getCurrentProfile } from "@/lib/profile";
 import { getSpendingOrders, monthStart } from "@/lib/spending";
 import { fill, formatEGP, pickName } from "@/lib/format";
 import { setBudget } from "./actions";
+import { PageTitle } from "@/components/discover/page-title";
 
 export default async function SpendingPage() {
   const { t, locale } = await getDictionary();
@@ -41,7 +42,7 @@ export default async function SpendingPage() {
     <>
       <Header />
       <main className="mx-auto flex w-full max-w-lg flex-col gap-5 px-4 pb-16 pt-6">
-        <h1 className="text-2xl font-extrabold tracking-tight">{t.spending.title}</h1>
+        <PageTitle title={t.spending.title} art="/art/money_bag.webp" />
 
         <section className="card flex flex-col gap-3">
           <div className="flex items-end justify-between gap-2">

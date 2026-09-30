@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
-import { ChevronDown, MapPin, ShoppingBag, Star, X } from "lucide-react";
+import { Bike, ChevronDown, Clock, MapPin, ShoppingBag, Star, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
 import { SideMenuButton } from "@/components/side-menu";
@@ -18,6 +18,8 @@ import type { SearchLabels } from "@/app/search/search-screen";
 
 export type HomeLabels = {
   brand: string;
+  // Big line in the top band, e.g. "What are you craving today?"
+  hero?: string;
   demo: string;
   deliverTo: string;
   area: string;
@@ -90,8 +92,11 @@ export function HomeFeed({
   return (
     <>
       {/* Top band: address, cart and search, like the big delivery apps. */}
-      <section className="relative isolate overflow-hidden text-accent-ink lg:rounded-3xl" style={{ background: "linear-gradient(160deg, var(--accent-2), var(--accent) 50%, var(--accent-deep))" }}>
-        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-10 pt-4">
+      <section className="hero-band relative isolate overflow-hidden text-accent-ink lg:rounded-3xl">
+        {/* The same light rays and dot grid as the opening animation, very faint. */}
+        <span aria-hidden="true" className="hero-rays" />
+        <span aria-hidden="true" className="hero-dots" />
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-12 pt-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5">
               <SideMenuButton {...menu} className="flex h-14 w-14 shrink-0 flex-col items-center justify-center gap-1 rounded-2xl bg-accent-ink/15 transition hover:bg-accent-ink/25 active:scale-90 lg:hidden" />
@@ -118,6 +123,16 @@ export function HomeFeed({
               </Link>
             </div>
           </div>
+          {labels.hero && (
+            <div className="relative flex min-h-[5.5rem] items-center">
+              <h1 className="max-w-[62%] text-[1.7rem] font-extrabold leading-[1.1] tracking-tight sm:text-4xl">{labels.hero}</h1>
+              {/* Two real food pictures stacked at the far end of the band. */}
+              <span aria-hidden="true" className="pointer-events-none absolute -end-2 top-1/2 h-28 w-40 -translate-y-1/2 sm:w-56">
+                <Art src="/art/real/pizza.webp" className="hero-food absolute end-16 top-1 h-20 w-20 -rotate-12 sm:end-24 sm:h-24 sm:w-24" />
+                <Art src="/art/real/burger.webp" className="hero-food hero-food-2 absolute end-0 bottom-0 h-24 w-24 sm:h-28 sm:w-28" />
+              </span>
+            </div>
+          )}
           {/* Tapping search opens the search screen in place, with the keyboard already up. */}
           <SearchLauncher labels={searchLabels} locale={location.locale} className="relative flex h-13 w-full items-center rounded-full bg-background ps-12 text-base text-muted shadow-xl shadow-black/10 transition active:scale-[0.99]" />
         </div>
@@ -140,16 +155,16 @@ export function HomeFeed({
                 whileTap={{ scale: 0.96 }}
                 onClick={() => pick(c)}
                 aria-pressed={active}
-                className={`stagger relative flex flex-col items-center gap-1 rounded-2xl border-2 pb-2.5 pt-4 transition ${active ? "border-accent bg-accent/10" : "border-transparent bg-tile hover:border-accent/40"}`}
+                className={`stagger tile-card relative flex flex-col items-center gap-1.5 overflow-hidden rounded-3xl border-2 pb-3 pt-6 transition ${active ? "border-accent" : "border-transparent hover:border-accent/40"}`}
                 style={{ "--i": i } as React.CSSProperties}
               >
                 <span
-                  className={`absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg px-2 py-0.5 text-[10px] font-bold ${n ? "bg-positive text-accent-ink" : "border border-line bg-background text-muted"}`}
+                  className={`absolute start-2 top-2 whitespace-nowrap rounded-full px-2 py-0.5 text-[10px] font-bold ${n ? "bg-positive text-accent-ink" : "bg-surface/80 text-muted"}`}
                 >
                   {n ? labels.openCount.replace("{n}", String(n)) : labels.soon}
                 </span>
-                <Art src={CATEGORY_ART[c]} className="h-16 w-16 drop-shadow-[0_6px_8px_rgba(0,0,0,0.15)]" />
-                <span className="text-xs font-bold">{labels.tiles[c]}</span>
+                <Art src={CATEGORY_ART[c]} className="h-[4.5rem] w-[4.5rem] drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)]" />
+                <span className="text-[13px] font-bold">{labels.tiles[c]}</span>
               </m.button>
             );
           })}
@@ -186,7 +201,7 @@ export function HomeFeed({
           {stores.length === 0 ? (
             <p className="card text-muted">{labels.none}</p>
           ) : (
-            <ul className="grid gap-3 sm:grid-cols-2">
+            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               <AnimatePresence mode="popLayout" initial={false}>
                 {shown.map((s, i) => (
                   <m.li key={s.id} layout initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} className="stagger" style={{ "--i": i } as React.CSSProperties}>
@@ -227,52 +242,58 @@ export function HomeFeed({
 }
 
 function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
+  const pic = s.cover ?? null;
   return (
     <Link
       href={`/stores/${s.id}`}
-      className={`flex h-full items-stretch overflow-hidden rounded-3xl border border-line bg-surface lift hover:border-accent/50 active:scale-[0.99] ${s.isOpen ? "" : "opacity-60"}`}
+      className={`store-card flex h-full flex-col overflow-hidden rounded-3xl bg-surface lift active:scale-[0.99] ${s.isOpen ? "" : "grayscale-[0.6]"}`}
     >
-      <span className="relative grid w-20 shrink-0 place-items-center overflow-hidden border-e border-line bg-tile">
-        {s.logo || s.cover ? (
+      {/* Picture area: the store's cover photo, or its food picture on a warm cream plate. */}
+      <span className="store-card-media relative block h-36 overflow-hidden">
+        {pic ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={(s.logo ?? s.cover)!} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
+          <img src={pic} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
-          <NameArt name={s.name} category={s.category} className="h-14 w-14 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]" />
+          <NameArt name={s.name} category={s.category} className="absolute end-6 top-1/2 h-28 w-28 -translate-y-1/2 drop-shadow-[0_12px_14px_rgba(0,0,0,0.2)]" />
+        )}
+        <span className={`absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold shadow-sm ${s.isOpen ? "bg-surface text-positive" : "bg-foreground/80 text-white"}`}>
+          <span className={`h-2 w-2 rounded-full ${s.isOpen ? "animate-pulse bg-positive" : "bg-white/70"}`} />
+          {s.isOpen ? labels.open : labels.closed}
+        </span>
+        {s.fee === 0 && (
+          <span className="absolute bottom-3 end-3 rounded-full bg-warm px-2.5 py-1 text-xs font-bold text-white shadow-md">{labels.freeDelivery}</span>
         )}
       </span>
-      <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
-        <span className="flex items-center gap-1.5 text-xs font-semibold">
-          <span className={`h-2 w-2 rounded-full ${s.isOpen ? "animate-pulse bg-positive" : "bg-muted"}`} />
-          <span className={s.isOpen ? "text-positive" : "text-muted"}>{s.isOpen ? labels.open : labels.closed}</span>
-          <span className="text-muted">· {s.categoryLabel}</span>
+      <span className="relative flex flex-1 flex-col gap-1.5 px-4 pb-4 pt-9">
+        {/* Logo sits half over the picture, like the big delivery apps. */}
+        <span className="absolute -top-8 start-4">
+          <StoreBadge category={s.category} logo={s.logo} name={s.name} className="h-16 w-16 rounded-2xl border-4 border-surface shadow-md" iconClass="h-10 w-10" />
         </span>
         <span className="flex min-w-0 items-center gap-2">
-          <span className="truncate text-lg font-extrabold">{s.name}</span>
+          <span className="truncate text-lg font-extrabold leading-tight">{s.name}</span>
           {s.isDemo && <span className="shrink-0 rounded-md border border-warning/50 px-1.5 text-[11px] font-bold text-warning">{labels.demo}</span>}
+          {s.rating && (
+            <span className="ms-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-warning/15 px-2 py-0.5 text-xs font-bold text-foreground">
+              <Star className="h-3.5 w-3.5 fill-warning text-warning" aria-hidden="true" />
+              {s.rating.avg.toFixed(1)}
+            </span>
+          )}
         </span>
-        <span className="flex flex-wrap items-center gap-x-2 text-sm text-muted">
-          <span>
+        <span className="text-sm text-muted">{s.categoryLabel}</span>
+        <span className="mt-1 flex flex-wrap items-center gap-2 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1">
+            <Clock className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             {s.prep}–{s.prep + 15} {labels.mins}
           </span>
-          <span>·</span>
-          <span className={s.fee === 0 ? "font-bold text-warm-deep" : ""}>{s.fee === 0 ? labels.freeDelivery : s.feeText}</span>
+          <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 ${s.fee === 0 ? "bg-accent/10 text-warm-deep" : "bg-surface-2"}`}>
+            <Bike className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+            {s.fee === 0 ? labels.freeDelivery : s.feeText}
+          </span>
           {s.distanceText && (
-            <>
-              <span>·</span>
-              <span className={`inline-flex items-center gap-0.5 ${s.inRange ? "text-foreground" : "text-warning"}`}>
-                <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                {s.distanceText}
-              </span>
-            </>
-          )}
-          {s.rating && (
-            <>
-              <span>·</span>
-              <span className="inline-flex items-center gap-0.5 font-semibold text-foreground">
-                <Star className="h-3.5 w-3.5 fill-warning text-warning" aria-hidden="true" />
-                {s.rating.avg.toFixed(1)}
-              </span>
-            </>
+            <span className={`inline-flex items-center gap-1 rounded-full bg-surface-2 px-2.5 py-1 ${s.inRange ? "" : "text-warning"}`}>
+              <MapPin className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+              {s.distanceText}
+            </span>
           )}
         </span>
       </span>

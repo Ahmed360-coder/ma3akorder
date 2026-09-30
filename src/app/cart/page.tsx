@@ -6,6 +6,7 @@ import type { DeliveryAddress } from "@/lib/types";
 import { getMonthSpend } from "@/lib/spending";
 import { Checkout } from "./checkout";
 import { getCustomerLocation } from "@/lib/location-server";
+import { PageTitle } from "@/components/discover/page-title";
 
 export default async function CartPage() {
   const { t, locale } = await getDictionary();
@@ -33,7 +34,7 @@ export default async function CartPage() {
     <>
       <Header />
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
-        <h1 className="mb-5 text-2xl font-extrabold tracking-tight">{t.cart.title}</h1>
+        <div className="mb-5"><PageTitle title={t.cart.title} art="/art/real/shops.webp" /></div>
         <Checkout t={t} locale={locale} signedIn={!!user} defaults={{ address: lastAddress, phone: lastPhone }} budgetLeft={budgetLeft} loc={loc} />
       </main>
     </>
