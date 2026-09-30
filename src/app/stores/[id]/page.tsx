@@ -3,7 +3,7 @@ import { Bike, Clock, Lock, ShoppingCart } from "lucide-react";
 import { Header } from "@/components/header";
 import { RealtimeRefresh } from "@/components/realtime-refresh";
 import { CartBar } from "@/components/cart-bar";
-import { Art, CATEGORY_ART, CATEGORY_TINT } from "@/components/category-icon";
+import { Art, CATEGORY_TINT, NameArt, pickArt } from "@/components/category-icon";
 import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { formatEGP, pickName } from "@/lib/format";
@@ -30,6 +30,8 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
   const name = pickName(locale, store.name_ar, store.name_en);
   const storeInfo = { businessId: store.id, businessName: name, deliveryFee: Number(store.delivery_fee), minOrder: Number(store.min_order) };
   const tint = CATEGORY_TINT[store.category];
+  const storeText = `${store.name_en ?? ""} ${store.name_ar}`;
+  const storeArt = pickArt(storeText, store.category);
 
   return (
     <>
@@ -46,7 +48,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
             // eslint-disable-next-line @next/next/no-img-element
             <img src={store.cover_url} alt="" className="-mx-5 -mt-5 mb-4 block h-36 w-[calc(100%+2.5rem)] max-w-none object-cover sm:-mx-7 sm:-mt-7 sm:h-48 sm:w-[calc(100%+3.5rem)]" />
           ) : (
-            <Art src={CATEGORY_ART[store.category]} className="absolute -bottom-6 -end-4 -z-10 h-32 w-32 opacity-15" />
+            storeArt && <Art src={storeArt} className="absolute -bottom-6 -end-4 -z-10 h-32 w-32 opacity-15" />
           )}
           <div className={`flex gap-4 ${store.cover_url ? "items-end" : "items-center"}`}>
             {store.logo_url ? (
@@ -54,7 +56,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
               <img src={store.logo_url} alt="" className={`h-16 w-16 shrink-0 rounded-2xl border-2 border-surface bg-white object-cover shadow-md ${store.cover_url ? "-mt-12" : ""}`} />
             ) : (
               <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/10 bg-background/60 backdrop-blur" style={{ color: tint }}>
-                <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
+                <NameArt name={storeText} category={store.category} className="h-10 w-10" />
               </span>
             )}
             <div className="min-w-0 flex-1">
@@ -97,7 +99,7 @@ export default async function StorePage({ params }: { params: Promise<{ id: stri
                   <img src={item.photo_url} alt="" loading="lazy" className="h-18 w-18 shrink-0 rounded-xl object-cover" />
                 ) : (
                   <span className="grid h-18 w-18 shrink-0 place-items-center rounded-xl" style={{ background: `linear-gradient(135deg, ${tint}30, ${tint}08)`, color: tint }}>
-                    <Art src={CATEGORY_ART[store.category]} className="h-10 w-10" />
+                    <NameArt name={`${item.name_en ?? ""} ${item.name_ar}`} category={store.category} className="h-10 w-10" />
                   </span>
                 )}
                 <div className="min-w-0 flex-1">

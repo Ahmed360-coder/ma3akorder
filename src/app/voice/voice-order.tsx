@@ -187,7 +187,7 @@ export function VoiceOrder({ stores, dishes, locale, x }: { stores: DiscoverStor
             const isAdded = added.includes(d.itemId);
             return (
               <m.div key={`${query}-${d.itemId}`} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="card flex items-center gap-3 p-3">
-                <DishArt photo={d.photo} category={s?.category ?? "restaurant"} className="h-14 w-14 rounded-xl" />
+                <DishArt photo={d.photo} name={d.name} category={s?.category ?? "restaurant"} className="h-14 w-14 rounded-xl" />
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-bold">{d.name}</div>
                   <div className="truncate text-xs text-muted">{s?.name}</div>

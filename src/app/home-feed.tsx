@@ -7,7 +7,7 @@ import { ChevronDown, MapPin, ShoppingBag, Star, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { LogoMark } from "@/components/logo";
 import { SideMenuButton } from "@/components/side-menu";
-import { Art, CATEGORY_ART, StoreBadge } from "@/components/category-icon";
+import { Art, CATEGORY_ART, NameArt, StoreBadge } from "@/components/category-icon";
 import type { BusinessCategory } from "@/lib/types";
 import type { StoreCard } from "@/lib/stores";
 import type { Loc } from "@/lib/location";
@@ -164,7 +164,7 @@ export function HomeFeed({
               {again.map((s) => (
                 <Link key={s.id} href={`/stores/${s.id}`} className="flex w-20 shrink-0 snap-start flex-col items-center gap-1.5 text-center transition active:scale-95">
                   <span className="relative">
-                    <StoreBadge category={s.category} logo={s.logo} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
+                    <StoreBadge category={s.category} logo={s.logo} name={s.name} className="h-20 w-20 rounded-2xl border border-line" iconClass="h-11 w-11" />
                     {s.fee === 0 && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-warm px-1.5 text-[10px] font-bold text-white">{labels.freeDelivery}</span>}
                   </span>
                   <span className="line-clamp-2 text-xs font-semibold">{s.name}</span>
@@ -237,7 +237,7 @@ function StoreRow({ s, labels }: { s: StoreCard; labels: HomeLabels }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={(s.logo ?? s.cover)!} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
-          <Art src={CATEGORY_ART[s.category]} className="h-14 w-14 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]" />
+          <NameArt name={s.name} category={s.category} className="h-14 w-14 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]" />
         )}
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">

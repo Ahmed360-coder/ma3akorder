@@ -31,7 +31,7 @@ export function FavoritesList({ stores, x }: { stores: StoreCard[]; x: Extras["f
         {saved.map((s) => (
           <m.li key={s.id} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -40 }} className="card flex items-center gap-3 p-3">
             <Link href={`/stores/${s.id}`} className="flex min-w-0 flex-1 items-center gap-3">
-              <StoreBadge category={s.category} logo={s.logo} className="h-14 w-14 rounded-xl" iconClass="h-9 w-9" />
+              <StoreBadge category={s.category} logo={s.logo} name={s.name} className="h-14 w-14 rounded-xl" iconClass="h-9 w-9" />
               <div className="min-w-0">
                 <div className="truncate font-bold">{s.name}</div>
                 <div className="flex flex-wrap items-center gap-x-2 text-xs text-muted">

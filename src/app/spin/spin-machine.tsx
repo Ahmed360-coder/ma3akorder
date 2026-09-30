@@ -82,7 +82,7 @@ export function SpinMachine({ stores, dishes, locale, x }: { stores: DiscoverSto
               const s = storeById.get(d.storeId);
               return (
                 <div key={i} className="flex items-center gap-3 px-4" style={{ height: ROW }}>
-                  <DishArt photo={d.photo} category={s?.category ?? "restaurant"} className="h-14 w-14 rounded-2xl" />
+                  <DishArt photo={d.photo} name={d.name} category={s?.category ?? "restaurant"} className="h-14 w-14 rounded-2xl" />
                   <div className="min-w-0 flex-1">
                     <div className="truncate font-bold">{d.name}</div>
                     <div className="truncate text-xs text-muted">{s?.name}</div>
@@ -117,7 +117,7 @@ export function SpinMachine({ stores, dishes, locale, x }: { stores: DiscoverSto
           <m.section key={burst} initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} className="card flex flex-col items-center gap-3 text-center">
             <Confetti />
             <span className="text-sm font-semibold text-muted">{x.winner}</span>
-            <DishArt photo={winner.photo} category={store.category} className="h-24 w-24 rounded-3xl" />
+            <DishArt photo={winner.photo} name={winner.name} category={store.category} className="h-24 w-24 rounded-3xl" />
             <h2 className="text-2xl font-extrabold">{winner.name}</h2>
             <p className="text-sm text-muted">
               {x.from} <span className="font-bold text-foreground">{store.name}</span> · <span className="font-bold text-warm" dir="auto">{formatEGP(winner.price, locale)}</span>

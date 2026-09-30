@@ -73,7 +73,7 @@ export function TrendingBoard({ today, week, rows, fallback, openStores, locale,
                 <m.span className="absolute inset-y-0 start-0 -z-0 bg-accent/5" initial={{ width: 0 }} animate={{ width: `${(r.orders / top) * 100}%` }} transition={{ duration: 0.9, delay: 0.2 + i * 0.05 }} />
               )}
               <span className={`relative grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-black ${i < 3 && rows.length ? "bg-accent text-white" : "bg-surface-2 text-muted"}`}>{i + 1}</span>
-              <DishArt photo={r.dish.photo} category={r.category} className="relative h-14 w-14 rounded-xl" />
+              <DishArt photo={r.dish.photo} name={r.dish.name} category={r.category} className="relative h-14 w-14 rounded-xl" />
               <div className="relative min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <span className="truncate font-bold">{r.dish.name}</span>

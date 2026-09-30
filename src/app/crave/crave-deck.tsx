@@ -46,7 +46,7 @@ function Card({ dish, store, locale, x, onSwipe, top }: { dish: Dish; store?: Di
         <m.span style={{ opacity: nopeOpacity }} className="absolute end-5 top-5 rotate-12 rounded-xl border-4 border-danger px-3 py-1 text-2xl font-black uppercase text-danger">
           {x.nope}
         </m.span>
-        <DishArt photo={dish.photo} category={store?.category ?? "restaurant"} className="h-44 w-44 rounded-[2rem]" />
+        <DishArt photo={dish.photo} name={dish.name} category={store?.category ?? "restaurant"} className="h-44 w-44 rounded-[2rem]" />
         <div>
           <h2 className="text-2xl font-extrabold">{dish.name}</h2>
           <p className="text-sm text-muted">{store?.name}</p>
@@ -106,7 +106,7 @@ export function CraveDeck({ stores, dishes, locale, x }: { stores: DiscoverStore
             </m.span>
             <h2 className="text-3xl font-black text-accent">{x.match}</h2>
             <p className="text-sm text-muted">{x.matchBody}</p>
-            <DishArt photo={match.photo} category={storeById.get(match.storeId)?.category ?? "restaurant"} className="h-28 w-28 rounded-3xl" />
+            <DishArt photo={match.photo} name={match.name} category={storeById.get(match.storeId)?.category ?? "restaurant"} className="h-28 w-28 rounded-3xl" />
             <div>
               <div className="text-xl font-extrabold">{match.name}</div>
               <div className="text-sm text-muted">
@@ -132,7 +132,7 @@ export function CraveDeck({ stores, dishes, locale, x }: { stores: DiscoverStore
             <h3 className="font-bold">{x.liked}</h3>
             {liked.slice(1).map((d, i) => (
               <m.div key={d.itemId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.06 }} className="card flex items-center gap-3 p-3">
-                <DishArt photo={d.photo} category={storeById.get(d.storeId)?.category ?? "restaurant"} className="h-12 w-12 rounded-xl" />
+                <DishArt photo={d.photo} name={d.name} category={storeById.get(d.storeId)?.category ?? "restaurant"} className="h-12 w-12 rounded-xl" />
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-bold">{d.name}</div>
                   <div className="truncate text-xs text-muted">{storeById.get(d.storeId)?.name}</div>

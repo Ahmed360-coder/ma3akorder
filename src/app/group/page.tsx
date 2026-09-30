@@ -37,7 +37,7 @@ export default async function GroupStartPage() {
             <h2 className="text-lg font-bold">{x.group.pick}</h2>
             {stores.map((s, i) => (
               <div key={s.id} className="stagger card flex items-center gap-3 p-3" style={{ "--i": i } as React.CSSProperties}>
-                <StoreBadge category={s.category} logo={s.logo} className="h-14 w-14 rounded-xl" iconClass="h-9 w-9" />
+                <StoreBadge category={s.category} logo={s.logo} name={s.name} className="h-14 w-14 rounded-xl" iconClass="h-9 w-9" />
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-bold">{s.name}</div>
                   <div className="text-xs text-muted">

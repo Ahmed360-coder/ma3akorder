@@ -140,7 +140,7 @@ export function GroupRoom({ code, initial, menu, locale, x }: { code: string; in
       {/* Store and invite */}
       <section className="card flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <StoreBadge category={group.business.category} logo={group.business.logo_url} className="h-12 w-12 rounded-xl" iconClass="h-8 w-8" />
+          <StoreBadge category={group.business.category} name={group.business.name_en ?? group.business.name_ar} logo={group.business.logo_url} className="h-12 w-12 rounded-xl" iconClass="h-8 w-8" />
           <div className="min-w-0 flex-1">
             <div className="truncate font-bold">{storeName}</div>
             <div className="text-xs text-muted">{group.host_name ? fill(x.host, { name: group.host_name }) : ""}</div>
@@ -201,7 +201,7 @@ export function GroupRoom({ code, initial, menu, locale, x }: { code: string; in
           <h2 className="text-lg font-bold">{x.menu}</h2>
           {menu.map((item) => (
             <div key={item.itemId} className="card flex items-center gap-3 p-3">
-              <DishArt photo={item.photo} category={group.business.category} className="h-12 w-12 rounded-xl" />
+              <DishArt photo={item.photo} name={item.name} category={group.business.category} className="h-12 w-12 rounded-xl" />
               <div className="min-w-0 flex-1">
                 <div className="truncate font-semibold">{item.name}</div>
                 <div className="text-sm font-bold text-warm" dir="auto">{formatEGP(item.price, locale)}</div>

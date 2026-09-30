@@ -84,7 +84,7 @@ export function MealBuilder({ start, stores, dishes, locale, x }: { start?: { pe
               className="card flex flex-col gap-3"
             >
               <div className="flex items-center gap-3">
-                <StoreBadge category={meal.store.category} logo={meal.store.logo} className="h-12 w-12 rounded-xl" iconClass="h-8 w-8" />
+                <StoreBadge category={meal.store.category} name={meal.store.name} logo={meal.store.logo} className="h-12 w-12 rounded-xl" iconClass="h-8 w-8" />
                 <div className="min-w-0 flex-1">
                   <Link href={`/stores/${meal.store.id}`} className="block truncate font-bold hover:underline">{meal.store.name}</Link>
                   <div className="flex items-center gap-2 text-xs text-muted">
