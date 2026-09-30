@@ -28,7 +28,7 @@ export async function Header({ hideOnPhone = false }: { hideOnPhone?: boolean } 
     <>
       <header className={`glass sticky top-0 z-20 border-b border-line/70 ${hideOnPhone ? "hidden md:block" : ""}`}>
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
-          <div className="flex min-w-0 items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1">
             {/* Phones and tablets: the side menu opens from here on every page (computers keep it pinned). */}
             {!hideOnPhone && (
               <SideMenuButton
@@ -40,13 +40,13 @@ export async function Header({ hideOnPhone = false }: { hideOnPhone?: boolean } 
               <Logo name={t.brand} />
             </Link>
           </div>
-          {/* Shoppers get the tab bar on phones, so the top links only show on wider screens. */}
-          <nav className="flex items-center gap-0.5 overflow-x-auto">
+          {/* Phones reach these pages from the Menu button, and computers from the pinned side menu, so the text links only show on tablets. */}
+          <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`${shopper ? "hidden md:inline-flex" : "inline-flex"} h-10 lg:hidden items-center whitespace-nowrap rounded-xl px-3 text-sm font-semibold text-muted hover:bg-surface hover:text-foreground`}
+                className={`hidden h-10 md:inline-flex lg:hidden items-center whitespace-nowrap rounded-xl px-3 text-sm font-semibold text-muted hover:bg-surface hover:text-foreground`}
               >
                 {l.label}
               </Link>
